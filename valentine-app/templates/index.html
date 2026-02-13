@@ -521,6 +521,102 @@
     font-style: italic;
   }
 
+  /* ── Scavenger Hunt section ── */
+  .hunt-intro {
+    text-align: center; padding: 24px 20px; margin-bottom: 16px;
+    background: linear-gradient(135deg, rgba(233,30,99,.10), rgba(255,215,0,.06));
+    border: 1px solid rgba(233,30,99,.18);
+  }
+  .hunt-intro-icon { font-size: 2.2rem; margin-bottom: 10px; display: block; }
+  .hunt-intro-text {
+    font-size: .92rem; line-height: 1.7; color: var(--text-secondary);
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .hunt-progress {
+    text-align: center; margin-bottom: 18px;
+    font-size: .78rem; color: var(--text-muted);
+    letter-spacing: .05em; text-transform: uppercase;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .hunt-progress-bar {
+    height: 4px; border-radius: 4px; margin: 8px auto 0;
+    max-width: 240px;
+    background: rgba(255,255,255,.08);
+    overflow: hidden;
+  }
+  .hunt-progress-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--love-bright), var(--gold));
+    transition: width .5s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+  .hunt-clue {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 18px; margin-bottom: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative; overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hunt-clue.locked {
+    opacity: .35; pointer-events: none;
+    filter: blur(1px);
+  }
+  .hunt-clue.locked .hunt-clue-text {
+    -webkit-user-select: none; user-select: none;
+  }
+  .hunt-clue:not(.locked):active { transform: scale(.97); }
+  .hunt-clue-check {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+    color: transparent; margin-top: 2px;
+  }
+  .hunt-clue-check svg { width: 18px; height: 18px; }
+  .hunt-clue.solved .hunt-clue-check {
+    background: linear-gradient(135deg, var(--gold), #ffb300);
+    border-color: var(--gold);
+    color: #1a0a1e;
+    box-shadow: 0 0 12px var(--gold-glow);
+  }
+  .hunt-clue-body { flex: 1; min-width: 0; }
+  .hunt-clue-number {
+    font-size: .7rem; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--gold); margin-bottom: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    font-weight: 600;
+  }
+  .hunt-clue.solved .hunt-clue-number { color: var(--text-muted); }
+  .hunt-clue-text {
+    font-size: .88rem; line-height: 1.7; color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+  }
+  .hunt-clue.solved .hunt-clue-text {
+    color: var(--text-muted);
+  }
+  .hunt-clue-lock {
+    font-size: 1.1rem; margin-top: 2px; flex-shrink: 0;
+  }
+  .hunt-complete {
+    text-align: center; padding: 28px 20px; margin-top: 4px;
+    background: linear-gradient(135deg, rgba(255,215,0,.12), rgba(233,30,99,.08));
+    border: 1px solid rgba(255,215,0,.25);
+    display: none;
+  }
+  .hunt-complete.visible { display: block; animation: fadeInUp .6s ease forwards; }
+  .hunt-complete-icon { font-size: 2.8rem; margin-bottom: 12px; display: block; }
+  .hunt-complete-title {
+    font-size: 1.15rem; font-weight: 700; color: var(--gold);
+    margin-bottom: 8px;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .hunt-complete-text {
+    font-size: .95rem; color: var(--text-secondary); line-height: 1.6;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
   /* Touch feedback */
   @media (hover: none) {
     .gallery-arrow { width: 36px; height: 36px; font-size: 1rem; }
@@ -559,6 +655,7 @@
     <button class="nav-tab active" onclick="showPage('home')">Home</button>
     <button class="nav-tab" onclick="showPage('sexy')">Sexy</button>
     <button class="nav-tab" onclick="showPage('coupons')">Coupons</button>
+    <button class="nav-tab" onclick="showPage('hunt')">Hunt</button>
     <button class="nav-tab" onclick="showPage('poems')">Poems</button>
   </div>
 
@@ -772,6 +869,122 @@
 
     <div class="coupon-fine-print">
       Valid through 2026 &#8226; Redeemable by Katy, honored by Brad &#10084;&#65039;
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
+  <!-- ════ SCAVENGER HUNT PAGE ════ -->
+  <div class="page" id="page-hunt">
+
+    <div class="hunt-intro glass">
+      <span class="hunt-intro-icon">&#128270;</span>
+      <p class="hunt-intro-text">
+        Solve each riddle to unlock the next clue. Brad will be there to help if you get stuck! Your Valentine&#8217;s gift awaits at the end. &#10084;&#65039;
+      </p>
+    </div>
+
+    <div class="hunt-progress" id="huntProgress">Clue 1 of 8</div>
+    <div class="hunt-progress-bar"><div class="hunt-progress-fill" id="huntProgressFill"></div></div>
+
+    <div style="margin-top:18px">
+
+      <div class="hunt-clue glass" id="hunt-0" onclick="solveClue(0)">
+        <div class="hunt-clue-check" id="hunt-check-0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="hunt-clue-body">
+          <div class="hunt-clue-number">Clue 1</div>
+          <div class="hunt-clue-text">&#8220;I&#8217;m the only reason Brad&#8217;s still married. Without me, you&#8217;d have committed justifiable homicide years ago. I transform hell into tolerable, one ritual at a time.&#8221;</div>
+        </div>
+      </div>
+
+      <div class="hunt-clue glass locked" id="hunt-1" onclick="solveClue(1)">
+        <div class="hunt-clue-check" id="hunt-check-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="hunt-clue-body">
+          <div class="hunt-clue-number">Clue 2</div>
+          <div class="hunt-clue-text">&#8220;I&#8217;m the homewrecker who lives in your house. You feed me regularly and I repay you with theft. My victims vanish without a trace and you just&#8230; keep using me anyway.&#8221;</div>
+        </div>
+        <span class="hunt-clue-lock">&#128274;</span>
+      </div>
+
+      <div class="hunt-clue glass locked" id="hunt-2" onclick="solveClue(2)">
+        <div class="hunt-clue-check" id="hunt-check-2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="hunt-clue-body">
+          <div class="hunt-clue-number">Clue 3</div>
+          <div class="hunt-clue-text">&#8220;I&#8217;m a morgue that hums constantly. Your optimism dies here in transparent coffins while I pretend not to notice. I preserve corpses but can&#8217;t save good intentions.&#8221;</div>
+        </div>
+        <span class="hunt-clue-lock">&#128274;</span>
+      </div>
+
+      <div class="hunt-clue glass locked" id="hunt-3" onclick="solveClue(3)">
+        <div class="hunt-clue-check" id="hunt-check-3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="hunt-clue-body">
+          <div class="hunt-clue-number">Clue 4</div>
+          <div class="hunt-clue-text">&#8220;I tell the truth but show it backwards. Shatter me for seven years of misery. I&#8217;ve witnessed your naked confidence more times than Brad has&#8212;and I never complain about the view.&#8221;</div>
+        </div>
+        <span class="hunt-clue-lock">&#128274;</span>
+      </div>
+
+      <div class="hunt-clue glass locked" id="hunt-4" onclick="solveClue(4)">
+        <div class="hunt-clue-check" id="hunt-check-4">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="hunt-clue-body">
+          <div class="hunt-clue-number">Clue 5</div>
+          <div class="hunt-clue-text">&#8220;Our warranty expired after incident number two. I&#8217;ve survived earthquakes that had nothing to do with geology. Physics met passion here repeatedly&#8212;physics lost every time.&#8221;</div>
+        </div>
+        <span class="hunt-clue-lock">&#128274;</span>
+      </div>
+
+      <div class="hunt-clue glass locked" id="hunt-5" onclick="solveClue(5)">
+        <div class="hunt-clue-check" id="hunt-check-5">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="hunt-clue-body">
+          <div class="hunt-clue-number">Clue 6</div>
+          <div class="hunt-clue-text">&#8220;I&#8217;m a monument to masculine delusion. Three levels of &#8216;someday&#8217; collecting dust beside tools of abandoned ambition. The graveyard where projects go to feel less alone.&#8221;</div>
+        </div>
+        <span class="hunt-clue-lock">&#128274;</span>
+      </div>
+
+      <div class="hunt-clue glass locked" id="hunt-6" onclick="solveClue(6)">
+        <div class="hunt-clue-check" id="hunt-check-6">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="hunt-clue-body">
+          <div class="hunt-clue-number">Clue 7</div>
+          <div class="hunt-clue-text">&#8220;I&#8217;m the guardian between your sanctuary and the world&#8217;s chaos. I swing both ways without shame. My highest point conceals secrets my lowest point could never imagine.&#8221;</div>
+        </div>
+        <span class="hunt-clue-lock">&#128274;</span>
+      </div>
+
+      <div class="hunt-clue glass locked" id="hunt-7" onclick="solveClue(7)">
+        <div class="hunt-clue-check" id="hunt-check-7">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="hunt-clue-body">
+          <div class="hunt-clue-number">Clue 8</div>
+          <div class="hunt-clue-text">&#8220;I&#8217;m enslaved to ancient decomposed forests. My heart pumps 2000 times per minute when Brad&#8217;s impatient. I bleed when wounded and scream when violated. Your treasure waits in my hollow core.&#8221;</div>
+        </div>
+        <span class="hunt-clue-lock">&#128274;</span>
+      </div>
+
+    </div>
+
+    <div class="hunt-complete glass" id="huntComplete">
+      <span class="hunt-complete-icon">&#128157;</span>
+      <div class="hunt-complete-title">Congratulations!</div>
+      <p class="hunt-complete-text">You solved them all! Now go claim your prize! &#128157;</p>
     </div>
 
     <div class="footer">
@@ -1077,7 +1290,7 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "poems"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems"];
   function showPage(name) {
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.getElementById("page-" + name).classList.add("active");
@@ -1382,6 +1595,75 @@ Come live with me, and be my love.</span>
   }
 
   loadCoupons();
+
+  // ── Scavenger Hunt ──
+  const HUNT_KEY = "valentine-hunt-solved";
+  const TOTAL_CLUES = 8;
+
+  function loadHunt() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(HUNT_KEY) || "[]");
+      saved.forEach(id => {
+        const clue = document.getElementById("hunt-" + id);
+        if (clue) clue.classList.add("solved");
+      });
+      // Unlock clues based on solved state
+      for (let i = 0; i < TOTAL_CLUES; i++) {
+        const clue = document.getElementById("hunt-" + i);
+        if (i === 0 || document.getElementById("hunt-" + (i - 1)).classList.contains("solved")) {
+          clue.classList.remove("locked");
+          const lock = clue.querySelector(".hunt-clue-lock");
+          if (lock) lock.style.display = "none";
+        }
+      }
+      updateHuntUI();
+    } catch(e) {}
+  }
+
+  function saveHunt() {
+    const solved = [];
+    document.querySelectorAll(".hunt-clue.solved").forEach(el => {
+      solved.push(parseInt(el.id.replace("hunt-", "")));
+    });
+    localStorage.setItem(HUNT_KEY, JSON.stringify(solved));
+  }
+
+  function updateHuntUI() {
+    const solvedCount = document.querySelectorAll(".hunt-clue.solved").length;
+    const progress = document.getElementById("huntProgress");
+    const fill = document.getElementById("huntProgressFill");
+    const complete = document.getElementById("huntComplete");
+
+    if (solvedCount >= TOTAL_CLUES) {
+      progress.textContent = "All 8 clues solved!";
+      fill.style.width = "100%";
+      complete.classList.add("visible");
+    } else {
+      progress.textContent = `Clue ${solvedCount + 1} of ${TOTAL_CLUES}`;
+      fill.style.width = (solvedCount / TOTAL_CLUES * 100) + "%";
+      complete.classList.remove("visible");
+    }
+  }
+
+  function solveClue(id) {
+    const clue = document.getElementById("hunt-" + id);
+    if (clue.classList.contains("locked") || clue.classList.contains("solved")) return;
+
+    clue.classList.add("solved");
+
+    // Unlock next clue
+    const next = document.getElementById("hunt-" + (id + 1));
+    if (next) {
+      next.classList.remove("locked");
+      const lock = next.querySelector(".hunt-clue-lock");
+      if (lock) lock.style.display = "none";
+    }
+
+    saveHunt();
+    updateHuntUI();
+  }
+
+  loadHunt();
 
   // ── Service Worker ──
   if ("serviceWorker" in navigator) {
