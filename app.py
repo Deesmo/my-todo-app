@@ -34,6 +34,10 @@ def init_db():
         db.execute("ALTER TABLE tasks ADD COLUMN priority TEXT NOT NULL DEFAULT 'medium'")
     except sqlite3.OperationalError:
         pass
+    try:
+        db.execute("ALTER TABLE tasks ADD COLUMN due_date TEXT DEFAULT NULL")
+    except sqlite3.OperationalError:
+        pass
     db.commit()
 
 
@@ -49,7 +53,7 @@ def index():
 @app.route("/api/tasks")
 def get_tasks():
     rows = get_db().execute(
-        "SELECT id, description, completed, priority FROM tasks ORDER BY id"
+        "SELECT id, description, completed, priority, due_date FROM tasks ORDER BY id"
     ).fetchall()
     tasks = [dict(r) for r in rows]
     return jsonify(tasks)
@@ -64,14 +68,15 @@ def add_task():
     priority = (data.get("priority") or "medium").lower()
     if priority not in VALID_PRIORITIES:
         priority = "medium"
+    due_date = data.get("due_date") or None
     db = get_db()
     cursor = db.execute(
-        "INSERT INTO tasks (description, priority) VALUES (?, ?)",
-        (description, priority),
+        "INSERT INTO tasks (description, priority, due_date) VALUES (?, ?, ?)",
+        (description, priority, due_date),
     )
     db.commit()
     task = db.execute(
-        "SELECT id, description, completed, priority FROM tasks WHERE id = ?",
+        "SELECT id, description, completed, priority, due_date FROM tasks WHERE id = ?",
         (cursor.lastrowid,),
     ).fetchone()
     return jsonify(dict(task)), 201
@@ -90,13 +95,14 @@ def edit_task(task_id):
     priority = (data.get("priority") or "medium").lower()
     if priority not in VALID_PRIORITIES:
         priority = "medium"
+    due_date = data.get("due_date")
     db.execute(
-        "UPDATE tasks SET description = ?, priority = ? WHERE id = ?",
-        (description, priority, task_id),
+        "UPDATE tasks SET description = ?, priority = ?, due_date = ? WHERE id = ?",
+        (description, priority, due_date, task_id),
     )
     db.commit()
     task = db.execute(
-        "SELECT id, description, completed, priority FROM tasks WHERE id = ?",
+        "SELECT id, description, completed, priority, due_date FROM tasks WHERE id = ?",
         (task_id,),
     ).fetchone()
     return jsonify(dict(task))
@@ -114,7 +120,7 @@ def toggle_complete(task_id):
     db.execute("UPDATE tasks SET completed = ? WHERE id = ?", (new_status, task_id))
     db.commit()
     task = db.execute(
-        "SELECT id, description, completed, priority FROM tasks WHERE id = ?",
+        "SELECT id, description, completed, priority, due_date FROM tasks WHERE id = ?",
         (task_id,),
     ).fetchone()
     return jsonify(dict(task))

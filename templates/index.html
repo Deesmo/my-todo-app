@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Todo App</title>
-<meta name="theme-color" content="#0984e3">
+<meta name="theme-color" content="#4a00e0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Todo">
@@ -12,131 +12,324 @@
 <link rel="apple-touch-icon" href="/static/icon-192.png">
 <style>
   :root {
-    --high: #e74c3c;
-    --medium: #f39c12;
-    --low: #27ae60;
-    --bg: #f5f6fa;
-    --card: #fff;
-    --text: #2d3436;
-    --muted: #636e72;
-    --border: #dfe6e9;
-    --radius: 8px;
+    --high: #ff6b6b;
+    --high-soft: #fff0f0;
+    --medium: #ffa94d;
+    --medium-soft: #fff8f0;
+    --low: #51cf66;
+    --low-soft: #f0faf2;
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --text: #1a1d23;
+    --text-secondary: #5f6577;
+    --muted: #8b91a3;
+    --border: #e2e5ed;
+    --accent: #6c5ce7;
+    --accent-hover: #5a4bd1;
+    --accent-soft: #f0eeff;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.04), 0 1px 2px rgba(0,0,0,.06);
+    --shadow: 0 4px 12px rgba(0,0,0,.06), 0 1px 4px rgba(0,0,0,.04);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.04);
+    --transition: .2s cubic-bezier(.4,0,.2,1);
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
   }
-  .container { max-width: 640px; margin: 0 auto; padding: 16px; }
-  h1 { font-size: 1.5rem; margin-bottom: 16px; }
+  .container { max-width: 640px; margin: 0 auto; padding: 16px; padding-bottom: 80px; }
+
+  /* Header / branding */
+  .app-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding: 4px 0;
+  }
+  .app-logo {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(108,92,231,.3);
+    flex-shrink: 0;
+  }
+  .app-logo svg { width: 22px; height: 22px; }
+  .app-title { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; }
+  .app-subtitle { font-size: .8rem; color: var(--muted); font-weight: 500; margin-top: 1px; }
 
   /* Add form */
   .add-form {
-    display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+    display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+    background: var(--card); padding: 14px; border-radius: var(--radius);
+    box-shadow: var(--shadow-sm); border: 1px solid var(--border);
   }
   .add-form input[type="text"] {
-    flex: 1 1 200px; padding: 10px 12px; border: 1px solid var(--border);
-    border-radius: var(--radius); font-size: 1rem; outline: none;
+    flex: 1 1 200px; padding: 10px 14px; border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm); font-size: .95rem; outline: none;
+    background: var(--bg); transition: border-color var(--transition), box-shadow var(--transition);
   }
-  .add-form input[type="text"]:focus { border-color: #74b9ff; }
-  .add-form select {
-    padding: 10px 12px; border: 1px solid var(--border);
-    border-radius: var(--radius); font-size: 1rem; background: var(--card); outline: none;
+  .add-form input[type="text"]:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(108,92,231,.12);
+  }
+  .add-form input[type="text"]::placeholder { color: var(--muted); }
+  .add-form select, .add-form input[type="datetime-local"] {
+    padding: 10px 12px; border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm); font-size: .9rem; background: var(--bg);
+    outline: none; color: var(--text); transition: border-color var(--transition);
+  }
+  .add-form select:focus, .add-form input[type="datetime-local"]:focus {
+    border-color: var(--accent);
   }
   .add-form button {
-    padding: 10px 20px; border: none; border-radius: var(--radius);
-    background: #0984e3; color: #fff; font-size: 1rem; cursor: pointer;
-    font-weight: 600;
+    padding: 10px 24px; border: none; border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: #fff; font-size: .95rem; cursor: pointer; font-weight: 600;
+    transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+    box-shadow: 0 2px 8px rgba(108,92,231,.25);
   }
-  .add-form button:hover { background: #0773c5; }
+  .add-form button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(108,92,231,.35); }
+  .add-form button:active { transform: translateY(0); }
+
+  /* Notify button */
+  .notify-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border: 1.5px solid var(--border);
+    border-radius: 999px; background: var(--card); cursor: pointer;
+    font-size: .8rem; color: var(--text-secondary); margin-bottom: 16px;
+    transition: all var(--transition);
+  }
+  .notify-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .notify-btn.granted { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); cursor: default; }
 
   /* Tabs */
   .tabs {
-    display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+    display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap;
   }
   .tab {
-    padding: 6px 16px; border: 2px solid var(--border); border-radius: 999px;
-    background: var(--card); cursor: pointer; font-size: .9rem; font-weight: 600;
-    transition: all .15s;
+    padding: 7px 18px; border: 1.5px solid var(--border); border-radius: 999px;
+    background: var(--card); cursor: pointer; font-size: .85rem; font-weight: 600;
+    transition: all var(--transition); color: var(--text-secondary);
+    user-select: none; -webkit-tap-highlight-color: transparent;
   }
-  .tab:hover { border-color: #74b9ff; }
-  .tab.active { background: #0984e3; color: #fff; border-color: #0984e3; }
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab.active {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: #fff; border-color: transparent;
+    box-shadow: 0 2px 8px rgba(108,92,231,.25);
+  }
+  .tab[data-filter="high"].active { background: linear-gradient(135deg, #ff6b6b, #ee5a24); box-shadow: 0 2px 8px rgba(255,107,107,.3); }
+  .tab[data-filter="medium"].active { background: linear-gradient(135deg, #ffa94d, #f39c12); box-shadow: 0 2px 8px rgba(255,169,77,.3); }
+  .tab[data-filter="low"].active { background: linear-gradient(135deg, #51cf66, #20bf6b); box-shadow: 0 2px 8px rgba(81,207,102,.3); }
 
   /* Task list */
-  .task-list { display: flex; flex-direction: column; gap: 8px; }
+  .task-list { display: flex; flex-direction: column; gap: 10px; }
+
+  /* Task card */
   .task-card {
-    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px;
     background: var(--card); border-radius: var(--radius);
     border-left: 4px solid var(--medium);
-    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+    -webkit-tap-highlight-color: transparent;
+    animation: slideIn .3s cubic-bezier(.4,0,.2,1) both;
   }
+  .task-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+  .task-card:active { transform: translateY(0); }
   .task-card.high { border-left-color: var(--high); }
   .task-card.medium { border-left-color: var(--medium); }
   .task-card.low { border-left-color: var(--low); }
+  .task-card.done { opacity: .6; }
+  .task-card.done:hover { opacity: .8; }
   .task-card.done .task-desc { text-decoration: line-through; color: var(--muted); }
 
-  .task-check {
-    width: 20px; height: 20px; cursor: pointer; accent-color: #0984e3; flex-shrink: 0;
+  /* Animations */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .task-body { flex: 1; min-width: 0; }
-  .task-desc { font-size: 1rem; word-break: break-word; }
-  .badge {
-    display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase;
-    padding: 2px 8px; border-radius: 999px; color: #fff; margin-top: 4px;
+  @keyframes slideOut {
+    from { opacity: 1; transform: translateX(0); max-height: 120px; margin-bottom: 10px; }
+    to { opacity: 0; transform: translateX(60px); max-height: 0; margin-bottom: 0; padding: 0; overflow: hidden; }
   }
-  .badge.high { background: var(--high); }
-  .badge.medium { background: var(--medium); }
-  .badge.low { background: var(--low); }
+  @keyframes completePulse {
+    0% { box-shadow: var(--shadow-sm); }
+    50% { box-shadow: 0 0 0 4px rgba(81,207,102,.3); }
+    100% { box-shadow: var(--shadow-sm); }
+  }
+  @keyframes confetti {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-80px) rotate(720deg); opacity: 0; }
+  }
+  .task-card.completing { animation: completePulse .5s ease; }
+  .task-card.deleting { animation: slideOut .3s ease forwards; pointer-events: none; }
 
+  /* Custom checkbox */
+  .check-wrap {
+    position: relative; width: 22px; height: 22px; flex-shrink: 0;
+  }
+  .check-wrap input { opacity: 0; position: absolute; width: 100%; height: 100%; cursor: pointer; z-index: 1; margin: 0; }
+  .check-mark {
+    width: 22px; height: 22px; border: 2px solid var(--border); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition); background: var(--card);
+  }
+  .check-mark svg { width: 12px; height: 12px; opacity: 0; transition: opacity var(--transition); stroke: #fff; stroke-width: 2.5; fill: none; }
+  .check-wrap input:checked + .check-mark {
+    background: linear-gradient(135deg, #51cf66, #20bf6b); border-color: transparent;
+    box-shadow: 0 1px 4px rgba(81,207,102,.3);
+  }
+  .check-wrap input:checked + .check-mark svg { opacity: 1; }
+
+  .task-body { flex: 1; min-width: 0; }
+  .task-desc {
+    font-size: .95rem; word-break: break-word; line-height: 1.4;
+    font-weight: 500; transition: color var(--transition);
+  }
+  .task-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 6px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: 2px 8px; border-radius: 999px; color: #fff;
+  }
+  .badge.high { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+  .badge.medium { background: linear-gradient(135deg, #ffa94d, #f39c12); }
+  .badge.low { background: linear-gradient(135deg, #51cf66, #20bf6b); }
+
+  /* Due date badges */
+  .due-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: .65rem; font-weight: 600;
+    padding: 2px 8px; border-radius: 999px;
+  }
+  .due-badge.overdue { background: var(--high-soft); color: #d63031; }
+  .due-badge.due-soon { background: var(--medium-soft); color: #b45309; }
+  .due-badge.due-later { background: #f0f2f5; color: var(--muted); }
+
+  /* Action buttons */
   .task-actions { display: flex; gap: 4px; flex-shrink: 0; }
   .task-actions button {
-    background: none; border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 4px 8px; cursor: pointer; font-size: .85rem; color: var(--muted);
+    background: none; border: none; border-radius: var(--radius-sm);
+    padding: 6px 8px; cursor: pointer; color: var(--muted);
+    transition: all var(--transition); display: flex; align-items: center; justify-content: center;
   }
   .task-actions button:hover { background: var(--bg); color: var(--text); }
-  .task-actions button.del:hover { color: var(--high); border-color: var(--high); }
+  .task-actions button.del:hover { background: var(--high-soft); color: var(--high); }
+  .task-actions button svg { width: 16px; height: 16px; }
 
-  .empty { text-align: center; color: var(--muted); padding: 32px 0; }
+  /* Empty state */
+  .empty {
+    text-align: center; color: var(--muted); padding: 48px 16px;
+  }
+  .empty-icon {
+    width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%;
+    background: var(--accent-soft); display: flex; align-items: center; justify-content: center;
+  }
+  .empty-icon svg { width: 28px; height: 28px; stroke: var(--accent); fill: none; stroke-width: 1.5; }
+  .empty-title { font-size: 1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; }
+  .empty-sub { font-size: .85rem; }
+
+  /* Loading skeleton */
+  .skeleton {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .skeleton-card {
+    height: 68px; border-radius: var(--radius);
+    background: linear-gradient(90deg, var(--border) 25%, #eff1f5 50%, var(--border) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease infinite;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* Confetti canvas */
+  .confetti-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 200; overflow: hidden;
+  }
+  .confetti-piece {
+    position: absolute; width: 8px; height: 8px; border-radius: 2px;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+    80% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.3); }
+  }
 
   /* Offline banner */
   .offline-banner {
-    display: none; background: var(--high); color: #fff; text-align: center;
-    padding: 6px; font-size: .85rem; font-weight: 600;
+    display: none; background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: #fff; text-align: center;
+    padding: 8px; font-size: .82rem; font-weight: 600;
   }
   .offline-banner.show { display: block; }
 
   /* Edit modal */
   .modal-overlay {
-    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4);
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
     justify-content: center; align-items: center; z-index: 100; padding: 16px;
   }
   .modal-overlay.open { display: flex; }
+  .modal-overlay.open .modal { animation: modalIn .25s cubic-bezier(.4,0,.2,1); }
+  @keyframes modalIn { from { opacity: 0; transform: scale(.95) translateY(10px); } to { opacity: 1; transform: none; } }
   .modal {
-    background: var(--card); border-radius: var(--radius); padding: 24px;
-    width: 100%; max-width: 420px;
+    background: var(--card); border-radius: var(--radius); padding: 28px;
+    width: 100%; max-width: 420px; box-shadow: var(--shadow-lg);
   }
-  .modal h2 { margin-bottom: 16px; font-size: 1.2rem; }
-  .modal label { display: block; font-weight: 600; margin-bottom: 4px; font-size: .9rem; }
+  .modal h2 { margin-bottom: 20px; font-size: 1.15rem; font-weight: 700; }
+  .modal label { display: block; font-weight: 600; margin-bottom: 6px; font-size: .85rem; color: var(--text-secondary); }
   .modal input, .modal select {
-    width: 100%; padding: 10px 12px; border: 1px solid var(--border);
-    border-radius: var(--radius); font-size: 1rem; margin-bottom: 12px; outline: none;
+    width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm); font-size: .95rem; margin-bottom: 14px; outline: none;
+    background: var(--bg); transition: border-color var(--transition);
   }
-  .modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
+  .modal input:focus, .modal select:focus { border-color: var(--accent); }
+  .modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
   .modal-btns button {
-    padding: 8px 16px; border: none; border-radius: var(--radius);
-    font-size: .95rem; cursor: pointer; font-weight: 600;
+    padding: 9px 20px; border: none; border-radius: var(--radius-sm);
+    font-size: .9rem; cursor: pointer; font-weight: 600;
+    transition: all var(--transition);
   }
-  .btn-cancel { background: var(--border); color: var(--text); }
-  .btn-save { background: #0984e3; color: #fff; }
-  .btn-save:hover { background: #0773c5; }
+  .btn-cancel { background: var(--bg); color: var(--text-secondary); border: 1.5px solid var(--border); }
+  .btn-cancel:hover { background: var(--border); }
+  .btn-save {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff;
+    box-shadow: 0 2px 8px rgba(108,92,231,.25);
+  }
+  .btn-save:hover { box-shadow: 0 4px 12px rgba(108,92,231,.35); transform: translateY(-1px); }
+
+  /* Touch improvements */
+  @media (hover: none) {
+    .task-card:hover { transform: none; box-shadow: var(--shadow-sm); }
+    .task-card:active { transform: scale(.98); }
+    .add-form button:hover { transform: none; }
+  }
+  @media (max-width: 480px) {
+    .container { padding: 12px; padding-bottom: 80px; }
+    .add-form { padding: 12px; gap: 6px; }
+    .task-actions button { padding: 8px 10px; }
+  }
 </style>
 </head>
 <body>
 <div class="offline-banner" id="offlineBanner">You are offline — tasks are read-only</div>
 <div class="container">
-  <h1>Todo App</h1>
+  <div class="app-header">
+    <div class="app-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 11 12 14 22 4"/>
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+    </div>
+    <div>
+      <div class="app-title">Todo</div>
+      <div class="app-subtitle">Stay on top of things</div>
+    </div>
+  </div>
 
   <form class="add-form" id="addForm">
     <input type="text" id="descInput" placeholder="What needs to be done?" required>
@@ -145,8 +338,14 @@
       <option value="medium" selected>Medium</option>
       <option value="low">Low</option>
     </select>
-    <button type="submit">Add</button>
+    <input type="datetime-local" id="dueInput" title="Due date (optional)">
+    <button type="submit">Add Task</button>
   </form>
+
+  <button class="notify-btn" id="notifyBtn" style="display:none">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    Enable Reminders
+  </button>
 
   <div class="tabs" id="tabs">
     <button class="tab active" data-filter="all">All</button>
@@ -155,8 +354,16 @@
     <button class="tab" data-filter="low">Low</button>
   </div>
 
-  <div class="task-list" id="taskList"></div>
+  <div class="task-list" id="taskList">
+    <div class="skeleton" id="skeleton">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+  </div>
 </div>
+
+<div class="confetti-container" id="confetti"></div>
 
 <!-- Edit modal -->
 <div class="modal-overlay" id="editOverlay">
@@ -171,6 +378,8 @@
       <option value="medium">Medium</option>
       <option value="low">Low</option>
     </select>
+    <label for="editDue">Due Date</label>
+    <input type="datetime-local" id="editDue">
     <div class="modal-btns">
       <button class="btn-cancel" id="editCancel">Cancel</button>
       <button class="btn-save" id="editSave">Save</button>
@@ -188,11 +397,18 @@
   const editId = document.getElementById("editId");
   const editDesc = document.getElementById("editDesc");
   const editPrio = document.getElementById("editPrio");
+  const dueInput = document.getElementById("dueInput");
+  const editDue = document.getElementById("editDue");
+  const notifyBtn = document.getElementById("notifyBtn");
+  const confettiEl = document.getElementById("confetti");
 
   const offlineBanner = document.getElementById("offlineBanner");
 
   let tasks = [];
   let filter = "all";
+  let loaded = false;
+  const notifiedIds = new Set();
+  let notifyCheckInterval = null;
 
   function setOffline(offline) {
     offlineBanner.classList.toggle("show", offline);
@@ -208,35 +424,107 @@
     } catch {
       // offline — keep cached tasks
     }
+    loaded = true;
     render();
   }
 
+  function formatDue(dueDateStr) {
+    if (!dueDateStr) return null;
+    const due = new Date(dueDateStr);
+    const now = new Date();
+    const diffMs = due - now;
+    const diffMins = diffMs / 60000;
+    let cls;
+    if (diffMs < 0) cls = "overdue";
+    else if (diffMins <= 60) cls = "due-soon";
+    else cls = "due-later";
+    const opts = { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" };
+    const label = due.toLocaleString(undefined, opts);
+    const prefix = cls === "overdue" ? "Overdue: " : "Due: ";
+    return { cls, text: prefix + label };
+  }
+
+  const ICONS = {
+    edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+    del: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+    clock: '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+    check: '<svg viewBox="0 0 24 24"><polyline points="4 12 9 17 20 6"/></svg>',
+  };
+
   function render() {
     const filtered = filter === "all" ? tasks : tasks.filter(t => t.priority === filter);
+    if (!loaded) return; // skeleton still showing
     if (filtered.length === 0) {
-      taskList.innerHTML = '<div class="empty">No tasks</div>';
+      const isFiltered = filter !== "all";
+      taskList.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24"><path d="${isFiltered
+              ? "M3 6h18M3 12h18M3 18h18"
+              : "M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+            }"/></svg>
+          </div>
+          <div class="empty-title">${isFiltered ? "No " + filter + " priority tasks" : "All clear!"}</div>
+          <div class="empty-sub">${isFiltered ? "Try a different filter or add a new task" : "Add a task above to get started"}</div>
+        </div>`;
       return;
     }
-    taskList.innerHTML = filtered.map(t => `
-      <div class="task-card ${t.priority}${t.completed ? " done" : ""}">
-        <input type="checkbox" class="task-check" ${t.completed ? "checked" : ""}
-               onchange="toggleComplete(${t.id})">
+    taskList.innerHTML = filtered.map((t, i) => {
+      const due = formatDue(t.due_date);
+      const dueBadge = due
+        ? `<span class="due-badge ${due.cls}">${ICONS.clock} ${esc(due.text)}</span>`
+        : "";
+      return `
+      <div class="task-card ${t.priority}${t.completed ? " done" : ""}" data-id="${t.id}" style="animation-delay:${i * .03}s">
+        <label class="check-wrap">
+          <input type="checkbox" ${t.completed ? "checked" : ""} onchange="toggleComplete(${t.id})">
+          <span class="check-mark">${ICONS.check}</span>
+        </label>
         <div class="task-body">
           <div class="task-desc">${esc(t.description)}</div>
-          <span class="badge ${t.priority}">${t.priority}</span>
+          <div class="task-meta">
+            <span class="badge ${t.priority}">${t.priority}</span>${dueBadge}
+          </div>
         </div>
         <div class="task-actions">
-          <button onclick="openEdit(${t.id})">Edit</button>
-          <button class="del" onclick="deleteTask(${t.id})">Del</button>
+          <button onclick="openEdit(${t.id})" title="Edit">${ICONS.edit}</button>
+          <button class="del" onclick="deleteTask(${t.id})" title="Delete">${ICONS.del}</button>
         </div>
-      </div>
-    `).join("");
+      </div>`;
+    }).join("");
   }
 
   function esc(s) {
     const d = document.createElement("div");
     d.textContent = s;
     return d.innerHTML;
+  }
+
+  // Celebration confetti
+  function celebrate(x, y) {
+    const colors = ["#6c5ce7","#a29bfe","#51cf66","#ffa94d","#ff6b6b","#fdcb6e","#74b9ff"];
+    for (let i = 0; i < 24; i++) {
+      const piece = document.createElement("div");
+      piece.className = "confetti-piece";
+      piece.style.left = x + "px";
+      piece.style.top = y + "px";
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width = (Math.random() * 6 + 4) + "px";
+      piece.style.height = (Math.random() * 6 + 4) + "px";
+      piece.style.borderRadius = Math.random() > .5 ? "50%" : "2px";
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = Math.random() * 200 + 80;
+      const vx = Math.cos(angle) * velocity;
+      const vy = Math.sin(angle) * velocity - 150;
+      piece.style.setProperty("--vx", vx + "px");
+      piece.style.setProperty("--vy", vy + "px");
+      piece.animate([
+        { transform: "translate(0,0) rotate(0deg) scale(1)", opacity: 1 },
+        { transform: `translate(${vx}px, ${vy + 200}px) rotate(${Math.random()*720-360}deg) scale(0)`, opacity: 0 }
+      ], { duration: 800 + Math.random() * 400, easing: "cubic-bezier(.25,.46,.45,.94)" });
+      confettiEl.appendChild(piece);
+      setTimeout(() => piece.remove(), 1300);
+    }
   }
 
   // Add task
@@ -248,9 +536,10 @@
       await fetch("/api/tasks", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({description, priority: prioInput.value})
+        body: JSON.stringify({description, priority: prioInput.value, due_date: dueInput.value || null})
       });
       descInput.value = "";
+      dueInput.value = "";
     } catch { alert("Cannot add tasks while offline"); }
     await loadTasks();
   });
@@ -266,14 +555,27 @@
 
   // Toggle complete
   async function toggleComplete(id) {
+    const task = tasks.find(t => t.id === id);
+    const wasCompleted = task && task.completed;
+    const card = document.querySelector(`.task-card[data-id="${id}"]`);
+    if (card && !wasCompleted) {
+      card.classList.add("completing");
+      const rect = card.getBoundingClientRect();
+      celebrate(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    }
     try {
       await fetch(`/api/tasks/${id}/complete`, {method: "PUT"});
     } catch { alert("Cannot update tasks while offline"); }
     await loadTasks();
   }
 
-  // Delete
+  // Delete with animation
   async function deleteTask(id) {
+    const card = document.querySelector(`.task-card[data-id="${id}"]`);
+    if (card) {
+      card.classList.add("deleting");
+      await new Promise(r => setTimeout(r, 280));
+    }
     try {
       await fetch(`/api/tasks/${id}`, {method: "DELETE"});
     } catch { alert("Cannot delete tasks while offline"); }
@@ -287,6 +589,7 @@
     editId.value = t.id;
     editDesc.value = t.description;
     editPrio.value = t.priority;
+    editDue.value = t.due_date || "";
     editOverlay.classList.add("open");
   }
 
@@ -306,13 +609,72 @@
       await fetch(`/api/tasks/${id}`, {
         method: "PUT",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({description, priority: editPrio.value})
+        body: JSON.stringify({description, priority: editPrio.value, due_date: editDue.value || null})
       });
       editOverlay.classList.remove("open");
     } catch { alert("Cannot edit tasks while offline"); }
     await loadTasks();
   });
 
+  // --- Notification System ---
+  function initNotifications() {
+    if (!("Notification" in window)) return;
+    notifyBtn.style.display = "inline-flex";
+    if (Notification.permission === "granted") {
+      notifyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Reminders On';
+      notifyBtn.classList.add("granted");
+      startNotifyChecker();
+    } else if (Notification.permission === "denied") {
+      notifyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><line x1="1" y1="1" x2="23" y2="23"/></svg> Blocked';
+      notifyBtn.classList.add("granted");
+    }
+    notifyBtn.addEventListener("click", async () => {
+      if (Notification.permission === "granted") return;
+      const perm = await Notification.requestPermission();
+      if (perm === "granted") {
+        notifyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Reminders On';
+        notifyBtn.classList.add("granted");
+        startNotifyChecker();
+      } else {
+        notifyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><line x1="1" y1="1" x2="23" y2="23"/></svg> Blocked';
+        notifyBtn.classList.add("granted");
+      }
+    });
+  }
+
+  function startNotifyChecker() {
+    if (notifyCheckInterval) return;
+    notifyCheckInterval = setInterval(checkDueTasks, 60000);
+    checkDueTasks();
+  }
+
+  function checkDueTasks() {
+    if (Notification.permission !== "granted") return;
+    const now = new Date();
+    const window_ms = 5 * 60 * 1000;
+    tasks.forEach(t => {
+      if (!t.due_date || t.completed || notifiedIds.has(t.id)) return;
+      const due = new Date(t.due_date);
+      const diffMs = due - now;
+      if (diffMs <= window_ms && diffMs > -window_ms) {
+        notifiedIds.add(t.id);
+        let body;
+        if (diffMs <= 0) {
+          body = "This task is now overdue!";
+        } else {
+          const mins = Math.ceil(diffMs / 60000);
+          body = `Due in ${mins} minute${mins === 1 ? "" : "s"}`;
+        }
+        new Notification("Todo Reminder", {
+          body: `${t.description} - ${body}`,
+          icon: "/static/icon-192.png",
+          tag: `todo-${t.id}`,
+        });
+      }
+    });
+  }
+
+  initNotifications();
   loadTasks();
 
   // Register service worker
