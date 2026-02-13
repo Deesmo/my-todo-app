@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo App</title>
+<style>
+  :root {
+    --high: #e74c3c;
+    --medium: #f39c12;
+    --low: #27ae60;
+    --bg: #f5f6fa;
+    --card: #fff;
+    --text: #2d3436;
+    --muted: #636e72;
+    --border: #dfe6e9;
+    --radius: 8px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .container { max-width: 640px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 1.5rem; margin-bottom: 16px; }
+
+  /* Add form */
+  .add-form {
+    display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .add-form input[type="text"] {
+    flex: 1 1 200px; padding: 10px 12px; border: 1px solid var(--border);
+    border-radius: var(--radius); font-size: 1rem; outline: none;
+  }
+  .add-form input[type="text"]:focus { border-color: #74b9ff; }
+  .add-form select {
+    padding: 10px 12px; border: 1px solid var(--border);
+    border-radius: var(--radius); font-size: 1rem; background: var(--card); outline: none;
+  }
+  .add-form button {
+    padding: 10px 20px; border: none; border-radius: var(--radius);
+    background: #0984e3; color: #fff; font-size: 1rem; cursor: pointer;
+    font-weight: 600;
+  }
+  .add-form button:hover { background: #0773c5; }
+
+  /* Tabs */
+  .tabs {
+    display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .tab {
+    padding: 6px 16px; border: 2px solid var(--border); border-radius: 999px;
+    background: var(--card); cursor: pointer; font-size: .9rem; font-weight: 600;
+    transition: all .15s;
+  }
+  .tab:hover { border-color: #74b9ff; }
+  .tab.active { background: #0984e3; color: #fff; border-color: #0984e3; }
+
+  /* Task list */
+  .task-list { display: flex; flex-direction: column; gap: 8px; }
+  .task-card {
+    display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+    background: var(--card); border-radius: var(--radius);
+    border-left: 4px solid var(--medium);
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .task-card.high { border-left-color: var(--high); }
+  .task-card.medium { border-left-color: var(--medium); }
+  .task-card.low { border-left-color: var(--low); }
+  .task-card.done .task-desc { text-decoration: line-through; color: var(--muted); }
+
+  .task-check {
+    width: 20px; height: 20px; cursor: pointer; accent-color: #0984e3; flex-shrink: 0;
+  }
+  .task-body { flex: 1; min-width: 0; }
+  .task-desc { font-size: 1rem; word-break: break-word; }
+  .badge {
+    display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 999px; color: #fff; margin-top: 4px;
+  }
+  .badge.high { background: var(--high); }
+  .badge.medium { background: var(--medium); }
+  .badge.low { background: var(--low); }
+
+  .task-actions { display: flex; gap: 4px; flex-shrink: 0; }
+  .task-actions button {
+    background: none; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 4px 8px; cursor: pointer; font-size: .85rem; color: var(--muted);
+  }
+  .task-actions button:hover { background: var(--bg); color: var(--text); }
+  .task-actions button.del:hover { color: var(--high); border-color: var(--high); }
+
+  .empty { text-align: center; color: var(--muted); padding: 32px 0; }
+
+  /* Edit modal */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4);
+    justify-content: center; align-items: center; z-index: 100; padding: 16px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card); border-radius: var(--radius); padding: 24px;
+    width: 100%; max-width: 420px;
+  }
+  .modal h2 { margin-bottom: 16px; font-size: 1.2rem; }
+  .modal label { display: block; font-weight: 600; margin-bottom: 4px; font-size: .9rem; }
+  .modal input, .modal select {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+    border-radius: var(--radius); font-size: 1rem; margin-bottom: 12px; outline: none;
+  }
+  .modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
+  .modal-btns button {
+    padding: 8px 16px; border: none; border-radius: var(--radius);
+    font-size: .95rem; cursor: pointer; font-weight: 600;
+  }
+  .btn-cancel { background: var(--border); color: var(--text); }
+  .btn-save { background: #0984e3; color: #fff; }
+  .btn-save:hover { background: #0773c5; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Todo App</h1>
+
+  <form class="add-form" id="addForm">
+    <input type="text" id="descInput" placeholder="What needs to be done?" required>
+    <select id="prioInput">
+      <option value="high">High</option>
+      <option value="medium" selected>Medium</option>
+      <option value="low">Low</option>
+    </select>
+    <button type="submit">Add</button>
+  </form>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-filter="all">All</button>
+    <button class="tab" data-filter="high">High</button>
+    <button class="tab" data-filter="medium">Medium</button>
+    <button class="tab" data-filter="low">Low</button>
+  </div>
+
+  <div class="task-list" id="taskList"></div>
+</div>
+
+<!-- Edit modal -->
+<div class="modal-overlay" id="editOverlay">
+  <div class="modal">
+    <h2>Edit Task</h2>
+    <input type="hidden" id="editId">
+    <label for="editDesc">Description</label>
+    <input type="text" id="editDesc" required>
+    <label for="editPrio">Priority</label>
+    <select id="editPrio">
+      <option value="high">High</option>
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+    </select>
+    <div class="modal-btns">
+      <button class="btn-cancel" id="editCancel">Cancel</button>
+      <button class="btn-save" id="editSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const taskList = document.getElementById("taskList");
+  const addForm = document.getElementById("addForm");
+  const descInput = document.getElementById("descInput");
+  const prioInput = document.getElementById("prioInput");
+  const tabs = document.getElementById("tabs");
+  const editOverlay = document.getElementById("editOverlay");
+  const editId = document.getElementById("editId");
+  const editDesc = document.getElementById("editDesc");
+  const editPrio = document.getElementById("editPrio");
+
+  let tasks = [];
+  let filter = "all";
+
+  async function loadTasks() {
+    const res = await fetch("/api/tasks");
+    tasks = await res.json();
+    render();
+  }
+
+  function render() {
+    const filtered = filter === "all" ? tasks : tasks.filter(t => t.priority === filter);
+    if (filtered.length === 0) {
+      taskList.innerHTML = '<div class="empty">No tasks</div>';
+      return;
+    }
+    taskList.innerHTML = filtered.map(t => `
+      <div class="task-card ${t.priority}${t.completed ? " done" : ""}">
+        <input type="checkbox" class="task-check" ${t.completed ? "checked" : ""}
+               onchange="toggleComplete(${t.id})">
+        <div class="task-body">
+          <div class="task-desc">${esc(t.description)}</div>
+          <span class="badge ${t.priority}">${t.priority}</span>
+        </div>
+        <div class="task-actions">
+          <button onclick="openEdit(${t.id})">Edit</button>
+          <button class="del" onclick="deleteTask(${t.id})">Del</button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function esc(s) {
+    const d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  // Add task
+  addForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const description = descInput.value.trim();
+    if (!description) return;
+    await fetch("/api/tasks", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({description, priority: prioInput.value})
+    });
+    descInput.value = "";
+    await loadTasks();
+  });
+
+  // Tabs
+  tabs.addEventListener("click", e => {
+    if (!e.target.classList.contains("tab")) return;
+    tabs.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    e.target.classList.add("active");
+    filter = e.target.dataset.filter;
+    render();
+  });
+
+  // Toggle complete
+  async function toggleComplete(id) {
+    await fetch(`/api/tasks/${id}/complete`, {method: "PUT"});
+    await loadTasks();
+  }
+
+  // Delete
+  async function deleteTask(id) {
+    await fetch(`/api/tasks/${id}`, {method: "DELETE"});
+    await loadTasks();
+  }
+
+  // Edit modal
+  function openEdit(id) {
+    const t = tasks.find(t => t.id === id);
+    if (!t) return;
+    editId.value = t.id;
+    editDesc.value = t.description;
+    editPrio.value = t.priority;
+    editOverlay.classList.add("open");
+  }
+
+  document.getElementById("editCancel").addEventListener("click", () => {
+    editOverlay.classList.remove("open");
+  });
+
+  editOverlay.addEventListener("click", e => {
+    if (e.target === editOverlay) editOverlay.classList.remove("open");
+  });
+
+  document.getElementById("editSave").addEventListener("click", async () => {
+    const id = editId.value;
+    const description = editDesc.value.trim();
+    if (!description) return;
+    await fetch(`/api/tasks/${id}`, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({description, priority: editPrio.value})
+    });
+    editOverlay.classList.remove("open");
+    await loadTasks();
+  });
+
+  loadTasks();
+</script>
+</body>
+</html>
