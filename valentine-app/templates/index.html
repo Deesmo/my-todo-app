@@ -583,7 +583,14 @@
   let ytPlayer = null;
   let progressTimer = null;
   let ytReady = false;
-  let needsUserTap = false;
+
+  // Always attach tap handler immediately — covers all autoplay-blocked cases
+  tapOverlay.addEventListener("click", () => {
+    if (ytPlayer && ytReady) {
+      ytPlayer.playVideo();
+    }
+    tapOverlay.classList.add("hidden");
+  });
 
   function formatTime(s) {
     if (isNaN(s) || s < 0) return "0:00";
@@ -671,22 +678,7 @@
 
   function onPlayerReady(e) {
     ytReady = true;
-    // Try to autoplay
     e.target.playVideo();
-    // Check after a short delay if it actually started
-    setTimeout(() => {
-      const state = e.target.getPlayerState();
-      if (state !== YT.PlayerState.PLAYING) {
-        // Autoplay blocked — need user tap
-        needsUserTap = true;
-        tapOverlay.addEventListener("click", function handler() {
-          ytPlayer.playVideo();
-          tapOverlay.removeEventListener("click", handler);
-        });
-      } else {
-        tapOverlay.classList.add("hidden");
-      }
-    }, 1000);
   }
 
   function onPlayerStateChange(e) {
