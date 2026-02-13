@@ -1,10 +1,10 @@
 {
-  "name": "Todo App",
-  "short_name": "Todo",
+  "name": "Brad's To Do List",
+  "short_name": "Brad's ToDo",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f0f2f5",
-  "theme_color": "#6c5ce7",
+  "background_color": "#0f0c29",
+  "theme_color": "#1a1a2e",
   "icons": [
     {
       "src": "/static/icon-192.png",
