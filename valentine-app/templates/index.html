@@ -707,8 +707,8 @@
           </svg>
         </button>
         <div class="music-info">
-          <div class="music-title">My Home &#8212; Myles Smith <span class="music-note">&#9834;</span></div>
-          <div class="music-artist">Our song &#128149;</div>
+          <div class="music-title" id="musicTitle">My Home &#8212; Myles Smith <span class="music-note">&#9834;</span></div>
+          <div class="music-artist" id="musicArtist">Song 1 of 2 &#128149;</div>
           <div class="music-progress" id="progressBar" onclick="seekMusic(event)">
             <div class="music-progress-fill" id="progressFill"></div>
           </div>
@@ -1256,7 +1256,7 @@ Come live with me, and be my love.</span>
 
 </div>
 
-<audio id="bgMusic" preload="auto" loop>
+<audio id="bgMusic" preload="auto">
   <source src="/static/my-home.mp3" type="audio/mpeg">
 </audio>
 
@@ -1499,7 +1499,13 @@ Come live with me, and be my love.</span>
     updatePoemUI();
   });
 
-  // ── Music Player (HTML5 Audio) ──
+  // ── Music Player (Playlist) ──
+  const playlist = [
+    { src: "/static/my-home.mp3", title: "My Home", artist: "Myles Smith" },
+    { src: "/static/a-thousand-years.mp3", title: "A Thousand Years", artist: "Christina Perri" }
+  ];
+  let currentTrack = 0;
+
   const audio = document.getElementById("bgMusic");
   const musicBtn = document.getElementById("musicBtn");
   const playIcon = document.getElementById("playIcon");
@@ -1509,7 +1515,25 @@ Come live with me, and be my love.</span>
   const totalTimeEl = document.getElementById("totalTime");
   const visualizer = document.getElementById("visualizer");
   const tapOverlay = document.getElementById("tapOverlay");
+  const musicTitle = document.getElementById("musicTitle");
+  const musicArtist = document.getElementById("musicArtist");
   let isPlaying = false;
+
+  function updateTrackUI() {
+    const t = playlist[currentTrack];
+    musicTitle.innerHTML = t.title + " &#8212; " + t.artist + ' <span class="music-note">&#9834;</span>';
+    musicArtist.innerHTML = "Song " + (currentTrack + 1) + " of " + playlist.length + " &#128149;";
+  }
+
+  function loadTrack(index, autoplay) {
+    currentTrack = index;
+    audio.src = playlist[index].src;
+    audio.load();
+    updateTrackUI();
+    if (autoplay) {
+      audio.play().then(() => setPlayingUI()).catch(() => {});
+    }
+  }
 
   function formatTime(s) {
     if (isNaN(s) || s < 0) return "0:00";
@@ -1565,6 +1589,12 @@ Come live with me, and be my love.</span>
 
   audio.addEventListener("loadedmetadata", () => {
     totalTimeEl.textContent = formatTime(audio.duration);
+  });
+
+  // When a song ends, play the next one (loop back to first after last)
+  audio.addEventListener("ended", () => {
+    const next = (currentTrack + 1) % playlist.length;
+    loadTrack(next, true);
   });
 
   // ── Love Coupons ──
