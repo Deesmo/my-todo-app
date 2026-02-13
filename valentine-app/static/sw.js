@@ -1,4 +1,4 @@
-const CACHE = "valentine-v12";
+const CACHE = "valentine-v13";
 const SHELL = ["/", "/static/manifest.json", "/static/icon-192.png", "/static/icon-512.png"];
 
 self.addEventListener("install", (e) => {
