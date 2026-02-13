@@ -89,7 +89,7 @@
 
   /* Header */
   .header {
-    text-align: center; margin-bottom: 32px; padding: 10px 0;
+    text-align: center; margin-bottom: 20px; padding: 10px 0;
   }
   .header-heart {
     font-size: 3rem; margin-bottom: 8px;
@@ -115,6 +115,34 @@
     margin-top: 6px; font-style: italic;
     font-family: Georgia, "Times New Roman", serif;
   }
+
+  /* Navigation tabs */
+  .nav-tabs {
+    display: flex; justify-content: center; gap: 4px;
+    margin-bottom: 24px; padding: 4px;
+    background: var(--glass);
+    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+  }
+  .nav-tab {
+    flex: 1; padding: 10px 16px; border: none; border-radius: 12px;
+    background: transparent; color: var(--text-muted);
+    font-size: .85rem; font-weight: 600; cursor: pointer;
+    transition: var(--transition);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-tab.active {
+    background: linear-gradient(135deg, rgba(233,30,99,.4), rgba(244,143,177,.3));
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(233,30,99,.3);
+  }
+  .nav-tab:not(.active):hover { color: var(--text-secondary); }
+
+  /* Page sections */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeInUp .5s ease forwards; }
 
   /* Glass panel */
   .glass {
@@ -154,12 +182,6 @@
   .gallery-slide img {
     width: 100%; height: 100%; object-fit: cover;
   }
-  .gallery-placeholder {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 12px; color: var(--text-muted); font-size: .85rem;
-    width: 100%; height: 100%;
-  }
-  .gallery-placeholder span { font-size: 3rem; }
 
   /* Gallery dots */
   .gallery-dots {
@@ -301,6 +323,97 @@
     font-style: italic;
   }
 
+  /* ── Poems section ── */
+  .poem-viewer {
+    position: relative; overflow: hidden;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(233,30,99,.08), rgba(139,10,58,.06));
+    border: 1px solid rgba(233,30,99,.18);
+    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+    box-shadow: 0 8px 32px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.08);
+    min-height: 420px;
+    touch-action: pan-y pinch-zoom;
+  }
+  .poem-track {
+    display: flex;
+    transition: transform .45s cubic-bezier(.25,.46,.45,.94);
+    will-change: transform;
+  }
+  .poem-track.dragging { transition: none; }
+  .poem-page {
+    min-width: 100%;
+    padding: 32px 24px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .poem-number {
+    font-size: .7rem; text-transform: uppercase; letter-spacing: .12em;
+    color: var(--text-muted); margin-bottom: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .poem-title {
+    font-size: 1.3rem; font-weight: 700;
+    color: var(--love-pink); margin-bottom: 6px;
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.3;
+  }
+  .poem-author {
+    font-size: .82rem; color: var(--text-muted);
+    font-style: italic; margin-bottom: 24px;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .poem-body {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: .95rem; line-height: 1.85;
+    color: var(--text-secondary);
+    white-space: pre-line;
+    max-width: 380px;
+  }
+  .poem-body .stanza { margin-bottom: 16px; display: block; }
+  .poem-body .stanza:last-child { margin-bottom: 0; }
+
+  /* Poem navigation */
+  .poem-nav {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; margin-top: 18px;
+  }
+  .poem-arrow {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--glass);
+    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--glass-border);
+    color: #fff; font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .poem-arrow:hover { background: rgba(255,255,255,.18); }
+  .poem-arrow:active { transform: scale(.92); }
+  .poem-arrow:disabled { opacity: .3; pointer-events: none; }
+  .poem-counter {
+    font-size: .8rem; color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    min-width: 50px; text-align: center;
+  }
+
+  /* Poem dots */
+  .poem-dots {
+    display: flex; justify-content: center; gap: 6px;
+    margin-top: 12px; flex-wrap: wrap;
+  }
+  .poem-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,.2);
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  .poem-dot.active {
+    background: var(--love-pink);
+    box-shadow: 0 0 8px rgba(233,30,99,.4);
+    transform: scale(1.4);
+  }
+
   /* Tap-to-play overlay */
   .tap-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -362,6 +475,9 @@
     .message-text { font-size: .95rem; }
     .music-player { padding: 16px; gap: 12px; }
     .music-btn { width: 48px; height: 48px; font-size: 1.2rem; }
+    .poem-page { padding: 24px 16px; }
+    .poem-title { font-size: 1.15rem; }
+    .poem-body { font-size: .88rem; }
   }
 </style>
 </head>
@@ -379,90 +495,362 @@
     <p class="header-subtitle">Happy Valentine's Day 2026</p>
   </div>
 
-  <!-- Photo Gallery -->
-  <div class="gallery-section fade-in fade-in-2">
-    <div class="gallery-label">✨ Our Beautiful Family ✨</div>
-    <div class="gallery glass" id="gallery">
-      <div class="gallery-track" id="galleryTrack">
-        <div class="gallery-slide">
-          <img src="/static/photos/photo1.jpg" alt="Brad and Katy embracing">
-        </div>
-        <div class="gallery-slide">
-          <img src="/static/photos/photo2.jpg" alt="The whole family together">
-        </div>
-        <div class="gallery-slide">
-          <img src="/static/photos/photo3.jpg" alt="Brad and Katy walking together">
-        </div>
-        <div class="gallery-slide">
-          <img src="/static/photos/photo4.jpg" alt="Family on the front steps">
-        </div>
-      </div>
-      <div class="sparkle-overlay"></div>
-      <button class="gallery-arrow prev" onclick="prevSlide()">‹</button>
-      <button class="gallery-arrow next" onclick="nextSlide()">›</button>
-    </div>
-    <div class="gallery-dots" id="galleryDots">
-      <div class="gallery-dot active" onclick="goToSlide(0)"></div>
-      <div class="gallery-dot" onclick="goToSlide(1)"></div>
-      <div class="gallery-dot" onclick="goToSlide(2)"></div>
-      <div class="gallery-dot" onclick="goToSlide(3)"></div>
-    </div>
+  <!-- Navigation -->
+  <div class="nav-tabs fade-in fade-in-1" id="navTabs">
+    <button class="nav-tab active" onclick="showPage('home')">Home</button>
+    <button class="nav-tab" onclick="showPage('poems')">Love Poems</button>
   </div>
 
-  <div class="divider">♥ ♥ ♥</div>
+  <!-- ════ HOME PAGE ════ -->
+  <div class="page active" id="page-home">
 
-  <!-- Music Player -->
-  <div class="music-section fade-in fade-in-3">
-    <div class="music-player glass">
-      <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
-        <svg id="playIcon" width="22" height="22" viewBox="0 0 24 24" fill="white">
-          <polygon points="6,3 20,12 6,21"/>
-        </svg>
-        <svg id="pauseIcon" width="22" height="22" viewBox="0 0 24 24" fill="white" style="display:none">
-          <rect x="5" y="3" width="5" height="18" rx="1"/>
-          <rect x="14" y="3" width="5" height="18" rx="1"/>
-        </svg>
-      </button>
-      <div class="music-info">
-        <div class="music-title">My Home — Myles Smith <span class="music-note">♪</span></div>
-        <div class="music-artist">Our song 💕</div>
-        <div class="music-progress" id="progressBar" onclick="seekMusic(event)">
-          <div class="music-progress-fill" id="progressFill"></div>
+    <!-- Photo Gallery -->
+    <div class="gallery-section">
+      <div class="gallery-label">✨ Our Beautiful Family ✨</div>
+      <div class="gallery glass" id="gallery">
+        <div class="gallery-track" id="galleryTrack">
+          <div class="gallery-slide">
+            <img src="/static/photos/photo1.jpg" alt="Brad and Katy embracing">
+          </div>
+          <div class="gallery-slide">
+            <img src="/static/photos/photo2.jpg" alt="The whole family together">
+          </div>
+          <div class="gallery-slide">
+            <img src="/static/photos/photo3.jpg" alt="Brad and Katy walking together">
+          </div>
+          <div class="gallery-slide">
+            <img src="/static/photos/photo4.jpg" alt="Family on the front steps">
+          </div>
         </div>
-        <div class="music-time">
-          <span id="currentTime">0:00</span>
-          <span id="totalTime">0:00</span>
-        </div>
+        <div class="sparkle-overlay"></div>
+        <button class="gallery-arrow prev" onclick="prevSlide()">&#8249;</button>
+        <button class="gallery-arrow next" onclick="nextSlide()">&#8250;</button>
       </div>
-      <div class="visualizer paused" id="visualizer">
-        <div class="viz-bar"></div>
-        <div class="viz-bar"></div>
-        <div class="viz-bar"></div>
-        <div class="viz-bar"></div>
-        <div class="viz-bar"></div>
+      <div class="gallery-dots" id="galleryDots">
+        <div class="gallery-dot active" onclick="goToSlide(0)"></div>
+        <div class="gallery-dot" onclick="goToSlide(1)"></div>
+        <div class="gallery-dot" onclick="goToSlide(2)"></div>
+        <div class="gallery-dot" onclick="goToSlide(3)"></div>
       </div>
     </div>
-  </div>
 
-  <div class="divider">♥ ♥ ♥</div>
+    <div class="divider">&#9829; &#9829; &#9829;</div>
 
-  <!-- Love Message -->
-  <div class="message-section fade-in fade-in-4">
-    <div class="love-message glass">
-      <span class="message-icon">💌</span>
-      <p class="message-text">
-        Katy, I love and appreciate you more than words can say.
-        Thank you for being the rock of our family and the best mother in the world.
-        You make our house a home, and I'm so grateful for everything you do.
-        Happy Valentine's Day! ❤️
-      </p>
-      <p class="message-signature">Forever yours, Brad 💕</p>
+    <!-- Music Player -->
+    <div class="music-section">
+      <div class="music-player glass">
+        <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+          <svg id="playIcon" width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <polygon points="6,3 20,12 6,21"/>
+          </svg>
+          <svg id="pauseIcon" width="22" height="22" viewBox="0 0 24 24" fill="white" style="display:none">
+            <rect x="5" y="3" width="5" height="18" rx="1"/>
+            <rect x="14" y="3" width="5" height="18" rx="1"/>
+          </svg>
+        </button>
+        <div class="music-info">
+          <div class="music-title">My Home &#8212; Myles Smith <span class="music-note">&#9834;</span></div>
+          <div class="music-artist">Our song &#128149;</div>
+          <div class="music-progress" id="progressBar" onclick="seekMusic(event)">
+            <div class="music-progress-fill" id="progressFill"></div>
+          </div>
+          <div class="music-time">
+            <span id="currentTime">0:00</span>
+            <span id="totalTime">0:00</span>
+          </div>
+        </div>
+        <div class="visualizer paused" id="visualizer">
+          <div class="viz-bar"></div>
+          <div class="viz-bar"></div>
+          <div class="viz-bar"></div>
+          <div class="viz-bar"></div>
+          <div class="viz-bar"></div>
+        </div>
+      </div>
     </div>
+
+    <div class="divider">&#9829; &#9829; &#9829;</div>
+
+    <!-- Love Message -->
+    <div class="message-section">
+      <div class="love-message glass">
+        <span class="message-icon">&#128140;</span>
+        <p class="message-text">
+          Katy, I love and appreciate you more than words can say.
+          Thank you for being the rock of our family and the best mother in the world.
+          You make our house a home, and I'm so grateful for everything you do.
+          Happy Valentine's Day! &#10084;&#65039;
+        </p>
+        <p class="message-signature">Forever yours, Brad &#128149;</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
   </div>
 
-  <!-- Footer -->
-  <div class="footer">
-    Made with ❤️ for the love of my life
+  <!-- ════ POEMS PAGE ════ -->
+  <div class="page" id="page-poems">
+
+    <div class="poem-viewer" id="poemViewer">
+      <div class="poem-track" id="poemTrack">
+
+        <!-- Poem 1 -->
+        <div class="poem-page">
+          <div class="poem-number">Poem 1 of 10</div>
+          <div class="poem-title">How Do I Love Thee?</div>
+          <div class="poem-author">Elizabeth Barrett Browning</div>
+          <div class="poem-body">
+<span class="stanza">How do I love thee? Let me count the ways.
+I love thee to the depth and breadth and height
+My soul can reach, when feeling out of sight
+For the ends of being and ideal grace.</span>
+<span class="stanza">I love thee to the level of every day's
+Most quiet need, by sun and candle-light.
+I love thee freely, as men strive for right.
+I love thee purely, as they turn from praise.</span>
+<span class="stanza">I love thee with the passion put to use
+In my old griefs, and with my childhood's faith.
+I love thee with a love I seemed to lose
+With my lost saints. I love thee with the breath,
+Smiles, tears, of all my life; and, if God choose,
+I shall but love thee better after death.</span>
+          </div>
+        </div>
+
+        <!-- Poem 2 -->
+        <div class="poem-page">
+          <div class="poem-number">Poem 2 of 10</div>
+          <div class="poem-title">Sonnet 116</div>
+          <div class="poem-author">William Shakespeare</div>
+          <div class="poem-body">
+<span class="stanza">Let me not to the marriage of true minds
+Admit impediments. Love is not love
+Which alters when it alteration finds,
+Or bends with the remover to remove.</span>
+<span class="stanza">O no! it is an ever-fixed mark
+That looks on tempests and is never shaken;
+It is the star to every wand'ring bark,
+Whose worth's unknown, although his height be taken.</span>
+<span class="stanza">Love's not Time's fool, though rosy lips and cheeks
+Within his bending sickle's compass come;
+Love alters not with his brief hours and weeks,
+But bears it out even to the edge of doom.</span>
+<span class="stanza">If this be error and upon me prov'd,
+I never writ, nor no man ever lov'd.</span>
+          </div>
+        </div>
+
+        <!-- Poem 3 -->
+        <div class="poem-page">
+          <div class="poem-number">Poem 3 of 10</div>
+          <div class="poem-title">She Walks in Beauty</div>
+          <div class="poem-author">Lord Byron</div>
+          <div class="poem-body">
+<span class="stanza">She walks in beauty, like the night
+Of cloudless climes and starry skies;
+And all that's best of dark and bright
+Meet in her aspect and her eyes;
+Thus mellowed to that tender light
+Which heaven to gaudy day denies.</span>
+<span class="stanza">One shade the more, one ray the less,
+Had half impaired the nameless grace
+Which waves in every raven tress,
+Or softly lightens o'er her face;
+Where thoughts serenely sweet express,
+How pure, how dear their dwelling-place.</span>
+<span class="stanza">And on that cheek, and o'er that brow,
+So soft, so calm, yet eloquent,
+The smiles that win, the tints that glow,
+But tell of days in goodness spent,
+A mind at peace with all below,
+A heart whose love is innocent!</span>
+          </div>
+        </div>
+
+        <!-- Poem 4 -->
+        <div class="poem-page">
+          <div class="poem-number">Poem 4 of 10</div>
+          <div class="poem-title">i carry your heart with me</div>
+          <div class="poem-author">E.E. Cummings</div>
+          <div class="poem-body">
+<span class="stanza">i carry your heart with me(i carry it in
+my heart)i am never without it(anywhere
+i go you go,my dear;and whatever is done
+by only me is your doing,my darling)</span>
+<span class="stanza">i fear no fate(for you are my fate,my sweet)i want
+no world(for beautiful you are my world,my true)
+and it's you are whatever a moon has always meant
+and whatever a sun will always sing is you</span>
+<span class="stanza">here is the deepest secret nobody knows
+(here is the root of the root and the bud of the bud
+and the sky of the sky of a tree called life;which grows
+higher than soul can hope or mind can hide)
+and this is the wonder that's keeping the stars apart</span>
+<span class="stanza">i carry your heart(i carry it in my heart)</span>
+          </div>
+        </div>
+
+        <!-- Poem 5 -->
+        <div class="poem-page">
+          <div class="poem-number">Poem 5 of 10</div>
+          <div class="poem-title">Love's Philosophy</div>
+          <div class="poem-author">Percy Bysshe Shelley</div>
+          <div class="poem-body">
+<span class="stanza">The fountains mingle with the river
+And the rivers with the ocean,
+The winds of heaven mix for ever
+With a sweet emotion;
+Nothing in the world is single;
+All things by a law divine
+In one spirit meet and mingle.
+Why not I with thine?&#8212;</span>
+<span class="stanza">See the mountains kiss high heaven
+And the waves clasp one another;
+No sister-flower would be forgiven
+If it disdained its brother;
+And the sunlight clasps the earth
+And the moonbeams kiss the sea:
+What is all this sweet work worth
+If thou kiss not me?</span>
+          </div>
+        </div>
+
+        <!-- Poem 6 -->
+        <div class="poem-page">
+          <div class="poem-number">Poem 6 of 10</div>
+          <div class="poem-title">A Red, Red Rose</div>
+          <div class="poem-author">Robert Burns</div>
+          <div class="poem-body">
+<span class="stanza">O my Luve is like a red, red rose
+That's newly sprung in June;
+O my Luve is like the melody
+That's sweetly played in tune.</span>
+<span class="stanza">So fair art thou, my bonnie lass,
+So deep in luve am I;
+And I will luve thee still, my dear,
+Till a' the seas gang dry.</span>
+<span class="stanza">Till a' the seas gang dry, my dear,
+And the rocks melt wi' the sun;
+I will luve thee still, my dear,
+While the sands o' life shall run.</span>
+<span class="stanza">And fare thee weel, my only luve!
+And fare thee weel awhile!
+And I will come again, my luve,
+Though it were ten thousand mile.</span>
+          </div>
+        </div>
+
+        <!-- Poem 7 -->
+        <div class="poem-page">
+          <div class="poem-number">Poem 7 of 10</div>
+          <div class="poem-title">Wild Nights</div>
+          <div class="poem-author">Emily Dickinson</div>
+          <div class="poem-body">
+<span class="stanza">Wild Nights &#8212; Wild Nights!
+Were I with thee
+Wild Nights should be
+Our luxury!</span>
+<span class="stanza">Futile &#8212; the winds &#8212;
+To a Heart in port &#8212;
+Done with the Compass &#8212;
+Done with the Chart!</span>
+<span class="stanza">Rowing in Eden &#8212;
+Ah, the Sea!
+Might I but moor &#8212; tonight &#8212;
+In thee!</span>
+          </div>
+        </div>
+
+        <!-- Poem 8 -->
+        <div class="poem-page">
+          <div class="poem-number">Poem 8 of 10</div>
+          <div class="poem-title">When You Are Old</div>
+          <div class="poem-author">W.B. Yeats</div>
+          <div class="poem-body">
+<span class="stanza">When you are old and grey and full of sleep,
+And nodding by the fire, take down this book,
+And slowly read, and dream of the soft look
+Your eyes had once, and of their shadows deep;</span>
+<span class="stanza">How many loved your moments of glad grace,
+And loved your beauty with love false or true,
+But one man loved the pilgrim soul in you,
+And loved the sorrows of your changing face;</span>
+<span class="stanza">And bending down beside the glowing bars,
+Murmur, a little sadly, how Love fled
+And paced upon the mountains overhead
+And hid his face amid a crowd of stars.</span>
+          </div>
+        </div>
+
+        <!-- Poem 9 -->
+        <div class="poem-page">
+          <div class="poem-number">Poem 9 of 10</div>
+          <div class="poem-title">To My Dear and Loving Husband</div>
+          <div class="poem-author">Anne Bradstreet</div>
+          <div class="poem-body">
+<span class="stanza">If ever two were one, then surely we.
+If ever man were loved by wife, then thee;
+If ever wife was happy in a man,
+Compare with me, ye women, if you can.</span>
+<span class="stanza">I prize thy love more than whole mines of gold
+Or all the riches that the East doth hold.
+My love is such that rivers cannot quench,
+Nor ought but love from thee, give recompense.</span>
+<span class="stanza">Thy love is such I can no way repay,
+The heavens reward thee manifold, I pray.
+Then while we live, in love let's so persevere
+That when we live no more, we may live ever.</span>
+          </div>
+        </div>
+
+        <!-- Poem 10 -->
+        <div class="poem-page">
+          <div class="poem-number">Poem 10 of 10</div>
+          <div class="poem-title">The Passionate Shepherd to His Love</div>
+          <div class="poem-author">Christopher Marlowe</div>
+          <div class="poem-body">
+<span class="stanza">Come live with me and be my love,
+And we will all the pleasures prove
+That valleys, groves, hills, and fields,
+Woods, or steepy mountain yields.</span>
+<span class="stanza">And we will sit upon the rocks,
+Seeing the shepherds feed their flocks,
+By shallow rivers to whose falls
+Melodious birds sing madrigals.</span>
+<span class="stanza">And I will make thee beds of roses
+And a thousand fragrant posies,
+A cap of flowers, and a kirtle
+Embroidered all with leaves of myrtle;</span>
+<span class="stanza">A gown made of the finest wool
+Which from our pretty lambs we pull;
+Fair lined slippers for the cold,
+With buckles of the purest gold;</span>
+<span class="stanza">A belt of straw and ivy buds,
+With coral clasps and amber studs:
+And if these pleasures may thee move,
+Come live with me, and be my love.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Poem navigation -->
+    <div class="poem-nav">
+      <button class="poem-arrow" id="poemPrev" onclick="prevPoem()">&#8249;</button>
+      <span class="poem-counter" id="poemCounter">1 / 10</span>
+      <button class="poem-arrow" id="poemNext" onclick="nextPoem()">&#8250;</button>
+    </div>
+    <div class="poem-dots" id="poemDots"></div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
   </div>
 
 </div>
@@ -474,16 +862,16 @@
 <!-- Tap-to-play overlay -->
 <div class="tap-overlay" id="tapOverlay">
   <div class="tap-content">
-    <div class="tap-heart">💝</div>
+    <div class="tap-heart">&#128157;</div>
     <div class="tap-text">Tap anywhere to begin</div>
-    <div class="tap-sub">A Valentine's surprise for you ❤️</div>
+    <div class="tap-sub">A Valentine's surprise for you &#10084;&#65039;</div>
   </div>
 </div>
 
 <script>
   // ── Floating Hearts ──
   const heartsContainer = document.getElementById("heartsContainer");
-  const heartChars = ["❤️", "💕", "💗", "💖", "💝", "🩷", "♥"];
+  const heartChars = ["\u2764\uFE0F", "\uD83D\uDC95", "\uD83D\uDC97", "\uD83D\uDC96", "\uD83D\uDC9D", "\uD83E\uDE77", "\u2665"];
 
   function spawnHeart() {
     const heart = document.createElement("div");
@@ -497,10 +885,18 @@
     setTimeout(() => heart.remove(), 22000);
   }
 
-  // Spawn initial batch
   for (let i = 0; i < 12; i++) setTimeout(spawnHeart, i * 400);
-  // Continuous spawning
   setInterval(spawnHeart, 1800);
+
+  // ── Page Navigation ──
+  function showPage(name) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById("page-" + name).classList.add("active");
+    document.querySelectorAll(".nav-tab").forEach((t, i) => {
+      t.classList.toggle("active", (i === 0 && name === "home") || (i === 1 && name === "poems"));
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   // ── Photo Gallery (Swipeable) ──
   const track = document.getElementById("galleryTrack");
@@ -531,7 +927,6 @@
     updateGallery();
   }
 
-  // Touch swipe
   const gallery = document.getElementById("gallery");
 
   gallery.addEventListener("touchstart", (e) => {
@@ -560,11 +955,80 @@
     updateGallery(true);
   });
 
-  // Auto-advance gallery
   let galleryTimer = setInterval(nextSlide, 5000);
   gallery.addEventListener("touchstart", () => { clearInterval(galleryTimer); }, { passive: true });
   gallery.addEventListener("touchend", () => {
     galleryTimer = setInterval(nextSlide, 5000);
+  });
+
+  // ── Poem Viewer (Swipeable) ──
+  const poemTrack = document.getElementById("poemTrack");
+  const poemViewer = document.getElementById("poemViewer");
+  const poemCounter = document.getElementById("poemCounter");
+  const poemPrev = document.getElementById("poemPrev");
+  const poemNext = document.getElementById("poemNext");
+  const poemDotsContainer = document.getElementById("poemDots");
+  const totalPoems = 10;
+  let currentPoem = 0;
+  let poemStartX = 0, poemCurrentX = 0, poemDragging = false;
+
+  // Build poem dots
+  for (let i = 0; i < totalPoems; i++) {
+    const dot = document.createElement("div");
+    dot.className = "poem-dot" + (i === 0 ? " active" : "");
+    dot.onclick = () => goToPoem(i);
+    poemDotsContainer.appendChild(dot);
+  }
+
+  function updatePoemUI() {
+    poemTrack.classList.remove("dragging");
+    poemTrack.style.transform = `translateX(-${currentPoem * 100}%)`;
+    poemCounter.textContent = `${currentPoem + 1} / ${totalPoems}`;
+    poemPrev.disabled = currentPoem === 0;
+    poemNext.disabled = currentPoem === totalPoems - 1;
+    poemDotsContainer.querySelectorAll(".poem-dot").forEach((d, i) => {
+      d.classList.toggle("active", i === currentPoem);
+    });
+  }
+
+  function nextPoem() {
+    if (currentPoem < totalPoems - 1) { currentPoem++; updatePoemUI(); }
+  }
+
+  function prevPoem() {
+    if (currentPoem > 0) { currentPoem--; updatePoemUI(); }
+  }
+
+  function goToPoem(n) {
+    currentPoem = n;
+    updatePoemUI();
+  }
+
+  // Poem touch swipe
+  poemViewer.addEventListener("touchstart", (e) => {
+    poemStartX = e.touches[0].clientX;
+    poemDragging = true;
+    poemTrack.classList.add("dragging");
+  }, { passive: true });
+
+  poemViewer.addEventListener("touchmove", (e) => {
+    if (!poemDragging) return;
+    poemCurrentX = e.touches[0].clientX;
+    const diff = poemCurrentX - poemStartX;
+    const offset = -(currentPoem * poemViewer.offsetWidth) + diff;
+    poemTrack.style.transform = `translateX(${offset}px)`;
+  }, { passive: true });
+
+  poemViewer.addEventListener("touchend", () => {
+    if (!poemDragging) return;
+    poemDragging = false;
+    const diff = poemCurrentX - poemStartX;
+    if (Math.abs(diff) > 50) {
+      if (diff < 0 && currentPoem < totalPoems - 1) currentPoem++;
+      else if (diff > 0 && currentPoem > 0) currentPoem--;
+    }
+    poemCurrentX = 0;
+    updatePoemUI();
   });
 
   // ── Music Player (HTML5 Audio) ──
@@ -603,7 +1067,6 @@
     visualizer.classList.add("paused");
   }
 
-  // Tap overlay — start music on first interaction
   tapOverlay.addEventListener("click", () => {
     audio.play().then(() => setPlayingUI()).catch(() => {});
     tapOverlay.classList.add("hidden");
