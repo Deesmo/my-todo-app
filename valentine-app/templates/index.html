@@ -301,6 +301,32 @@
     font-style: italic;
   }
 
+  /* Tap-to-play overlay */
+  .tap-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10,5,15,.85);
+    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    z-index: 9999; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: opacity .6s ease, visibility .6s ease;
+  }
+  .tap-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .tap-content { text-align: center; }
+  .tap-heart {
+    font-size: 5rem; margin-bottom: 16px;
+    animation: heartbeat 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(233,30,99,.6));
+  }
+  .tap-text {
+    font-size: 1.3rem; font-weight: 600; color: #fff;
+    margin-bottom: 8px; letter-spacing: .02em;
+  }
+  .tap-sub {
+    font-size: .9rem; color: var(--love-pink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+  }
+
   /* Animations */
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
@@ -441,9 +467,21 @@
 
 </div>
 
-<audio id="bgMusic" preload="auto" loop>
-  <source src="/static/music/my-home.mp3" type="audio/mpeg">
-</audio>
+<!-- Hidden YouTube player -->
+<div id="ytContainer" style="position:fixed;top:-200px;left:-200px;width:1px;height:1px;overflow:hidden;pointer-events:none;">
+  <div id="ytPlayer"></div>
+</div>
+
+<!-- Tap-to-play overlay shown when autoplay is blocked -->
+<div class="tap-overlay" id="tapOverlay">
+  <div class="tap-content">
+    <div class="tap-heart">💝</div>
+    <div class="tap-text">Tap anywhere to begin</div>
+    <div class="tap-sub">A Valentine's surprise for you ❤️</div>
+  </div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
   // ── Floating Hearts ──
@@ -532,8 +570,7 @@
     galleryTimer = setInterval(nextSlide, 5000);
   });
 
-  // ── Music Player ──
-  const audio = document.getElementById("bgMusic");
+  // ── Music Player (YouTube IFrame API) ──
   const musicBtn = document.getElementById("musicBtn");
   const playIcon = document.getElementById("playIcon");
   const pauseIcon = document.getElementById("pauseIcon");
@@ -541,56 +578,126 @@
   const currentTimeEl = document.getElementById("currentTime");
   const totalTimeEl = document.getElementById("totalTime");
   const visualizer = document.getElementById("visualizer");
+  const tapOverlay = document.getElementById("tapOverlay");
   let isPlaying = false;
+  let ytPlayer = null;
+  let progressTimer = null;
+  let ytReady = false;
+  let needsUserTap = false;
 
   function formatTime(s) {
-    if (isNaN(s)) return "0:00";
+    if (isNaN(s) || s < 0) return "0:00";
     const m = Math.floor(s / 60);
     const sec = Math.floor(s % 60);
     return m + ":" + (sec < 10 ? "0" : "") + sec;
   }
 
-  function toggleMusic() {
-    if (isPlaying) {
-      audio.pause();
-      playIcon.style.display = "";
-      pauseIcon.style.display = "none";
-      musicBtn.classList.remove("playing");
-      visualizer.classList.add("paused");
-    } else {
-      audio.play().catch(() => {});
-      playIcon.style.display = "none";
-      pauseIcon.style.display = "";
-      musicBtn.classList.add("playing");
-      visualizer.classList.remove("paused");
-    }
-    isPlaying = !isPlaying;
+  function setPlayingUI() {
+    isPlaying = true;
+    playIcon.style.display = "none";
+    pauseIcon.style.display = "";
+    musicBtn.classList.add("playing");
+    visualizer.classList.remove("paused");
+    tapOverlay.classList.add("hidden");
+    startProgressTimer();
   }
 
-  audio.addEventListener("timeupdate", () => {
-    if (audio.duration) {
-      progressFill.style.width = (audio.currentTime / audio.duration * 100) + "%";
-      currentTimeEl.textContent = formatTime(audio.currentTime);
-    }
-  });
-
-  audio.addEventListener("loadedmetadata", () => {
-    totalTimeEl.textContent = formatTime(audio.duration);
-  });
-
-  audio.addEventListener("ended", () => {
+  function setPausedUI() {
     isPlaying = false;
     playIcon.style.display = "";
     pauseIcon.style.display = "none";
     musicBtn.classList.remove("playing");
     visualizer.classList.add("paused");
-  });
+    stopProgressTimer();
+  }
+
+  function startProgressTimer() {
+    stopProgressTimer();
+    progressTimer = setInterval(() => {
+      if (!ytPlayer || !ytPlayer.getDuration) return;
+      const dur = ytPlayer.getDuration();
+      const cur = ytPlayer.getCurrentTime();
+      if (dur > 0) {
+        progressFill.style.width = (cur / dur * 100) + "%";
+        currentTimeEl.textContent = formatTime(cur);
+        totalTimeEl.textContent = formatTime(dur);
+      }
+    }, 500);
+  }
+
+  function stopProgressTimer() {
+    if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+  }
+
+  function toggleMusic() {
+    if (!ytPlayer || !ytReady) return;
+    if (isPlaying) {
+      ytPlayer.pauseVideo();
+    } else {
+      ytPlayer.playVideo();
+    }
+  }
 
   function seekMusic(e) {
-    if (!audio.duration) return;
+    if (!ytPlayer || !ytReady || !ytPlayer.getDuration) return;
+    const dur = ytPlayer.getDuration();
+    if (!dur) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const pct = (e.clientX - rect.left) / rect.width;
-    audio.currentTime = pct * audio.duration;
+    ytPlayer.seekTo(pct * dur, true);
+  }
+
+  // YouTube IFrame API callback
+  function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player("ytPlayer", {
+      videoId: "m4FqPGJO-DM",
+      playerVars: {
+        autoplay: 1,
+        loop: 1,
+        playlist: "m4FqPGJO-DM",
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        modestbranding: 1,
+        rel: 0,
+        playsinline: 1
+      },
+      events: {
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange
+      }
+    });
+  }
+
+  function onPlayerReady(e) {
+    ytReady = true;
+    // Try to autoplay
+    e.target.playVideo();
+    // Check after a short delay if it actually started
+    setTimeout(() => {
+      const state = e.target.getPlayerState();
+      if (state !== YT.PlayerState.PLAYING) {
+        // Autoplay blocked — need user tap
+        needsUserTap = true;
+        tapOverlay.addEventListener("click", function handler() {
+          ytPlayer.playVideo();
+          tapOverlay.removeEventListener("click", handler);
+        });
+      } else {
+        tapOverlay.classList.add("hidden");
+      }
+    }, 1000);
+  }
+
+  function onPlayerStateChange(e) {
+    if (e.data === YT.PlayerState.PLAYING) {
+      setPlayingUI();
+    } else if (e.data === YT.PlayerState.PAUSED) {
+      setPausedUI();
+    } else if (e.data === YT.PlayerState.ENDED) {
+      // Loop — playlist param should handle this but just in case
+      ytPlayer.playVideo();
+    }
   }
 
   // ── Service Worker ──
