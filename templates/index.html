@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Todo App</title>
+<meta name="theme-color" content="#0984e3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Todo">
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" href="/static/icon-192.png">
 <style>
   :root {
     --high: #e74c3c;
@@ -94,6 +100,13 @@
 
   .empty { text-align: center; color: var(--muted); padding: 32px 0; }
 
+  /* Offline banner */
+  .offline-banner {
+    display: none; background: var(--high); color: #fff; text-align: center;
+    padding: 6px; font-size: .85rem; font-weight: 600;
+  }
+  .offline-banner.show { display: block; }
+
   /* Edit modal */
   .modal-overlay {
     display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4);
@@ -121,6 +134,7 @@
 </style>
 </head>
 <body>
+<div class="offline-banner" id="offlineBanner">You are offline — tasks are read-only</div>
 <div class="container">
   <h1>Todo App</h1>
 
@@ -175,12 +189,25 @@
   const editDesc = document.getElementById("editDesc");
   const editPrio = document.getElementById("editPrio");
 
+  const offlineBanner = document.getElementById("offlineBanner");
+
   let tasks = [];
   let filter = "all";
 
+  function setOffline(offline) {
+    offlineBanner.classList.toggle("show", offline);
+  }
+  window.addEventListener("online", () => { setOffline(false); loadTasks(); });
+  window.addEventListener("offline", () => setOffline(true));
+  if (!navigator.onLine) setOffline(true);
+
   async function loadTasks() {
-    const res = await fetch("/api/tasks");
-    tasks = await res.json();
+    try {
+      const res = await fetch("/api/tasks");
+      tasks = await res.json();
+    } catch {
+      // offline — keep cached tasks
+    }
     render();
   }
 
@@ -217,12 +244,14 @@
     e.preventDefault();
     const description = descInput.value.trim();
     if (!description) return;
-    await fetch("/api/tasks", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({description, priority: prioInput.value})
-    });
-    descInput.value = "";
+    try {
+      await fetch("/api/tasks", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({description, priority: prioInput.value})
+      });
+      descInput.value = "";
+    } catch { alert("Cannot add tasks while offline"); }
     await loadTasks();
   });
 
@@ -237,13 +266,17 @@
 
   // Toggle complete
   async function toggleComplete(id) {
-    await fetch(`/api/tasks/${id}/complete`, {method: "PUT"});
+    try {
+      await fetch(`/api/tasks/${id}/complete`, {method: "PUT"});
+    } catch { alert("Cannot update tasks while offline"); }
     await loadTasks();
   }
 
   // Delete
   async function deleteTask(id) {
-    await fetch(`/api/tasks/${id}`, {method: "DELETE"});
+    try {
+      await fetch(`/api/tasks/${id}`, {method: "DELETE"});
+    } catch { alert("Cannot delete tasks while offline"); }
     await loadTasks();
   }
 
@@ -269,16 +302,23 @@
     const id = editId.value;
     const description = editDesc.value.trim();
     if (!description) return;
-    await fetch(`/api/tasks/${id}`, {
-      method: "PUT",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({description, priority: editPrio.value})
-    });
-    editOverlay.classList.remove("open");
+    try {
+      await fetch(`/api/tasks/${id}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({description, priority: editPrio.value})
+      });
+      editOverlay.classList.remove("open");
+    } catch { alert("Cannot edit tasks while offline"); }
     await loadTasks();
   });
 
   loadTasks();
+
+  // Register service worker
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/static/sw.js");
+  }
 </script>
 </body>
 </html>
