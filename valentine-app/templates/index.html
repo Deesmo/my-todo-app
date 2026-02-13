@@ -127,9 +127,9 @@
     border-radius: 16px;
   }
   .nav-tab {
-    flex: 1; padding: 10px 16px; border: none; border-radius: 12px;
+    flex: 1; padding: 10px 8px; border: none; border-radius: 12px;
     background: transparent; color: var(--text-muted);
-    font-size: .85rem; font-weight: 600; cursor: pointer;
+    font-size: .78rem; font-weight: 600; cursor: pointer;
     transition: var(--transition);
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
     -webkit-tap-highlight-color: transparent;
@@ -674,6 +674,53 @@
   }
   .daily-dismiss:hover { background: linear-gradient(135deg, rgba(233,30,99,.35), rgba(244,143,177,.25)); }
   .daily-dismiss:active { transform: scale(.95); }
+
+  /* ── You Fascinate Me video section ── */
+  .video-section { margin-bottom: 28px; }
+  .video-container {
+    position: relative; overflow: hidden;
+    border-radius: var(--radius);
+    background: rgba(0,0,0,.4);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 12px 40px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  .video-container video {
+    width: 100%; display: block; border-radius: var(--radius);
+  }
+  .video-play-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,.3);
+    cursor: pointer; z-index: 2;
+    transition: opacity .3s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .video-play-overlay.hidden { opacity: 0; pointer-events: none; }
+  .video-play-btn {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(233,30,99,.8), rgba(194,24,91,.8));
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,.2);
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+    box-shadow: 0 8px 32px rgba(233,30,99,.4);
+  }
+  .video-play-overlay:active .video-play-btn { transform: scale(.9); }
+  .video-play-btn svg { margin-left: 4px; }
+  .video-quote {
+    text-align: center; padding: 24px 20px; margin-top: 16px;
+    background: linear-gradient(135deg, rgba(233,30,99,.10), rgba(244,143,177,.06));
+    border: 1px solid rgba(233,30,99,.18);
+  }
+  .video-quote-text {
+    font-size: 1rem; line-height: 1.7; color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+  }
+  .video-quote-attr {
+    margin-top: 10px; font-size: .82rem; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif;
+  }
 </style>
 </head>
 <body>
@@ -697,6 +744,7 @@
     <button class="nav-tab" onclick="showPage('coupons')">Coupons</button>
     <button class="nav-tab" onclick="showPage('hunt')">Hunt</button>
     <button class="nav-tab" onclick="showPage('poems')">Poems</button>
+    <button class="nav-tab" onclick="showPage('fascinate')">Video</button>
   </div>
 
   <!-- ════ HOME PAGE ════ -->
@@ -1294,6 +1342,35 @@ Come live with me, and be my love.</span>
 
   </div>
 
+  <!-- ════ YOU FASCINATE ME PAGE ════ -->
+  <div class="page" id="page-fascinate">
+
+    <div class="gallery-label">&#128525; You Fascinate Me &#128525;</div>
+
+    <div class="video-section">
+      <div class="video-container glass">
+        <video id="fascinateVideo" playsinline loop preload="metadata">
+          <source src="/static/you-fascinate-me.mp4" type="video/mp4">
+        </video>
+        <div class="video-play-overlay" id="videoPlayOverlay" onclick="toggleFascinateVideo()">
+          <div class="video-play-btn">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="6,3 20,12 6,21"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-quote glass">
+      <p class="video-quote-text">&#8220;You fascinate me.&#8221;</p>
+      <p class="video-quote-attr">&#8212; How Brad feels every single day &#10084;&#65039;</p>
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
 </div>
 
 <audio id="bgMusic" preload="auto">
@@ -1339,14 +1416,32 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "hunt", "poems"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate"];
+  let musicWasPlaying = false;
   function showPage(name) {
+    const prevPage = pageNames.find(p => document.getElementById("page-" + p).classList.contains("active"));
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.getElementById("page-" + name).classList.add("active");
     document.querySelectorAll(".nav-tab").forEach((t, i) => {
       t.classList.toggle("active", pageNames[i] === name);
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
+
+    const vid = document.getElementById("fascinateVideo");
+    const overlay = document.getElementById("videoPlayOverlay");
+    if (name === "fascinate") {
+      // Entering video tab: pause music, autoplay video
+      musicWasPlaying = isPlaying;
+      if (isPlaying) { audio.pause(); setPausedUI(); }
+      vid.currentTime = 0;
+      vid.play().then(() => { overlay.classList.add("hidden"); }).catch(() => { overlay.classList.remove("hidden"); });
+    } else if (prevPage === "fascinate") {
+      // Leaving video tab: stop video, resume music
+      vid.pause();
+      vid.currentTime = 0;
+      overlay.classList.remove("hidden");
+      if (musicWasPlaying) { audio.play().then(() => setPlayingUI()).catch(() => {}); }
+    }
   }
 
   // ── Photo Gallery (Swipeable) ──
@@ -1769,6 +1864,20 @@ Come live with me, and be my love.</span>
   }
 
   showDailyReminder();
+
+  // ── You Fascinate Me Video ──
+  function toggleFascinateVideo() {
+    const vid = document.getElementById("fascinateVideo");
+    const overlay = document.getElementById("videoPlayOverlay");
+    if (vid.paused) {
+      vid.play().then(() => { overlay.classList.add("hidden"); }).catch(() => {});
+    } else {
+      vid.pause();
+      overlay.classList.remove("hidden");
+    }
+  }
+
+  document.getElementById("fascinateVideo").addEventListener("click", toggleFascinateVideo);
 
   // ── Service Worker ──
   if ("serviceWorker" in navigator) {
