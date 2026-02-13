@@ -1429,6 +1429,12 @@ Come live with me, and be my love.</span>
     updateSexyGallery(true);
   });
 
+  let sexyTimer = setInterval(nextSexy, 5000);
+  sexyGallery.addEventListener("touchstart", () => { clearInterval(sexyTimer); }, { passive: true });
+  sexyGallery.addEventListener("touchend", () => {
+    sexyTimer = setInterval(nextSexy, 5000);
+  });
+
   // ── Poem Viewer (Swipeable) ──
   const poemTrack = document.getElementById("poemTrack");
   const poemViewer = document.getElementById("poemViewer");
