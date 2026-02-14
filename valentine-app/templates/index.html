@@ -1033,6 +1033,100 @@
     .about-name { font-size: 1.2rem; }
     .about-text { font-size: .85rem; }
   }
+
+  /* ── Word Jumble Game ── */
+  .jumble-card {
+    padding: 32px 24px; text-align: center;
+  }
+  .jumble-score {
+    display: inline-block; padding: 6px 18px; border-radius: 20px;
+    background: rgba(233,30,99,.2); color: var(--love-pink);
+    font-size: .78rem; font-weight: 700; letter-spacing: .06em;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    margin-bottom: 20px;
+  }
+  .jumble-scrambled {
+    font-size: 2.4rem; font-weight: 800; letter-spacing: .15em;
+    color: var(--text); margin-bottom: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    word-break: break-all;
+    transition: transform .3s ease;
+  }
+  .jumble-scrambled.shake {
+    animation: jumbleShake .4s ease;
+  }
+  @keyframes jumbleShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+  .jumble-hint {
+    font-size: .8rem; color: var(--text-muted); margin-bottom: 20px;
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+  }
+  .jumble-input {
+    width: 100%; max-width: 280px; padding: 14px 18px;
+    border: 2px solid rgba(233,30,99,.3); border-radius: 14px;
+    background: rgba(255,255,255,.06); color: var(--text);
+    font-size: 1.1rem; font-weight: 600; text-align: center;
+    letter-spacing: .08em; text-transform: uppercase;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    outline: none; transition: var(--transition);
+    -webkit-appearance: none;
+  }
+  .jumble-input:focus { border-color: var(--love-bright); box-shadow: 0 0 20px rgba(233,30,99,.2); }
+  .jumble-input::placeholder { color: var(--text-muted); text-transform: none; letter-spacing: normal; font-weight: 400; }
+  .jumble-feedback {
+    min-height: 36px; margin-top: 14px;
+    font-size: .95rem; font-weight: 600;
+    font-family: Georgia, "Times New Roman", serif;
+    transition: opacity .3s ease;
+  }
+  .jumble-feedback.correct { color: #81c784; }
+  .jumble-feedback.wrong { color: #ef9a9a; }
+  .jumble-feedback.reveal { color: var(--love-pink); font-style: italic; }
+  .jumble-btns {
+    display: flex; gap: 10px; justify-content: center;
+    margin-top: 18px; flex-wrap: wrap;
+  }
+  .jumble-btn {
+    padding: 12px 24px; border: none; border-radius: 30px;
+    font-size: .88rem; font-weight: 700; cursor: pointer;
+    transition: var(--transition);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .jumble-btn:active { transform: scale(.93); }
+  .jumble-btn-check {
+    background: linear-gradient(135deg, var(--love-bright), #c2185b);
+    color: #fff; box-shadow: 0 4px 16px rgba(233,30,99,.4);
+  }
+  .jumble-btn-check:hover { box-shadow: 0 6px 24px rgba(233,30,99,.5); }
+  .jumble-btn-skip {
+    background: var(--glass); color: var(--text-secondary);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  }
+  .jumble-btn-next {
+    background: linear-gradient(135deg, rgba(255,215,0,.3), rgba(255,183,77,.2));
+    color: var(--gold); border: 1px solid rgba(255,215,0,.3);
+  }
+  .jumble-celebrate {
+    position: absolute; pointer-events: none;
+    font-size: 1.4rem; opacity: 0;
+    animation: jumbleCelebrate 1s ease-out forwards;
+  }
+  @keyframes jumbleCelebrate {
+    0% { opacity: 1; transform: translate(0,0) scale(.5) rotate(0deg); }
+    100% { opacity: 0; transform: translate(var(--cx), var(--cy)) scale(1.3) rotate(var(--cr)); }
+  }
+  @media (max-width: 480px) {
+    .jumble-scrambled { font-size: 1.8rem; }
+    .jumble-card { padding: 24px 16px; }
+    .jumble-input { max-width: 240px; font-size: 1rem; padding: 12px 14px; }
+  }
 </style>
 </head>
 <body>
@@ -1063,6 +1157,7 @@
     <button class="nav-tab" onclick="showPage('booth')">Booth</button>
     <button class="nav-tab" onclick="showPage('textme')">Text Me</button>
     <button class="nav-tab" onclick="showPage('challenge')">Challenge</button>
+    <button class="nav-tab" onclick="showPage('games')">Games</button>
     <button class="nav-tab" onclick="showPage('about')">About</button>
   </div>
 
@@ -1923,6 +2018,30 @@ Come live with me, and be my love.</span>
 
   </div>
 
+  <!-- ════ WORD JUMBLE GAME PAGE ════ -->
+  <div class="page" id="page-games">
+
+    <div class="gallery-label">&#127922; Love Word Jumble &#127922;</div>
+
+    <div class="jumble-card glass" id="jumbleCard" style="position:relative; overflow:hidden;">
+      <div class="jumble-score" id="jumbleScore">&#10084;&#65039; Score: 0</div>
+      <div class="jumble-scrambled" id="jumbleScrambled">???</div>
+      <div class="jumble-hint" id="jumbleHint">Tap "New Word" to start!</div>
+      <input class="jumble-input" id="jumbleInput" type="text" placeholder="Type your guess..." autocomplete="off" autocapitalize="characters" spellcheck="false">
+      <div class="jumble-feedback" id="jumbleFeedback"></div>
+      <div class="jumble-btns">
+        <button class="jumble-btn jumble-btn-check" onclick="checkJumble()">&#10004;&#65039; Check</button>
+        <button class="jumble-btn jumble-btn-skip" onclick="revealJumble()">&#128064; Give Up</button>
+        <button class="jumble-btn jumble-btn-next" onclick="nextJumble()">&#10024; New Word</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
   <!-- ════ ABOUT THE AUTHOR PAGE ════ -->
   <div class="page" id="page-about">
 
@@ -2002,7 +2121,7 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "about"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "about"];
   let musicWasPlaying = false;
   function showPage(name) {
     const prevPage = pageNames.find(p => document.getElementById("page-" + p).classList.contains("active"));
@@ -2858,6 +2977,98 @@ Come live with me, and be my love.</span>
 
   loadChallengeState();
   updateChallengeUI();
+
+  // ── Word Jumble Game ──
+  const jumbleWords = [
+    "LOVE","KISS","HEART","ROMANCE","PASSION","FOREVER","HUSBAND","WIFE",
+    "SOULMATE","DEVOTION","CHERISH","ADORE","SWEETHEART","DARLING",
+    "EMBRACE","TENDERNESS","AFFECTION","VALENTINE","BELOVED","TREASURE",
+    "COMMITMENT","TOGETHER","BEAUTIFUL","GORGEOUS","AMAZING","INCREDIBLE",
+    "STUNNING","LOVELY","PERFECT","ANGEL","DESIRE","BLISS","WARMTH",
+    "INTIMATE","HAPPINESS","DESTINY","ETERNITY","MAGNETIC","INFATUATE"
+  ];
+  let jumbleAnswer = "";
+  let jumbleScore = 0;
+  let jumbleRevealed = false;
+  let jumbleLastIdx = -1;
+
+  function scrambleWord(word) {
+    const arr = word.split("");
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    const result = arr.join("");
+    // Make sure it's actually different from the original
+    if (result === word && word.length > 1) return scrambleWord(word);
+    return result;
+  }
+
+  function nextJumble() {
+    let idx;
+    do { idx = Math.floor(Math.random() * jumbleWords.length); } while (idx === jumbleLastIdx);
+    jumbleLastIdx = idx;
+    jumbleAnswer = jumbleWords[idx];
+    jumbleRevealed = false;
+    const scrambled = scrambleWord(jumbleAnswer);
+    document.getElementById("jumbleScrambled").textContent = scrambled;
+    document.getElementById("jumbleScrambled").classList.remove("shake");
+    document.getElementById("jumbleHint").textContent = jumbleAnswer.length + " letters \u2022 a word about love";
+    document.getElementById("jumbleInput").value = "";
+    document.getElementById("jumbleFeedback").textContent = "";
+    document.getElementById("jumbleFeedback").className = "jumble-feedback";
+    document.getElementById("jumbleInput").focus();
+  }
+
+  function checkJumble() {
+    if (!jumbleAnswer || jumbleRevealed) return;
+    const guess = document.getElementById("jumbleInput").value.trim().toUpperCase();
+    const fb = document.getElementById("jumbleFeedback");
+    if (!guess) { fb.textContent = "Type a guess first!"; fb.className = "jumble-feedback wrong"; return; }
+    if (guess === jumbleAnswer) {
+      jumbleScore++;
+      jumbleRevealed = true;
+      document.getElementById("jumbleScore").innerHTML = "\u2764\uFE0F Score: " + jumbleScore;
+      const msgs = ["You got it! \uD83C\uDF89","Amazing! \u2764\uFE0F","So smart! \uD83D\uDC96","Nailed it! \u2728","Perfect! \uD83D\uDC95","Brilliant! \uD83C\uDF1F"];
+      fb.textContent = msgs[Math.floor(Math.random()*msgs.length)];
+      fb.className = "jumble-feedback correct";
+      // Celebration burst
+      const card = document.getElementById("jumbleCard");
+      const emojis = ["\u2764\uFE0F","\uD83D\uDC95","\uD83D\uDC96","\u2728","\uD83C\uDF89","\uD83C\uDF1F","\uD83D\uDC97"];
+      for (let i = 0; i < 10; i++) {
+        const s = document.createElement("span");
+        s.className = "jumble-celebrate";
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        s.style.left = (35 + Math.random()*30) + "%";
+        s.style.top = (20 + Math.random()*30) + "%";
+        s.style.setProperty("--cx", (Math.random()*200-100)+"px");
+        s.style.setProperty("--cy", (Math.random()*-150-30)+"px");
+        s.style.setProperty("--cr", (Math.random()*360-180)+"deg");
+        card.appendChild(s);
+        setTimeout(() => s.remove(), 1100);
+      }
+    } else {
+      document.getElementById("jumbleScrambled").classList.remove("shake");
+      void document.getElementById("jumbleScrambled").offsetWidth;
+      document.getElementById("jumbleScrambled").classList.add("shake");
+      const near = [..."So close, try again! \uD83D\uDCAA","Not quite\u2014keep going! \u2764\uFE0F","Almost! Give it another shot \u2728"];
+      fb.textContent = near[Math.floor(Math.random()*near.length)];
+      fb.className = "jumble-feedback wrong";
+    }
+  }
+
+  function revealJumble() {
+    if (!jumbleAnswer || jumbleRevealed) return;
+    jumbleRevealed = true;
+    const fb = document.getElementById("jumbleFeedback");
+    fb.textContent = "The answer was: " + jumbleAnswer + " \uD83D\uDC94";
+    fb.className = "jumble-feedback reveal";
+  }
+
+  // Allow Enter key to check answer
+  document.getElementById("jumbleInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") checkJumble();
+  });
 
   // ── Service Worker ──
   if ("serviceWorker" in navigator) {
