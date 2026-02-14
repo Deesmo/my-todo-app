@@ -1460,8 +1460,8 @@ Come live with me, and be my love.</span>
     <div class="gallery-label">&#128525; You Fascinate Me &#128525;</div>
 
     <div class="video-section">
-      <div class="video-container glass">
-        <video id="fascinateVideo" playsinline loop preload="metadata">
+      <div class="video-container glass" id="videoContainer1">
+        <video id="fascinateVideo" playsinline preload="metadata">
           <source src="/static/you-fascinate-me.mp4" type="video/mp4">
         </video>
         <div class="video-play-overlay" id="videoPlayOverlay" onclick="toggleFascinateVideo()">
@@ -1469,6 +1469,11 @@ Come live with me, and be my love.</span>
             <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><polygon points="6,3 20,12 6,21"/></svg>
           </div>
         </div>
+      </div>
+      <div class="video-container glass" id="videoContainer2" style="display:none; margin-top:16px;">
+        <video id="fascinateVideo2" playsinline preload="metadata">
+          <source src="/static/ghost-kiss.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
 
@@ -1601,18 +1606,24 @@ Come live with me, and be my love.</span>
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-    const vid = document.getElementById("fascinateVideo");
+    const vid1 = document.getElementById("fascinateVideo");
+    const vid2 = document.getElementById("fascinateVideo2");
     const overlay = document.getElementById("videoPlayOverlay");
+    const container2 = document.getElementById("videoContainer2");
     if (name === "fascinate") {
-      // Entering video tab: pause music, autoplay video
+      // Entering video tab: pause music, autoplay first video
       musicWasPlaying = isPlaying;
       if (isPlaying) { audio.pause(); setPausedUI(); }
-      vid.currentTime = 0;
-      vid.play().then(() => { overlay.classList.add("hidden"); }).catch(() => { overlay.classList.remove("hidden"); });
+      vid1.currentTime = 0;
+      vid2.currentTime = 0;
+      vid2.pause();
+      container2.style.display = "none";
+      vid1.play().then(() => { overlay.classList.add("hidden"); }).catch(() => { overlay.classList.remove("hidden"); });
     } else if (prevPage === "fascinate") {
-      // Leaving video tab: stop video, resume music
-      vid.pause();
-      vid.currentTime = 0;
+      // Leaving video tab: stop both videos, resume music
+      vid1.pause(); vid1.currentTime = 0;
+      vid2.pause(); vid2.currentTime = 0;
+      container2.style.display = "none";
       overlay.classList.remove("hidden");
       if (musicWasPlaying) { audio.play().then(() => setPlayingUI()).catch(() => {}); }
     }
@@ -2058,19 +2069,40 @@ Come live with me, and be my love.</span>
 
   showDailyReminder();
 
-  // ── You Fascinate Me Video ──
+  // ── You Fascinate Me Videos (sequential playback) ──
+  const fascinateVid1 = document.getElementById("fascinateVideo");
+  const fascinateVid2 = document.getElementById("fascinateVideo2");
+  const fascinateContainer2 = document.getElementById("videoContainer2");
+
+  // When first video ends, show and play second video
+  fascinateVid1.addEventListener("ended", () => {
+    fascinateContainer2.style.display = "block";
+    fascinateVid2.currentTime = 0;
+    fascinateVid2.play().catch(() => {});
+  });
+
+  // When second video ends, loop back to first
+  fascinateVid2.addEventListener("ended", () => {
+    fascinateVid2.pause();
+    fascinateContainer2.style.display = "none";
+    fascinateVid1.currentTime = 0;
+    fascinateVid1.play().catch(() => {});
+  });
+
   function toggleFascinateVideo() {
-    const vid = document.getElementById("fascinateVideo");
     const overlay = document.getElementById("videoPlayOverlay");
-    if (vid.paused) {
-      vid.play().then(() => { overlay.classList.add("hidden"); }).catch(() => {});
+    // Determine which video is currently active
+    const activeVid = fascinateContainer2.style.display !== "none" ? fascinateVid2 : fascinateVid1;
+    if (activeVid.paused) {
+      activeVid.play().then(() => { overlay.classList.add("hidden"); }).catch(() => {});
     } else {
-      vid.pause();
+      activeVid.pause();
       overlay.classList.remove("hidden");
     }
   }
 
-  document.getElementById("fascinateVideo").addEventListener("click", toggleFascinateVideo);
+  fascinateVid1.addEventListener("click", toggleFascinateVideo);
+  fascinateVid2.addEventListener("click", toggleFascinateVideo);
 
   // ── Date Night Generator ──
   const dateIdeas = [
