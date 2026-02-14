@@ -827,6 +827,143 @@
     .gen-desc { font-size: .85rem; }
     .compliment-text { font-size: 1.1rem; }
   }
+
+  /* ── Photo Booth ── */
+  .booth-viewfinder {
+    position: relative; overflow: hidden;
+    border-radius: var(--radius);
+    background: rgba(0,0,0,.6);
+    aspect-ratio: 3/4;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 12px 40px rgba(0,0,0,.3);
+  }
+  .booth-viewfinder video,
+  .booth-viewfinder canvas {
+    width: 100%; height: 100%; object-fit: cover;
+    border-radius: var(--radius); display: block;
+  }
+  .booth-viewfinder canvas { display: none; }
+  .booth-viewfinder.captured video { display: none; }
+  .booth-viewfinder.captured canvas { display: block; }
+  .booth-frame-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 2;
+    border-radius: var(--radius);
+  }
+  .booth-controls {
+    display: flex; justify-content: center; gap: 14px;
+    margin-top: 18px; flex-wrap: wrap;
+  }
+  .booth-snap {
+    width: 68px; height: 68px; border-radius: 50%; border: 4px solid #fff;
+    background: linear-gradient(135deg, var(--love-bright), #c2185b);
+    cursor: pointer; transition: var(--transition);
+    box-shadow: 0 4px 20px rgba(233,30,99,.5);
+    display: flex; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .booth-snap:active { transform: scale(.88); }
+  .booth-snap svg { pointer-events: none; }
+  .booth-action {
+    padding: 10px 20px; border: 1px solid var(--glass-border);
+    border-radius: 30px; background: var(--glass);
+    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+    color: var(--text); font-size: .82rem; font-weight: 600;
+    cursor: pointer; transition: var(--transition);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .booth-action:active { transform: scale(.93); }
+  .booth-frames {
+    display: flex; gap: 8px; justify-content: center;
+    margin-top: 14px; flex-wrap: wrap;
+  }
+  .booth-frame-opt {
+    padding: 8px 14px; border-radius: 20px; font-size: .75rem;
+    font-weight: 600; cursor: pointer; transition: var(--transition);
+    border: 1px solid var(--glass-border); background: var(--glass);
+    color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .booth-frame-opt.active {
+    background: linear-gradient(135deg, rgba(233,30,99,.4), rgba(244,143,177,.3));
+    color: #fff; border-color: rgba(233,30,99,.4);
+  }
+
+  /* ── Text Me When ── */
+  .sms-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px; margin-bottom: 12px;
+    cursor: pointer; transition: var(--transition);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sms-card:active { transform: scale(.97); }
+  .sms-emoji { font-size: 2rem; flex-shrink: 0; }
+  .sms-body { flex: 1; min-width: 0; }
+  .sms-label {
+    font-size: .72rem; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--text-muted); margin-bottom: 4px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    font-weight: 600;
+  }
+  .sms-text {
+    font-size: .95rem; color: var(--text); line-height: 1.5;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .sms-arrow {
+    color: var(--text-muted); font-size: 1.2rem; flex-shrink: 0;
+    transition: var(--transition);
+  }
+  .sms-card:active .sms-arrow { transform: translateX(4px); }
+
+  /* ── Weekly Challenge ── */
+  .challenge-card {
+    padding: 32px 24px; text-align: center; min-height: 260px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .challenge-inner {
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .challenge-inner.switching {
+    opacity: 0; transform: translateY(20px) scale(.96);
+  }
+  .challenge-check {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 2px solid var(--love-pink); margin-top: 18px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: var(--transition);
+    color: transparent;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .challenge-check svg { width: 24px; height: 24px; }
+  .challenge-check.done {
+    background: linear-gradient(135deg, var(--love-bright), #c2185b);
+    border-color: var(--love-bright); color: #fff;
+    box-shadow: 0 0 16px rgba(233,30,99,.4);
+  }
+  .challenge-check:active { transform: scale(.88); }
+  .challenge-stats {
+    text-align: center; margin-top: 18px; padding: 16px;
+    font-size: .8rem; color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .challenge-bar {
+    height: 4px; border-radius: 4px; margin: 8px auto 0;
+    max-width: 240px; background: rgba(255,255,255,.08); overflow: hidden;
+  }
+  .challenge-bar-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--love-bright), var(--love-pink));
+    transition: width .5s cubic-bezier(.4,0,.2,1); width: 0%;
+  }
+  @media (max-width: 480px) {
+    .sms-card { padding: 14px; }
+    .sms-text { font-size: .88rem; }
+    .challenge-card { padding: 24px 16px; }
+  }
 </style>
 </head>
 <body>
@@ -854,6 +991,9 @@
     <button class="nav-tab" onclick="showPage('dates')">Dates</button>
     <button class="nav-tab" onclick="showPage('compliments')">Sweet</button>
     <button class="nav-tab" onclick="showPage('dinner')">Dinner</button>
+    <button class="nav-tab" onclick="showPage('booth')">Booth</button>
+    <button class="nav-tab" onclick="showPage('textme')">Text Me</button>
+    <button class="nav-tab" onclick="showPage('challenge')">Challenge</button>
   </div>
 
   <!-- ════ HOME PAGE ════ -->
@@ -1550,6 +1690,169 @@ Come live with me, and be my love.</span>
 
   </div>
 
+  <!-- ════ PHOTO BOOTH PAGE ════ -->
+  <div class="page" id="page-booth">
+
+    <div class="gallery-label">&#128247; Valentine's Photo Booth &#128247;</div>
+
+    <div class="booth-viewfinder glass" id="boothViewfinder">
+      <video id="boothCamera" playsinline autoplay muted></video>
+      <canvas id="boothCanvas"></canvas>
+      <div class="booth-frame-overlay" id="boothFrameOverlay"></div>
+    </div>
+
+    <div class="booth-frames" id="boothFrames">
+      <div class="booth-frame-opt active" onclick="setBoothFrame(0)">&#10084;&#65039; Hearts</div>
+      <div class="booth-frame-opt" onclick="setBoothFrame(1)">&#128140; Love</div>
+      <div class="booth-frame-opt" onclick="setBoothFrame(2)">&#10024; Sparkle</div>
+      <div class="booth-frame-opt" onclick="setBoothFrame(3)">&#128293; Hot</div>
+    </div>
+
+    <div class="booth-controls" id="boothControls">
+      <button class="booth-snap" id="boothSnap" onclick="takeBoothPhoto()">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="13" r="4"/><path d="M20 7h-3.2L15 5H9L7.2 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" fill="none" stroke="white" stroke-width="1.5"/></svg>
+      </button>
+    </div>
+    <div class="booth-controls" id="boothActions" style="display:none">
+      <button class="booth-action" onclick="saveBoothPhoto()">&#128190; Save Photo</button>
+      <button class="booth-action" onclick="retakeBoothPhoto()">&#128247; Retake</button>
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
+  <!-- ════ TEXT ME WHEN PAGE ════ -->
+  <div class="page" id="page-textme">
+
+    <div class="gallery-label">&#128172; Text Me When... &#128172;</div>
+
+    <a class="sms-card glass" href="sms:18034224114&body=Hey%20babe%2C%20I'm%20home%20safe%20%E2%9D%A4%EF%B8%8F">
+      <div class="sms-emoji">&#127968;</div>
+      <div class="sms-body">
+        <div class="sms-label">You're home safe</div>
+        <div class="sms-text">Hey babe, I'm home safe &#10084;&#65039;</div>
+      </div>
+      <div class="sms-arrow">&#8250;</div>
+    </a>
+
+    <a class="sms-card glass" href="sms:18034224114&body=Missing%20you%20right%20now%20%F0%9F%92%95">
+      <div class="sms-emoji">&#128149;</div>
+      <div class="sms-body">
+        <div class="sms-label">You miss him</div>
+        <div class="sms-text">Missing you right now &#128149;</div>
+      </div>
+      <div class="sms-arrow">&#8250;</div>
+    </a>
+
+    <a class="sms-card glass" href="sms:18034224114&body=Goodnight%20beautiful%2C%20sweet%20dreams%20%F0%9F%98%98">
+      <div class="sms-emoji">&#127769;</div>
+      <div class="sms-body">
+        <div class="sms-label">Goodnight</div>
+        <div class="sms-text">Goodnight beautiful, sweet dreams &#128536;</div>
+      </div>
+      <div class="sms-arrow">&#8250;</div>
+    </a>
+
+    <a class="sms-card glass" href="sms:18034224114&body=I%20need%20a%20laugh%2C%20entertain%20me!%20%F0%9F%98%82">
+      <div class="sms-emoji">&#128514;</div>
+      <div class="sms-body">
+        <div class="sms-label">You need a laugh</div>
+        <div class="sms-text">I need a laugh, entertain me! &#128514;</div>
+      </div>
+      <div class="sms-arrow">&#8250;</div>
+    </a>
+
+    <a class="sms-card glass" href="sms:18034224114&body=I%20need%20a%20hug%20ASAP%20%F0%9F%A4%97">
+      <div class="sms-emoji">&#129303;</div>
+      <div class="sms-body">
+        <div class="sms-label">You need a hug</div>
+        <div class="sms-text">I need a hug ASAP &#129303;</div>
+      </div>
+      <div class="sms-arrow">&#8250;</div>
+    </a>
+
+    <a class="sms-card glass" href="sms:18034224114&body=Just%20thinking%20about%20you%20%E2%9D%A4%EF%B8%8F">
+      <div class="sms-emoji">&#128173;</div>
+      <div class="sms-body">
+        <div class="sms-label">Thinking of him</div>
+        <div class="sms-text">Just thinking about you &#10084;&#65039;</div>
+      </div>
+      <div class="sms-arrow">&#8250;</div>
+    </a>
+
+    <a class="sms-card glass" href="sms:18034224114&body=Come%20home%20soon!%20Missing%20you%20%F0%9F%92%8B">
+      <div class="sms-emoji">&#128139;</div>
+      <div class="sms-body">
+        <div class="sms-label">Come home</div>
+        <div class="sms-text">Come home soon! Missing you &#128139;</div>
+      </div>
+      <div class="sms-arrow">&#8250;</div>
+    </a>
+
+    <a class="sms-card glass" href="sms:18034224114&body=I%20love%20you%20so%20much%20%F0%9F%92%95">
+      <div class="sms-emoji">&#128156;</div>
+      <div class="sms-body">
+        <div class="sms-label">Just because</div>
+        <div class="sms-text">I love you so much &#128149;</div>
+      </div>
+      <div class="sms-arrow">&#8250;</div>
+    </a>
+
+    <a class="sms-card glass" href="sms:18034224114&body=Can%20we%20have%20a%20date%20night%20soon%3F%20%F0%9F%92%91">
+      <div class="sms-emoji">&#128145;</div>
+      <div class="sms-body">
+        <div class="sms-label">Date night request</div>
+        <div class="sms-text">Can we have a date night soon? &#128145;</div>
+      </div>
+      <div class="sms-arrow">&#8250;</div>
+    </a>
+
+    <a class="sms-card glass" href="sms:18034224114&body=You%20looked%20really%20good%20today%20%F0%9F%94%A5">
+      <div class="sms-emoji">&#128293;</div>
+      <div class="sms-body">
+        <div class="sms-label">He looked good</div>
+        <div class="sms-text">You looked really good today &#128293;</div>
+      </div>
+      <div class="sms-arrow">&#8250;</div>
+    </a>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
+  <!-- ════ WEEKLY CHALLENGE PAGE ════ -->
+  <div class="page" id="page-challenge">
+
+    <div class="gallery-label">&#127942; Weekly Couple Challenge &#127942;</div>
+
+    <div class="challenge-card glass" id="challengeCard">
+      <div class="challenge-inner" id="challengeInner">
+        <span class="gen-icon" id="challengeIcon">&#127942;</span>
+        <div class="gen-title" id="challengeTitle">Tap below to get this week's challenge!</div>
+        <div class="gen-desc" id="challengeDesc">Fun ways to grow closer together</div>
+      </div>
+      <div class="challenge-check" id="challengeCheck" onclick="toggleChallengeComplete()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <button class="gen-btn" onclick="newChallenge()" style="margin-top:18px">&#127922; New Challenge</button>
+    </div>
+
+    <div class="challenge-stats glass" id="challengeStats">
+      <div id="challengeCount">0 challenges completed &#10084;&#65039;</div>
+      <div class="challenge-bar"><div class="challenge-bar-fill" id="challengeBarFill"></div></div>
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
 </div>
 
 <audio id="bgMusic" preload="auto">
@@ -1595,7 +1898,7 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge"];
   let musicWasPlaying = false;
   function showPage(name) {
     const prevPage = pageNames.find(p => document.getElementById("page-" + p).classList.contains("active"));
@@ -1627,6 +1930,10 @@ Come live with me, and be my love.</span>
       overlay.classList.remove("hidden");
       if (musicWasPlaying) { audio.play().then(() => setPlayingUI()).catch(() => {}); }
     }
+
+    // Photo booth camera management
+    if (name === "booth") { startBoothCamera(); }
+    else if (prevPage === "booth") { stopBoothCamera(); retakeBoothPhoto(); }
   }
 
   // ── Photo Gallery (Swipeable) ──
@@ -2270,6 +2577,189 @@ Come live with me, and be my love.</span>
       inner.classList.remove("switching");
     }, 350);
   }
+
+  // ── Photo Booth ──
+  let boothStream = null;
+  let boothFrame = 0;
+  const boothFrames = [
+    { border:"4px solid rgba(233,30,99,.6)", shadow:"inset 0 0 60px rgba(233,30,99,.15)", watermark:"\u2764\uFE0F Property of Brad \u2764\uFE0F", corners:"\u2764\uFE0F" },
+    { border:"4px solid rgba(244,143,177,.6)", shadow:"inset 0 0 60px rgba(244,143,177,.15)", watermark:"\uD83D\uDC98 Brad & Katy Forever \uD83D\uDC98", corners:"\uD83D\uDC95" },
+    { border:"4px solid rgba(255,215,0,.5)", shadow:"inset 0 0 60px rgba(255,215,0,.1)", watermark:"\u2728 My Beautiful Katy \u2728", corners:"\u2728" },
+    { border:"4px solid rgba(255,69,0,.5)", shadow:"inset 0 0 60px rgba(255,69,0,.1)", watermark:"\uD83D\uDD25 Too Hot to Handle \uD83D\uDD25", corners:"\uD83D\uDD25" }
+  ];
+
+  function setBoothFrame(idx) {
+    boothFrame = idx;
+    document.querySelectorAll(".booth-frame-opt").forEach((el,i) => el.classList.toggle("active", i===idx));
+    updateFrameOverlay();
+  }
+
+  function updateFrameOverlay() {
+    const f = boothFrames[boothFrame];
+    const ov = document.getElementById("boothFrameOverlay");
+    ov.style.border = f.border;
+    ov.style.boxShadow = f.shadow;
+  }
+  updateFrameOverlay();
+
+  async function startBoothCamera() {
+    const video = document.getElementById("boothCamera");
+    if (boothStream) return;
+    try {
+      boothStream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:"user", width:{ideal:720}, height:{ideal:960} }, audio:false });
+      video.srcObject = boothStream;
+    } catch(e) {}
+  }
+
+  function stopBoothCamera() {
+    if (boothStream) {
+      boothStream.getTracks().forEach(t => t.stop());
+      boothStream = null;
+      document.getElementById("boothCamera").srcObject = null;
+    }
+  }
+
+  function takeBoothPhoto() {
+    const video = document.getElementById("boothCamera");
+    const canvas = document.getElementById("boothCanvas");
+    const vf = document.getElementById("boothViewfinder");
+    if (!boothStream) return;
+    canvas.width = video.videoWidth || 720;
+    canvas.height = video.videoHeight || 960;
+    const ctx = canvas.getContext("2d");
+    // Mirror the image (front camera)
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    ctx.setTransform(1,0,0,1,0,0);
+    // Draw frame border
+    const f = boothFrames[boothFrame];
+    ctx.strokeStyle = f.border.match(/rgba?\([^)]+\)/)[0];
+    ctx.lineWidth = 8;
+    ctx.strokeRect(4,4,canvas.width-8,canvas.height-8);
+    // Corners
+    ctx.font = Math.round(canvas.width*0.06)+"px serif";
+    ctx.fillText(f.corners, 16, Math.round(canvas.width*0.07)+10);
+    ctx.fillText(f.corners, canvas.width-Math.round(canvas.width*0.07)-10, Math.round(canvas.width*0.07)+10);
+    ctx.fillText(f.corners, 16, canvas.height-16);
+    ctx.fillText(f.corners, canvas.width-Math.round(canvas.width*0.07)-10, canvas.height-16);
+    // Watermark
+    ctx.font = "bold "+Math.round(canvas.width*0.04)+"px -apple-system, sans-serif";
+    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.textAlign = "center";
+    ctx.fillText(f.watermark, canvas.width/2, canvas.height - Math.round(canvas.height*0.04));
+    ctx.textAlign = "start";
+    vf.classList.add("captured");
+    document.getElementById("boothControls").style.display = "none";
+    document.getElementById("boothActions").style.display = "flex";
+  }
+
+  function saveBoothPhoto() {
+    const canvas = document.getElementById("boothCanvas");
+    const link = document.createElement("a");
+    link.download = "valentine-booth-"+Date.now()+".png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }
+
+  function retakeBoothPhoto() {
+    document.getElementById("boothViewfinder").classList.remove("captured");
+    document.getElementById("boothControls").style.display = "flex";
+    document.getElementById("boothActions").style.display = "none";
+  }
+
+  // ── Weekly Challenge ──
+  const challenges = [
+    { icon:"\uD83C\uDF74", title:"Try a New Restaurant", desc:"Pick somewhere neither of you has been. Bonus points if it\u2019s a cuisine you\u2019ve never tried." },
+    { icon:"\uD83D\uDC83", title:"Dance in the Kitchen", desc:"Put on your favorite song and dance together while cooking (or just because)." },
+    { icon:"\uD83D\uDC8C", title:"Leave Love Notes", desc:"Hide little love notes around the house for each other to find throughout the week." },
+    { icon:"\uD83C\uDF73", title:"Cook a Meal Together", desc:"Pick a recipe neither of you has tried. Work as a team. No takeout backup allowed!" },
+    { icon:"\uD83C\uDFAC", title:"Movie Marathon Night", desc:"Pick a series or theme (80s classics, rom-coms, horror). Popcorn and blankets required." },
+    { icon:"\uD83C\uDF05", title:"Go for a Sunset Walk", desc:"No phones allowed. Just walk, talk, and watch the sky change colors together." },
+    { icon:"\uD83D\uDCDA", title:"Share a Childhood Memory", desc:"Tell each other a story from your childhood the other hasn\u2019t heard before." },
+    { icon:"\uD83C\uDF81", title:"Plan a Surprise Date", desc:"Each of you secretly plans a date for the other. Execute them on different nights." },
+    { icon:"\uD83D\uDC86", title:"Give Each Other Massages", desc:"Set the mood with candles and music. Take turns giving 15-minute massages." },
+    { icon:"\uD83D\uDCF5", title:"No Phones Evening", desc:"Put phones away for an entire evening. Board games, conversation, or whatever happens!" },
+    { icon:"\u2615", title:"Morning Coffee Together", desc:"Wake up 15 minutes early every day this week to have coffee together before the chaos." },
+    { icon:"\uD83D\uDDBC\uFE0F", title:"Recreate an Old Photo", desc:"Find a favorite photo from early in your relationship and recreate it today." },
+    { icon:"\uD83C\uDFB5", title:"Make a Playlist Together", desc:"Each pick 10 songs that remind you of each other. Combine into one playlist." },
+    { icon:"\uD83C\uDF1F", title:"Compliment Challenge", desc:"Give each other at least 3 genuine, specific compliments every day this week." },
+    { icon:"\uD83D\uDE97", title:"Take a Spontaneous Drive", desc:"Get in the car with no destination. Stop wherever looks interesting." },
+    { icon:"\uD83C\uDFAE", title:"Learn Something Together", desc:"Pick a new skill (cooking technique, card game, dance move) and learn it as a team." },
+    { icon:"\uD83D\uDCDD", title:"Write Each Other Letters", desc:"Write a handwritten letter to each other. Exchange them over dinner." },
+    { icon:"\uD83E\uDDD8", title:"Morning Stretch Together", desc:"Start each morning this week with 10 minutes of stretching or yoga together." },
+    { icon:"\uD83C\uDF4B", title:"Make Cocktails at Home", desc:"Pick two cocktail recipes. Each person makes one. Rate and enjoy!" },
+    { icon:"\uD83D\uDCF8", title:"Photo Challenge", desc:"Take one photo together every day this week. Different location or pose each time." },
+    { icon:"\u2B50", title:"Bucket List Night", desc:"Sit down together and write a couples bucket list of 20 things you want to do." },
+    { icon:"\uD83E\uDD17", title:"20-Second Hug", desc:"Give each other a real, 20-second hug at least once every day this week. No rushing." },
+    { icon:"\uD83C\uDFB2", title:"Truth or Dare (Couples Edition)", desc:"Take turns asking truth or dare\u2014but keep it romantic, spicy, or sweet." },
+    { icon:"\uD83C\uDF0C", title:"Stargaze Together", desc:"Find a clear night, lay out a blanket, and look up at the stars. Talk about everything." }
+  ];
+
+  const CHALLENGE_KEY = "valentine-challenge";
+  let currentChallenge = null;
+  let challengeCompleted = false;
+
+  function loadChallengeState() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(CHALLENGE_KEY) || "{}");
+      currentChallenge = saved.current != null ? saved.current : null;
+      challengeCompleted = saved.done || false;
+      return saved.completedCount || 0;
+    } catch(e) { return 0; }
+  }
+
+  function saveChallengeState(completedCount) {
+    localStorage.setItem(CHALLENGE_KEY, JSON.stringify({
+      current: currentChallenge,
+      done: challengeCompleted,
+      completedCount: completedCount
+    }));
+  }
+
+  function getChallengeCompletedCount() {
+    try { return JSON.parse(localStorage.getItem(CHALLENGE_KEY) || "{}").completedCount || 0; } catch(e) { return 0; }
+  }
+
+  function updateChallengeUI() {
+    const count = getChallengeCompletedCount();
+    document.getElementById("challengeCount").innerHTML = count + " challenge" + (count!==1?"s":"") + " completed \u2764\uFE0F";
+    document.getElementById("challengeBarFill").style.width = Math.min(count/challenges.length*100, 100) + "%";
+    const check = document.getElementById("challengeCheck");
+    check.classList.toggle("done", challengeCompleted);
+    if (currentChallenge != null) {
+      const c = challenges[currentChallenge];
+      document.getElementById("challengeIcon").textContent = c.icon;
+      document.getElementById("challengeTitle").textContent = c.title;
+      document.getElementById("challengeDesc").textContent = c.desc;
+    }
+  }
+
+  function newChallenge() {
+    let idx;
+    do { idx = Math.floor(Math.random() * challenges.length); } while (idx === currentChallenge);
+    currentChallenge = idx;
+    challengeCompleted = false;
+    const inner = document.getElementById("challengeInner");
+    inner.classList.add("switching");
+    setTimeout(() => {
+      updateChallengeUI();
+      inner.classList.remove("switching");
+    }, 350);
+    saveChallengeState(getChallengeCompletedCount());
+  }
+
+  function toggleChallengeComplete() {
+    if (currentChallenge == null) return;
+    challengeCompleted = !challengeCompleted;
+    let count = getChallengeCompletedCount();
+    if (challengeCompleted) count++; else count = Math.max(0, count - 1);
+    saveChallengeState(count);
+    updateChallengeUI();
+  }
+
+  loadChallengeState();
+  updateChallengeUI();
 
   // ── Service Worker ──
   if ("serviceWorker" in navigator) {
