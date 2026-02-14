@@ -8,3 +8,9 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: "3.11"
+      - key: DATA_DIR
+        value: /opt/render/project/src/data
+    disk:
+      name: valentine-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1

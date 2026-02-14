@@ -1,0 +1,13 @@
+# Data files - never overwrite user data on deploy
+valentine.db
+valentine.db-wal
+valentine.db-shm
+wishlist.json
+watchlist.json
+halloween-watchlist.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
