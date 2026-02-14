@@ -1793,6 +1793,156 @@
     .wotd-today { padding: 22px 16px; }
     .wotd-word { font-size: 1.7rem; }
   }
+
+  /* ── Shared Watchlist Styles ── */
+  .wl-subtitle {
+    text-align: center; font-size: .85rem; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    margin-bottom: 18px;
+  }
+  .wl-add-btn {
+    display: block; margin: 0 auto 18px; padding: 10px 24px;
+    border: 2px dashed rgba(233,30,99,.3); border-radius: 14px;
+    background: rgba(233,30,99,.06); color: var(--love-bright);
+    font-size: .95rem; cursor: pointer; transition: all .2s;
+  }
+  .wl-add-btn:hover { background: rgba(233,30,99,.12); border-color: var(--love-bright); }
+  .wl-form {
+    display: none; margin-bottom: 20px; padding: 20px; border-radius: 16px;
+  }
+  .wl-form.open { display: block; }
+  .wl-form-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.05rem; text-align: center; margin-bottom: 14px;
+  }
+  .wl-field {
+    width: 100%; padding: 10px 14px; margin-bottom: 10px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.15); background: rgba(255,255,255,.06);
+    color: var(--text-main); font-size: .9rem; box-sizing: border-box;
+    -webkit-appearance: none; appearance: none;
+  }
+  .wl-field:focus { outline: none; border-color: var(--love-bright); }
+  select.wl-field { cursor: pointer; }
+  .wl-row { display: flex; gap: 10px; }
+  .wl-row .wl-field { flex: 1; }
+  .wl-who-row {
+    display: flex; gap: 10px; align-items: center; margin-bottom: 10px;
+  }
+  .wl-who-label { color: var(--text-muted); font-size: .85rem; white-space: nowrap; }
+  .wl-who-btn {
+    padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.06); color: var(--text-muted);
+    cursor: pointer; font-size: .85rem; transition: all .2s;
+  }
+  .wl-who-btn.active-brad { background: rgba(100,149,237,.25); color: #90b8f8; border-color: rgba(100,149,237,.5); }
+  .wl-who-btn.active-katy { background: rgba(233,30,99,.2); color: var(--love-bright); border-color: rgba(233,30,99,.4); }
+  .wl-form-btns { display: flex; gap: 10px; margin-top: 8px; }
+  .wl-save-btn {
+    flex: 1; padding: 10px; border: none; border-radius: 12px;
+    background: linear-gradient(135deg, var(--love-bright), var(--love-deep));
+    color: #fff; font-size: .95rem; cursor: pointer;
+  }
+  .wl-cancel-btn {
+    padding: 10px 18px; border: 1px solid rgba(255,255,255,.15); border-radius: 12px;
+    background: transparent; color: var(--text-muted); cursor: pointer;
+  }
+  .wl-filters {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; justify-content: center;
+  }
+  .wl-filter-btn {
+    padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.06); color: var(--text-muted);
+    cursor: pointer; font-size: .8rem; transition: all .2s;
+  }
+  .wl-filter-btn.active { background: rgba(233,30,99,.2); color: var(--love-bright); border-color: rgba(233,30,99,.4); }
+  .wl-sort-row {
+    display: flex; gap: 8px; justify-content: center; margin-bottom: 14px;
+  }
+  .wl-sort-btn {
+    padding: 4px 12px; border-radius: 16px; border: 1px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.04); color: var(--text-muted);
+    cursor: pointer; font-size: .75rem; transition: all .2s;
+  }
+  .wl-sort-btn.active { color: var(--love-bright); border-color: rgba(233,30,99,.3); }
+  .wl-count {
+    text-align: center; font-size: .82rem; color: var(--text-muted); margin-bottom: 12px;
+  }
+  .wl-card {
+    padding: 16px; margin-bottom: 12px; border-radius: 14px;
+    border-left: 4px solid rgba(233,30,99,.3);
+    transition: transform .15s;
+  }
+  .wl-card.watched { opacity: .55; }
+  .wl-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .wl-card-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1rem; color: var(--text-main); flex: 1;
+  }
+  .wl-card-title.done { text-decoration: line-through; opacity: .7; }
+  .wl-card-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+  .wl-card-check {
+    width: 22px; height: 22px; border-radius: 6px;
+    border: 2px solid rgba(255,255,255,.2); background: rgba(255,255,255,.06);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: .8rem; transition: all .2s; color: transparent;
+  }
+  .wl-card-check.checked { background: rgba(76,175,80,.3); border-color: rgba(76,175,80,.6); color: #81c784; }
+  .wl-card-delete {
+    background: none; border: none; color: rgba(255,255,255,.25);
+    font-size: 1.2rem; cursor: pointer; padding: 0 4px; line-height: 1;
+  }
+  .wl-card-delete:hover { color: #ef9a9a; }
+  .wl-card-meta {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center;
+  }
+  .wl-card-tag {
+    display: inline-block; padding: 2px 10px; border-radius: 12px;
+    font-size: .72rem; background: rgba(255,255,255,.08);
+    color: var(--text-muted); white-space: nowrap;
+  }
+  .wl-card-tag.type { background: rgba(100,149,237,.15); color: #90b8f8; }
+  .wl-card-tag.where { background: rgba(233,30,99,.12); color: #f48fb1; }
+  .wl-card-tag.who-brad { background: rgba(100,149,237,.15); color: #90b8f8; }
+  .wl-card-tag.who-katy { background: rgba(233,30,99,.12); color: #f48fb1; }
+  .wl-card-tag.date { font-size: .68rem; opacity: .7; }
+  .wl-card-notes {
+    margin-top: 6px; font-size: .82rem; color: var(--text-muted);
+    font-style: italic; line-height: 1.4;
+  }
+  .wl-empty {
+    text-align: center; padding: 40px 20px; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    font-size: .9rem;
+  }
+
+  /* ── Halloween-specific overrides ── */
+  .hw-card {
+    border-left-color: rgba(255,152,0,.4);
+  }
+  .hw-card.watched { opacity: .55; }
+  .wl-card-tag.scary-not { background: rgba(76,175,80,.15); color: #81c784; }
+  .wl-card-tag.scary-mild { background: rgba(255,235,59,.15); color: #fff176; }
+  .wl-card-tag.scary-moderate { background: rgba(255,152,0,.15); color: #ffb74d; }
+  .wl-card-tag.scary-very { background: rgba(244,67,54,.15); color: #ef9a9a; }
+  .wl-card-tag.scary-terrifying { background: rgba(183,28,28,.25); color: #ef5350; }
+  #page-halloween .gallery-label { color: #ffb74d; }
+  #page-halloween .wl-subtitle { color: #ffb74d; }
+  #page-halloween .wl-add-btn {
+    border-color: rgba(255,152,0,.3); background: rgba(255,152,0,.06); color: #ffb74d;
+  }
+  #page-halloween .wl-add-btn:hover { background: rgba(255,152,0,.12); border-color: #ffb74d; }
+  #page-halloween .wl-filter-btn.active { background: rgba(255,152,0,.2); color: #ffb74d; border-color: rgba(255,152,0,.4); }
+  #page-halloween .wl-sort-btn.active { color: #ffb74d; border-color: rgba(255,152,0,.3); }
+  #page-halloween .wl-save-btn {
+    background: linear-gradient(135deg, #ff9800, #e65100);
+  }
+  #page-halloween .wl-who-btn.active-brad { background: rgba(255,152,0,.25); color: #ffb74d; border-color: rgba(255,152,0,.5); }
+  #page-halloween .wl-who-btn.active-katy { background: rgba(156,39,176,.25); color: #ce93d8; border-color: rgba(156,39,176,.5); }
+
+  @media (max-width: 480px) {
+    .wl-row { flex-direction: column; gap: 0; }
+    .wl-card { padding: 14px 12px; }
+  }
 </style>
 </head>
 <body>
@@ -1828,6 +1978,8 @@
     <button class="nav-tab" onclick="showPage('wishlist')">Wishes</button>
     <button class="nav-tab" onclick="showPage('slang')">Slang</button>
     <button class="nav-tab" onclick="showPage('wotd')">Word</button>
+    <button class="nav-tab" onclick="showPage('watchlist')">Watch</button>
+    <button class="nav-tab" onclick="showPage('halloween')">Spooky</button>
     <button class="nav-tab" onclick="showPage('about')">About</button>
   </div>
 
@@ -2865,6 +3017,166 @@ Come live with me, and be my love.</span>
     <div class="footer">Made with &#10084;&#65039; for the love of my life</div>
   </div>
 
+  <!-- ════ SHOWS & MOVIES WATCHLIST PAGE ════ -->
+  <div class="page" id="page-watchlist">
+
+    <div class="gallery-label">&#127916; Our Watchlist &#127871;</div>
+    <div class="wl-subtitle">Shows and movies we want to watch together</div>
+
+    <button class="wl-add-btn" id="wlAddBtn" onclick="toggleWlForm()">&#10133; Add New</button>
+
+    <div class="wl-form glass" id="wlForm">
+      <div class="wl-form-title">&#127871; What should we watch?</div>
+      <input class="wl-field" id="wlTitle" type="text" placeholder="Title *" maxlength="200">
+      <div class="wl-row">
+        <select class="wl-field" id="wlType">
+          <option value="">Type...</option>
+          <option>Movie</option>
+          <option>TV Show</option>
+          <option>Documentary</option>
+          <option>Limited Series</option>
+          <option>Anime</option>
+          <option>Reality TV</option>
+          <option>Stand-Up</option>
+          <option>Other</option>
+        </select>
+        <select class="wl-field" id="wlWhere">
+          <option value="">Where to watch...</option>
+          <option>Netflix</option>
+          <option>Hulu</option>
+          <option>Disney+</option>
+          <option>Amazon Prime</option>
+          <option>HBO Max</option>
+          <option>Apple TV+</option>
+          <option>Peacock</option>
+          <option>Paramount+</option>
+          <option>Theater</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="wl-who-row">
+        <span class="wl-who-label">Added by:</span>
+        <button class="wl-who-btn" id="wlWhoBrad" onclick="setWlWho('Brad')">Brad</button>
+        <button class="wl-who-btn" id="wlWhoKaty" onclick="setWlWho('Katy')">Katy</button>
+      </div>
+      <input class="wl-field" id="wlNotes" type="text" placeholder="Notes (optional)" maxlength="500">
+      <div class="wl-form-btns">
+        <button class="wl-save-btn" onclick="saveWlItem()">&#127871; Add to Watchlist</button>
+        <button class="wl-cancel-btn" onclick="toggleWlForm()">Cancel</button>
+      </div>
+    </div>
+
+    <div class="wl-filters" id="wlFilters">
+      <button class="wl-filter-btn active" onclick="setWlFilter('all')">Show All</button>
+      <button class="wl-filter-btn" onclick="setWlFilter('unwatched')">Not Watched</button>
+      <button class="wl-filter-btn" onclick="setWlFilter('watched')">Watched</button>
+    </div>
+    <div class="wl-sort-row">
+      <button class="wl-sort-btn active" data-sort="date" onclick="setWlSort('date')">Date Added</button>
+      <button class="wl-sort-btn" data-sort="title" onclick="setWlSort('title')">Title</button>
+      <button class="wl-sort-btn" data-sort="type" onclick="setWlSort('type')">Type</button>
+    </div>
+
+    <div class="wl-count" id="wlCount"></div>
+    <div class="wl-list" id="wlList"></div>
+    <div class="wl-empty" id="wlEmpty" style="display:none;">
+      Nothing on the list yet! Tap "Add New" to start building your watchlist &#127871;
+    </div>
+
+    <div class="footer">Made with &#10084;&#65039; for the love of my life</div>
+  </div>
+
+  <!-- ════ HALLOWEEN HORROR WATCHLIST PAGE ════ -->
+  <div class="page" id="page-halloween">
+
+    <div class="gallery-label">&#127875; Spooky Watchlist &#127875;</div>
+    <div class="wl-subtitle">Scary movies and shows for Halloween season &#128123;</div>
+
+    <button class="wl-add-btn" id="hwAddBtn" onclick="toggleHwForm()">&#10133; Add New</button>
+
+    <div class="wl-form glass" id="hwForm">
+      <div class="wl-form-title">&#128123; Add something spooky!</div>
+      <input class="wl-field" id="hwTitle" type="text" placeholder="Title *" maxlength="200">
+      <div class="wl-row">
+        <select class="wl-field" id="hwType">
+          <option value="">Type...</option>
+          <option>Horror Movie</option>
+          <option>Thriller</option>
+          <option>Psychological Horror</option>
+          <option>Supernatural</option>
+          <option>Slasher</option>
+          <option>Comedy Horror</option>
+          <option>Found Footage</option>
+          <option>Zombie</option>
+          <option>Haunted House</option>
+          <option>TV Show</option>
+          <option>Documentary</option>
+          <option>Other</option>
+        </select>
+        <select class="wl-field" id="hwScary">
+          <option value="">Scary level...</option>
+          <option>Not Scary</option>
+          <option>Mild</option>
+          <option>Moderate</option>
+          <option>Very Scary</option>
+          <option>Terrifying</option>
+        </select>
+      </div>
+      <select class="wl-field" id="hwWhere">
+        <option value="">Where to watch...</option>
+        <option>Netflix</option>
+        <option>Hulu</option>
+        <option>Disney+</option>
+        <option>Amazon Prime</option>
+        <option>HBO Max</option>
+        <option>Apple TV+</option>
+        <option>Peacock</option>
+        <option>Paramount+</option>
+        <option>Shudder</option>
+        <option>Theater</option>
+        <option>Other</option>
+      </select>
+      <div class="wl-who-row">
+        <span class="wl-who-label">Added by:</span>
+        <button class="wl-who-btn" id="hwWhoBrad" onclick="setHwWho('Brad')">Brad</button>
+        <button class="wl-who-btn" id="hwWhoKaty" onclick="setHwWho('Katy')">Katy</button>
+      </div>
+      <input class="wl-field" id="hwNotes" type="text" placeholder="Notes (optional)" maxlength="500">
+      <div class="wl-form-btns">
+        <button class="wl-save-btn" onclick="saveHwItem()">&#127875; Add to Spooky List</button>
+        <button class="wl-cancel-btn" onclick="toggleHwForm()">Cancel</button>
+      </div>
+    </div>
+
+    <div class="wl-filters" id="hwFilters">
+      <button class="wl-filter-btn active" onclick="setHwFilter('all')">Show All</button>
+      <button class="wl-filter-btn" onclick="setHwFilter('unwatched')">Not Watched</button>
+      <button class="wl-filter-btn" onclick="setHwFilter('watched')">Watched</button>
+    </div>
+    <div class="wl-filters" id="hwScaryFilters">
+      <button class="wl-filter-btn active" onclick="setHwScaryFilter('all')">All Levels</button>
+      <button class="wl-filter-btn" onclick="setHwScaryFilter('Not Scary')">&#128522; Not Scary</button>
+      <button class="wl-filter-btn" onclick="setHwScaryFilter('Mild')">&#128528; Mild</button>
+      <button class="wl-filter-btn" onclick="setHwScaryFilter('Moderate')">&#128552; Moderate</button>
+      <button class="wl-filter-btn" onclick="setHwScaryFilter('Very Scary')">&#128561; Very Scary</button>
+      <button class="wl-filter-btn" onclick="setHwScaryFilter('Terrifying')">&#128128; Terrifying</button>
+    </div>
+    <div class="wl-sort-row">
+      <button class="wl-sort-btn active" data-sort="date" onclick="setHwSort('date')">Date Added</button>
+      <button class="wl-sort-btn" data-sort="title" onclick="setHwSort('title')">Title</button>
+      <button class="wl-sort-btn" data-sort="type" onclick="setHwSort('type')">Type</button>
+      <button class="wl-sort-btn" data-sort="scary" onclick="setHwSort('scary')">Scary Level</button>
+    </div>
+
+    <div class="wl-count" id="hwCount"></div>
+    <div class="wl-list" id="hwList"></div>
+    <div class="wl-empty" id="hwEmpty" style="display:none;">
+      No spooky picks yet! Tap "Add New" to start your horror watchlist &#128123;
+    </div>
+
+    <div class="footer">Made with &#10084;&#65039; for the love of my life</div>
+  </div>
+
   <!-- ════ ABOUT THE AUTHOR PAGE ════ -->
   <div class="page" id="page-about">
 
@@ -2945,7 +3257,7 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "purses", "wishlist", "slang", "wotd", "about"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "purses", "wishlist", "slang", "wotd", "watchlist", "halloween", "about"];
   let musicWasPlaying = false;
   function showPage(name) {
     const prevPage = pageNames.find(p => document.getElementById("page-" + p).classList.contains("active"));
@@ -4792,6 +5104,313 @@ Come live with me, and be my love.</span>
   }
 
   fetchWishItems();
+
+  // ── Shows & Movies Watchlist (shared backend) ──
+  let wlItems = [];
+  let wlWho = "";
+  let wlFilter = "all";
+  let wlSort = "date";
+
+  async function fetchWlItems() {
+    try {
+      const res = await fetch("/api/watchlist");
+      wlItems = await res.json();
+    } catch { wlItems = []; }
+    renderWlList();
+  }
+
+  function toggleWlForm() {
+    const form = document.getElementById("wlForm");
+    form.classList.toggle("open");
+    if (!form.classList.contains("open")) clearWlForm();
+  }
+
+  function clearWlForm() {
+    document.getElementById("wlTitle").value = "";
+    document.getElementById("wlType").value = "";
+    document.getElementById("wlWhere").value = "";
+    document.getElementById("wlNotes").value = "";
+    wlWho = "";
+    document.getElementById("wlWhoBrad").className = "wl-who-btn";
+    document.getElementById("wlWhoKaty").className = "wl-who-btn";
+  }
+
+  function setWlWho(who) {
+    wlWho = (wlWho === who) ? "" : who;
+    document.getElementById("wlWhoBrad").className = "wl-who-btn" + (wlWho === "Brad" ? " active-brad" : "");
+    document.getElementById("wlWhoKaty").className = "wl-who-btn" + (wlWho === "Katy" ? " active-katy" : "");
+  }
+
+  async function saveWlItem() {
+    const title = document.getElementById("wlTitle").value.trim();
+    if (!title) {
+      document.getElementById("wlTitle").style.borderColor = "#ef9a9a";
+      setTimeout(function() { document.getElementById("wlTitle").style.borderColor = ""; }, 1500);
+      return;
+    }
+    var item = {
+      id: Date.now(),
+      title: title,
+      type: document.getElementById("wlType").value,
+      where: document.getElementById("wlWhere").value,
+      who: wlWho || "Unknown",
+      notes: document.getElementById("wlNotes").value.trim(),
+      watched: false,
+      date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    };
+    await fetch("/api/watchlist", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(item) });
+    toggleWlForm();
+    fetchWlItems();
+  }
+
+  async function toggleWlWatched(id) {
+    var item = wlItems.find(function(i) { return i.id === id; });
+    if (!item) return;
+    await fetch("/api/watchlist/" + id, { method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ watched: !item.watched }) });
+    fetchWlItems();
+  }
+
+  async function deleteWlItem(id) {
+    await fetch("/api/watchlist/" + id, { method: "DELETE" });
+    fetchWlItems();
+  }
+
+  function setWlFilter(f) {
+    wlFilter = f;
+    document.querySelectorAll("#wlFilters .wl-filter-btn").forEach(function(b, i) {
+      b.classList.toggle("active", (i === 0 && f === "all") || (i === 1 && f === "unwatched") || (i === 2 && f === "watched"));
+    });
+    renderWlList();
+  }
+
+  function setWlSort(s) {
+    wlSort = s;
+    document.querySelectorAll("#page-watchlist .wl-sort-btn").forEach(function(b) {
+      b.classList.toggle("active", b.dataset.sort === s);
+    });
+    renderWlList();
+  }
+
+  function renderWlList() {
+    var items = wlItems.slice();
+    if (wlFilter === "unwatched") items = items.filter(function(i) { return !i.watched; });
+    else if (wlFilter === "watched") items = items.filter(function(i) { return i.watched; });
+
+    if (wlSort === "title") items.sort(function(a, b) { return (a.title || "").localeCompare(b.title || ""); });
+    else if (wlSort === "type") items.sort(function(a, b) { return (a.type || "").localeCompare(b.type || ""); });
+
+    var list = document.getElementById("wlList");
+    var empty = document.getElementById("wlEmpty");
+    var count = document.getElementById("wlCount");
+    list.innerHTML = "";
+
+    var totalUn = wlItems.filter(function(i) { return !i.watched; }).length;
+    var totalW = wlItems.filter(function(i) { return i.watched; }).length;
+    count.textContent = "\uD83C\uDFAC " + wlItems.length + " total \u00B7 " + totalUn + " to watch \u00B7 " + totalW + " watched";
+
+    if (items.length === 0) {
+      empty.style.display = "";
+      return;
+    }
+    empty.style.display = "none";
+
+    items.forEach(function(item) {
+      var card = document.createElement("div");
+      card.className = "wl-card glass" + (item.watched ? " watched" : "");
+      var titleClass = item.watched ? " done" : "";
+
+      var metaHtml = "";
+      if (item.type) metaHtml += '<span class="wl-card-tag type">' + escHtml(item.type) + '</span>';
+      if (item.where) metaHtml += '<span class="wl-card-tag where">' + escHtml(item.where) + '</span>';
+      if (item.who) {
+        var whoClass = item.who === "Brad" ? "who-brad" : item.who === "Katy" ? "who-katy" : "";
+        metaHtml += '<span class="wl-card-tag ' + whoClass + '">' + escHtml(item.who) + '</span>';
+      }
+      if (item.date) metaHtml += '<span class="wl-card-tag date">' + escHtml(item.date) + '</span>';
+
+      var notesHtml = item.notes ? '<div class="wl-card-notes">' + escHtml(item.notes) + '</div>' : '';
+
+      card.innerHTML =
+        '<div class="wl-card-top">' +
+          '<div class="wl-card-title' + titleClass + '">' + (item.watched ? "\u2705 " : "\uD83C\uDFAC ") + escHtml(item.title) + '</div>' +
+          '<div class="wl-card-actions">' +
+            '<div class="wl-card-check' + (item.watched ? " checked" : "") + '" onclick="toggleWlWatched(' + item.id + ')" title="Mark as watched">' + (item.watched ? "\u2713" : "") + '</div>' +
+            '<button class="wl-card-delete" onclick="deleteWlItem(' + item.id + ')" title="Remove">&times;</button>' +
+          '</div>' +
+        '</div>' +
+        (metaHtml ? '<div class="wl-card-meta">' + metaHtml + '</div>' : '') +
+        notesHtml;
+
+      list.appendChild(card);
+    });
+  }
+
+  fetchWlItems();
+
+  // ── Halloween Horror Watchlist (shared backend) ──
+  let hwItems = [];
+  let hwWho = "";
+  let hwFilter = "all";
+  let hwScaryFilter = "all";
+  let hwSort = "date";
+
+  async function fetchHwItems() {
+    try {
+      const res = await fetch("/api/halloween-watchlist");
+      hwItems = await res.json();
+    } catch { hwItems = []; }
+    renderHwList();
+  }
+
+  function toggleHwForm() {
+    const form = document.getElementById("hwForm");
+    form.classList.toggle("open");
+    if (!form.classList.contains("open")) clearHwForm();
+  }
+
+  function clearHwForm() {
+    document.getElementById("hwTitle").value = "";
+    document.getElementById("hwType").value = "";
+    document.getElementById("hwScary").value = "";
+    document.getElementById("hwWhere").value = "";
+    document.getElementById("hwNotes").value = "";
+    hwWho = "";
+    document.getElementById("hwWhoBrad").className = "wl-who-btn";
+    document.getElementById("hwWhoKaty").className = "wl-who-btn";
+  }
+
+  function setHwWho(who) {
+    hwWho = (hwWho === who) ? "" : who;
+    document.getElementById("hwWhoBrad").className = "wl-who-btn" + (hwWho === "Brad" ? " active-brad" : "");
+    document.getElementById("hwWhoKaty").className = "wl-who-btn" + (hwWho === "Katy" ? " active-katy" : "");
+  }
+
+  async function saveHwItem() {
+    const title = document.getElementById("hwTitle").value.trim();
+    if (!title) {
+      document.getElementById("hwTitle").style.borderColor = "#ef9a9a";
+      setTimeout(function() { document.getElementById("hwTitle").style.borderColor = ""; }, 1500);
+      return;
+    }
+    var item = {
+      id: Date.now(),
+      title: title,
+      type: document.getElementById("hwType").value,
+      scary: document.getElementById("hwScary").value,
+      where: document.getElementById("hwWhere").value,
+      who: hwWho || "Unknown",
+      notes: document.getElementById("hwNotes").value.trim(),
+      watched: false,
+      date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    };
+    await fetch("/api/halloween-watchlist", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(item) });
+    toggleHwForm();
+    fetchHwItems();
+  }
+
+  async function toggleHwWatched(id) {
+    var item = hwItems.find(function(i) { return i.id === id; });
+    if (!item) return;
+    await fetch("/api/halloween-watchlist/" + id, { method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({ watched: !item.watched }) });
+    fetchHwItems();
+  }
+
+  async function deleteHwItem(id) {
+    await fetch("/api/halloween-watchlist/" + id, { method: "DELETE" });
+    fetchHwItems();
+  }
+
+  function setHwFilter(f) {
+    hwFilter = f;
+    document.querySelectorAll("#hwFilters .wl-filter-btn").forEach(function(b, i) {
+      b.classList.toggle("active", (i === 0 && f === "all") || (i === 1 && f === "unwatched") || (i === 2 && f === "watched"));
+    });
+    renderHwList();
+  }
+
+  function setHwScaryFilter(f) {
+    hwScaryFilter = f;
+    var btns = document.querySelectorAll("#hwScaryFilters .wl-filter-btn");
+    var levels = ["all", "Not Scary", "Mild", "Moderate", "Very Scary", "Terrifying"];
+    btns.forEach(function(b, i) { b.classList.toggle("active", levels[i] === f); });
+    renderHwList();
+  }
+
+  function setHwSort(s) {
+    hwSort = s;
+    document.querySelectorAll("#page-halloween .wl-sort-btn").forEach(function(b) {
+      b.classList.toggle("active", b.dataset.sort === s);
+    });
+    renderHwList();
+  }
+
+  function renderHwList() {
+    var items = hwItems.slice();
+    if (hwFilter === "unwatched") items = items.filter(function(i) { return !i.watched; });
+    else if (hwFilter === "watched") items = items.filter(function(i) { return i.watched; });
+    if (hwScaryFilter !== "all") items = items.filter(function(i) { return i.scary === hwScaryFilter; });
+
+    if (hwSort === "title") items.sort(function(a, b) { return (a.title || "").localeCompare(b.title || ""); });
+    else if (hwSort === "type") items.sort(function(a, b) { return (a.type || "").localeCompare(b.type || ""); });
+    else if (hwSort === "scary") {
+      var scaryOrder = { "Not Scary": 0, "Mild": 1, "Moderate": 2, "Very Scary": 3, "Terrifying": 4 };
+      items.sort(function(a, b) { return (scaryOrder[a.scary] || 0) - (scaryOrder[b.scary] || 0); });
+    }
+
+    var list = document.getElementById("hwList");
+    var empty = document.getElementById("hwEmpty");
+    var count = document.getElementById("hwCount");
+    list.innerHTML = "";
+
+    var totalUn = hwItems.filter(function(i) { return !i.watched; }).length;
+    var totalW = hwItems.filter(function(i) { return i.watched; }).length;
+    count.textContent = "\uD83C\uDF83 " + hwItems.length + " total \u00B7 " + totalUn + " to watch \u00B7 " + totalW + " watched";
+
+    if (items.length === 0) {
+      empty.style.display = "";
+      return;
+    }
+    empty.style.display = "none";
+
+    var scaryEmojis = { "Not Scary": "\uD83D\uDE0A", "Mild": "\uD83D\uDE10", "Moderate": "\uD83D\uDE28", "Very Scary": "\uD83D\uDE31", "Terrifying": "\uD83D\uDC80" };
+    var scaryClasses = { "Not Scary": "scary-not", "Mild": "scary-mild", "Moderate": "scary-moderate", "Very Scary": "scary-very", "Terrifying": "scary-terrifying" };
+
+    items.forEach(function(item) {
+      var card = document.createElement("div");
+      card.className = "wl-card hw-card glass" + (item.watched ? " watched" : "");
+      var titleClass = item.watched ? " done" : "";
+
+      var metaHtml = "";
+      if (item.type) metaHtml += '<span class="wl-card-tag type">' + escHtml(item.type) + '</span>';
+      if (item.scary) {
+        var sc = scaryClasses[item.scary] || "";
+        metaHtml += '<span class="wl-card-tag ' + sc + '">' + (scaryEmojis[item.scary] || "") + " " + escHtml(item.scary) + '</span>';
+      }
+      if (item.where) metaHtml += '<span class="wl-card-tag where">' + escHtml(item.where) + '</span>';
+      if (item.who) {
+        var whoClass = item.who === "Brad" ? "who-brad" : item.who === "Katy" ? "who-katy" : "";
+        metaHtml += '<span class="wl-card-tag ' + whoClass + '">' + escHtml(item.who) + '</span>';
+      }
+      if (item.date) metaHtml += '<span class="wl-card-tag date">' + escHtml(item.date) + '</span>';
+
+      var notesHtml = item.notes ? '<div class="wl-card-notes">' + escHtml(item.notes) + '</div>' : '';
+
+      card.innerHTML =
+        '<div class="wl-card-top">' +
+          '<div class="wl-card-title' + titleClass + '">' + (item.watched ? "\u2705 " : "\uD83C\uDF83 ") + escHtml(item.title) + '</div>' +
+          '<div class="wl-card-actions">' +
+            '<div class="wl-card-check' + (item.watched ? " checked" : "") + '" onclick="toggleHwWatched(' + item.id + ')" title="Mark as watched">' + (item.watched ? "\u2713" : "") + '</div>' +
+            '<button class="wl-card-delete" onclick="deleteHwItem(' + item.id + ')" title="Remove">&times;</button>' +
+          '</div>' +
+        '</div>' +
+        (metaHtml ? '<div class="wl-card-meta">' + metaHtml + '</div>' : '') +
+        notesHtml;
+
+      list.appendChild(card);
+    });
+  }
+
+  fetchHwItems();
 
   // ── Kids Slang Dictionary ──
   const slangTerms = [
