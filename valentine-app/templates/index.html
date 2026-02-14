@@ -1814,6 +1814,11 @@ Come live with me, and be my love.</span>
     { src: "/static/a-thousand-years.mp3", title: "A Thousand Years", artist: "Christina Perri" },
     { src: "/static/too-sweet.mp3", title: "Too Sweet", artist: "Hozier" }
   ];
+  // Shuffle playlist on each load (Fisher-Yates)
+  for (let i = playlist.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [playlist[i], playlist[j]] = [playlist[j], playlist[i]];
+  }
   let currentTrack = 0;
 
   const audio = document.getElementById("bgMusic");
@@ -1829,11 +1834,16 @@ Come live with me, and be my love.</span>
   const musicArtist = document.getElementById("musicArtist");
   let isPlaying = false;
 
+  // Set initial track from shuffled playlist
+  audio.src = playlist[0].src;
+
   function updateTrackUI() {
     const t = playlist[currentTrack];
     musicTitle.innerHTML = t.title + " &#8212; " + t.artist + ' <span class="music-note">&#9834;</span>';
     musicArtist.innerHTML = "Song " + (currentTrack + 1) + " of " + playlist.length + " &#128149;";
   }
+
+  updateTrackUI(); // Set initial UI from shuffled playlist
 
   function loadTrack(index, autoplay) {
     currentTrack = index;
