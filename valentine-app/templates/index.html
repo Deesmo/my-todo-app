@@ -1343,6 +1343,92 @@
     .hp-answers { grid-template-columns: 1fr; }
     .hp-answer { padding: 12px 10px; font-size: .84rem; }
   }
+
+  /* ── My Purses Gallery ── */
+  .purse-subtitle {
+    text-align: center; font-size: .85rem; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    margin-bottom: 20px;
+  }
+  .purse-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+    padding: 0 4px;
+  }
+  @media (min-width: 600px) { .purse-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 900px) { .purse-grid { grid-template-columns: repeat(4, 1fr); } }
+  .purse-card {
+    border-radius: 18px; overflow: hidden; cursor: pointer;
+    background: var(--glass); border: 2px solid rgba(233,30,99,.2);
+    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+    transition: transform .3s ease, box-shadow .3s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .purse-card:active { transform: scale(.96); }
+  .purse-card:hover { box-shadow: 0 8px 32px rgba(233,30,99,.25); transform: translateY(-2px); }
+  .purse-card-img {
+    width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+  }
+  .purse-card-info {
+    padding: 10px 12px; text-align: center;
+  }
+  .purse-card-brand {
+    font-size: .78rem; font-weight: 700; color: var(--gold);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    letter-spacing: .04em;
+  }
+  .purse-card-caption {
+    font-size: .7rem; color: var(--text-muted); margin-top: 2px;
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+  }
+  .purse-empty {
+    text-align: center; padding: 40px 20px; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+  }
+
+  /* Purse Lightbox */
+  .purse-lightbox {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,.92); display: none;
+    align-items: center; justify-content: center;
+    flex-direction: column;
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  }
+  .purse-lightbox.open { display: flex; }
+  .purse-lightbox-close {
+    position: absolute; top: 16px; right: 18px;
+    font-size: 2rem; color: #fff; background: none; border: none;
+    cursor: pointer; z-index: 10; -webkit-tap-highlight-color: transparent;
+    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+  }
+  .purse-lightbox-img {
+    max-width: 90vw; max-height: 75vh; border-radius: 16px;
+    object-fit: contain; transition: transform .3s ease;
+    user-select: none; -webkit-user-select: none;
+  }
+  .purse-lightbox-caption {
+    color: #fff; text-align: center; margin-top: 14px; padding: 0 20px;
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    font-size: .9rem; opacity: .85;
+  }
+  .purse-lightbox-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 2.4rem; color: rgba(255,255,255,.7); background: none; border: none;
+    cursor: pointer; padding: 12px; -webkit-tap-highlight-color: transparent;
+    z-index: 10;
+  }
+  .purse-lightbox-nav:hover { color: #fff; }
+  .purse-lightbox-prev { left: 8px; }
+  .purse-lightbox-next { right: 8px; }
+  .purse-lightbox-counter {
+    color: rgba(255,255,255,.5); font-size: .75rem; margin-top: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  @media (max-width: 480px) {
+    .purse-grid { gap: 10px; }
+    .purse-card-info { padding: 8px 8px; }
+    .purse-card-brand { font-size: .72rem; }
+    .purse-lightbox-nav { font-size: 1.8rem; padding: 8px; }
+  }
 </style>
 </head>
 <body>
@@ -1374,6 +1460,7 @@
     <button class="nav-tab" onclick="showPage('textme')">Text Me</button>
     <button class="nav-tab" onclick="showPage('challenge')">Challenge</button>
     <button class="nav-tab" onclick="showPage('games')">Games</button>
+    <button class="nav-tab" onclick="showPage('purses')">Purses</button>
     <button class="nav-tab" onclick="showPage('about')">About</button>
   </div>
 
@@ -2304,6 +2391,34 @@ Come live with me, and be my love.</span>
 
   </div>
 
+  <!-- ════ MY PURSES PAGE ════ -->
+  <div class="page" id="page-purses">
+
+    <div class="gallery-label">&#128092; My Purses &#128092;</div>
+    <div class="purse-subtitle">From Brad with Love &#128149;</div>
+
+    <div class="purse-grid" id="purseGrid"></div>
+
+    <div class="purse-empty" id="purseEmpty" style="display:none;">
+      Photos coming soon! &#128092;&#128149;
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
+  <!-- Purse Lightbox -->
+  <div class="purse-lightbox" id="purseLightbox">
+    <button class="purse-lightbox-close" onclick="closePurseLB()">&#10005;</button>
+    <button class="purse-lightbox-nav purse-lightbox-prev" onclick="navPurseLB(-1)">&#8249;</button>
+    <button class="purse-lightbox-nav purse-lightbox-next" onclick="navPurseLB(1)">&#8250;</button>
+    <img class="purse-lightbox-img" id="purseLBImg" src="" alt="">
+    <div class="purse-lightbox-caption" id="purseLBCaption"></div>
+    <div class="purse-lightbox-counter" id="purseLBCounter"></div>
+  </div>
+
   <!-- ════ ABOUT THE AUTHOR PAGE ════ -->
   <div class="page" id="page-about">
 
@@ -2383,7 +2498,7 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "about"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "purses", "about"];
   let musicWasPlaying = false;
   function showPage(name) {
     const prevPage = pageNames.find(p => document.getElementById("page-" + p).classList.contains("active"));
@@ -3840,6 +3955,94 @@ Come live with me, and be my love.</span>
       streakEl.textContent = "";
     }
   }
+
+  // ── My Purses Gallery ──
+  // To add purses: add entries to this array with photo path, brand, and caption.
+  // Photos go in /static/photos/purses/
+  const purseCollection = [
+    // { img: "/static/photos/purses/purse1.jpg", brand: "Coach", caption: "Birthday 2023" },
+    // { img: "/static/photos/purses/purse2.jpg", brand: "Michael Kors", caption: "Anniversary gift" },
+    // { img: "/static/photos/purses/purse3.jpg", brand: "Kate Spade", caption: "Just because \u2764\uFE0F" },
+  ];
+
+  let purseLBIndex = 0;
+
+  function renderPurseGrid() {
+    const grid = document.getElementById("purseGrid");
+    const empty = document.getElementById("purseEmpty");
+    grid.innerHTML = "";
+    if (purseCollection.length === 0) {
+      grid.style.display = "none";
+      empty.style.display = "";
+      return;
+    }
+    grid.style.display = "";
+    empty.style.display = "none";
+    purseCollection.forEach((p, i) => {
+      const card = document.createElement("div");
+      card.className = "purse-card";
+      card.onclick = () => openPurseLB(i);
+      card.innerHTML =
+        '<img class="purse-card-img" src="' + p.img + '" alt="' + (p.brand || "Purse") + '" loading="lazy">' +
+        '<div class="purse-card-info">' +
+          (p.brand ? '<div class="purse-card-brand">' + p.brand + '</div>' : '') +
+          (p.caption ? '<div class="purse-card-caption">' + p.caption + '</div>' : '') +
+        '</div>';
+      grid.appendChild(card);
+    });
+  }
+
+  function openPurseLB(idx) {
+    purseLBIndex = idx;
+    updatePurseLB();
+    document.getElementById("purseLightbox").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closePurseLB() {
+    document.getElementById("purseLightbox").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  function navPurseLB(dir) {
+    purseLBIndex = (purseLBIndex + dir + purseCollection.length) % purseCollection.length;
+    updatePurseLB();
+  }
+
+  function updatePurseLB() {
+    const p = purseCollection[purseLBIndex];
+    document.getElementById("purseLBImg").src = p.img;
+    document.getElementById("purseLBImg").alt = p.brand || "Purse";
+    const parts = [];
+    if (p.brand) parts.push(p.brand);
+    if (p.caption) parts.push(p.caption);
+    document.getElementById("purseLBCaption").textContent = parts.join(" \u2022 ") || "";
+    document.getElementById("purseLBCounter").textContent = (purseLBIndex + 1) + " / " + purseCollection.length;
+  }
+
+  // Swipe support for lightbox
+  (function() {
+    const lb = document.getElementById("purseLightbox");
+    let sx = 0;
+    lb.addEventListener("touchstart", e => { sx = e.touches[0].clientX; });
+    lb.addEventListener("touchend", e => {
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 50) navPurseLB(dx < 0 ? 1 : -1);
+    });
+    // Close on clicking background
+    lb.addEventListener("click", e => {
+      if (e.target === lb) closePurseLB();
+    });
+    // Keyboard nav
+    document.addEventListener("keydown", e => {
+      if (!lb.classList.contains("open")) return;
+      if (e.key === "Escape") closePurseLB();
+      if (e.key === "ArrowLeft") navPurseLB(-1);
+      if (e.key === "ArrowRight") navPurseLB(1);
+    });
+  })();
+
+  renderPurseGrid();
 
   // ── Service Worker ──
   if ("serviceWorker" in navigator) {
