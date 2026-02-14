@@ -1,7 +1,17 @@
-// Word of the Day - Rare & Obscure Vocabulary
-// The app cycles through words using a date-based index.
-// To expand: just add more entries to the array below.
-// Batch 1: Words 1-100 (Days 1-100)
+// ═══════════════════════════════════════════════════════════════
+// WORD OF THE DAY - Rare & Obscure Vocabulary
+// ═══════════════════════════════════════════════════════════════
+// The app picks one word per day using a date-based index.
+// Words cycle through the entire list, then repeat.
+//
+// HOW TO ADD MORE WORDS:
+//   1. Add new entries BEFORE the closing ];
+//   2. Use the same format: {w:"Word",p:"pronunciation",s:"part of speech",d:"definition",e:"etymology",x:"example sentence"}
+//   3. Optional fields: y:"synonyms", f:"fun fact"
+//   4. The app automatically adjusts — no other code changes needed!
+//
+// ═══════════════════════════════════════════════════════════════
+// BATCH 1: Words 1-106 (launched Feb 2026)
 const wotdWords = [
 {w:"Defenestration",p:"dee-fen-eh-STRAY-shun",s:"noun",d:"The act of throwing someone or something out of a window.",e:"Latin de- (down) + fenestra (window). Coined 1618.",x:"The Defenestration of Prague in 1618 helped spark the Thirty Years' War.",f:"Prague has had three famous defenestrations, making it the world capital of window-throwing."},
 {w:"Petrichor",p:"PET-rih-kor",s:"noun",d:"The pleasant, earthy smell produced when rain falls on dry soil.",e:"Coined in 1964 from Greek petra (stone) + ichor (fluid of the gods).",x:"After weeks of drought, the petrichor was absolutely intoxicating.",f:"The scent comes from oils released by soil bacteria called actinomycetes."},
@@ -109,6 +119,12 @@ const wotdWords = [
 {w:"Zenosyne",p:"ZEN-oh-syne",s:"noun",d:"The sense that time keeps going faster as you age.",e:"Coined in The Dictionary of Obscure Sorrows.",x:"Every December she felt the zenosyne more acutely \u2014 hadn't summer just ended?"},
 {w:"Xertz",p:"ZURTS",s:"verb",d:"To gulp down food or drink greedily and with great speed.",e:"Origin uncertain, possibly South African slang.",x:"He xertzed his entire milkshake in under a minute."},
 {w:"Lollygag",p:"LOL-ee-gag",s:"verb",d:"To spend time aimlessly; to dawdle, idle, or loaf about.",e:"American English, 1860s. Origin uncertain, possibly from loll.",x:"Stop lollygagging and get ready \u2014 we're going to be late!",y:"dawdle, loiter, dilly-dally"}
-// Batch 2: Add words 101-200 here (Days 101-200)
-// Batch 3: Add words 201-300 here (Days 201-300)
+// ═══════════════════════════════════════════════════════════════
+// BATCH 2: Add words 107-206 here (starts ~June 2026)
+// Just paste new entries below this comment, before the ];
+// ═══════════════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════════
+// BATCH 3: Add words 207-306 here (starts ~Sept 2026)
+// ═══════════════════════════════════════════════════════════════
 ];
