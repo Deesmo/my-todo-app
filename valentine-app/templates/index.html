@@ -1586,6 +1586,98 @@
     .wish-card { padding: 14px 12px; }
     .wish-card-name { font-size: .92rem; }
   }
+
+  /* ── Kids Slang Dictionary ── */
+  .slang-subtitle {
+    text-align: center; font-size: .85rem; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    margin-bottom: 18px;
+  }
+  .slang-controls {
+    display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .slang-search {
+    flex: 1; min-width: 160px; padding: 12px 16px; border: 2px solid rgba(233,30,99,.2);
+    border-radius: 14px; background: rgba(255,255,255,.06); color: var(--text);
+    font-size: .88rem; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    outline: none; transition: var(--transition); -webkit-appearance: none;
+  }
+  .slang-search:focus { border-color: var(--love-bright); box-shadow: 0 0 16px rgba(233,30,99,.15); }
+  .slang-search::placeholder { color: var(--text-muted); }
+  .slang-sort-btn {
+    padding: 10px 16px; border: 2px solid rgba(233,30,99,.2); border-radius: 14px;
+    background: rgba(255,255,255,.06); color: var(--text-secondary);
+    font-size: .78rem; font-weight: 700; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+  }
+  .slang-sort-btn.active {
+    background: rgba(233,30,99,.15); border-color: var(--love-bright); color: var(--love-pink);
+  }
+  .slang-cats {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; justify-content: center;
+  }
+  .slang-cat-btn {
+    padding: 6px 14px; border: 1px solid rgba(255,255,255,.12); border-radius: 20px;
+    background: rgba(255,255,255,.06); color: var(--text-muted);
+    font-size: .72rem; font-weight: 700; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+  }
+  .slang-cat-btn.active {
+    background: rgba(233,30,99,.2); border-color: var(--love-bright); color: var(--love-pink);
+  }
+  .slang-count {
+    text-align: center; margin-bottom: 12px; font-size: .72rem; color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .slang-list { display: flex; flex-direction: column; gap: 10px; }
+  .slang-card { padding: 16px; border-radius: 16px; }
+  .slang-term {
+    font-size: 1.15rem; font-weight: 800; color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    letter-spacing: .02em;
+  }
+  .slang-pron {
+    font-size: .72rem; color: var(--text-muted); font-style: italic;
+    font-family: Georgia, "Times New Roman", serif; margin-left: 6px; font-weight: 400;
+  }
+  .slang-cat-tag {
+    display: inline-block; padding: 2px 10px; border-radius: 12px;
+    font-size: .62rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; margin-left: 8px; vertical-align: middle;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .slang-cat-tag.positive { background: rgba(129,199,132,.2); color: #81c784; }
+  .slang-cat-tag.negative { background: rgba(239,154,154,.2); color: #ef9a9a; }
+  .slang-cat-tag.expression { background: rgba(255,183,77,.2); color: #ffb74d; }
+  .slang-cat-tag.internet { background: rgba(156,39,176,.2); color: #ce93d8; }
+  .slang-cat-tag.action { background: rgba(33,150,243,.2); color: #64b5f6; }
+  .slang-cat-tag.adjective { background: rgba(0,150,136,.2); color: #80cbc4; }
+  .slang-cat-tag.reaction { background: rgba(255,138,101,.2); color: #ff8a65; }
+  .slang-cat-tag.social { background: rgba(233,30,99,.2); color: var(--love-pink); }
+  .slang-cat-tag.money { background: rgba(255,215,0,.2); color: var(--gold); }
+  .slang-cat-tag.relationship { background: rgba(244,67,54,.2); color: #ef5350; }
+  .slang-def {
+    margin-top: 6px; font-size: .88rem; color: var(--text-secondary);
+    font-family: Georgia, "Times New Roman", serif; line-height: 1.4;
+  }
+  .slang-example {
+    margin-top: 6px; font-size: .8rem; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    padding-left: 12px; border-left: 2px solid rgba(233,30,99,.2);
+  }
+  .slang-empty {
+    text-align: center; padding: 30px 20px; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+  }
+  @media (max-width: 480px) {
+    .slang-card { padding: 14px 12px; }
+    .slang-term { font-size: 1rem; }
+    .slang-controls { flex-direction: column; }
+    .slang-sort-btn { width: 100%; text-align: center; }
+  }
 </style>
 </head>
 <body>
@@ -1619,6 +1711,7 @@
     <button class="nav-tab" onclick="showPage('games')">Games</button>
     <button class="nav-tab" onclick="showPage('purses')">Purses</button>
     <button class="nav-tab" onclick="showPage('wishlist')">Wishes</button>
+    <button class="nav-tab" onclick="showPage('slang')">Slang</button>
     <button class="nav-tab" onclick="showPage('about')">About</button>
   </div>
 
@@ -2617,6 +2710,29 @@ Come live with me, and be my love.</span>
 
   </div>
 
+  <!-- ════ KIDS SLANG DICTIONARY PAGE ════ -->
+  <div class="page" id="page-slang">
+
+    <div class="gallery-label">&#129322; Kids Slang Dictionary &#129322;</div>
+    <div class="slang-subtitle">What are they even saying?! A survival guide for confused parents</div>
+
+    <div class="slang-controls">
+      <input class="slang-search" id="slangSearch" type="text" placeholder="&#128269; Search slang terms..." oninput="filterSlang()">
+      <button class="slang-sort-btn" id="slangSortBtn" onclick="toggleSlangSort()">A&#8594;Z</button>
+    </div>
+    <div class="slang-cats" id="slangCats"></div>
+    <div class="slang-count" id="slangCount"></div>
+    <div class="slang-list" id="slangList"></div>
+    <div class="slang-empty" id="slangEmpty" style="display:none;">
+      No matches found! Try a different search &#129300;
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
   <!-- ════ ABOUT THE AUTHOR PAGE ════ -->
   <div class="page" id="page-about">
 
@@ -2696,7 +2812,7 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "purses", "wishlist", "about"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "purses", "wishlist", "slang", "about"];
   let musicWasPlaying = false;
   function showPage(name) {
     const prevPage = pageNames.find(p => document.getElementById("page-" + p).classList.contains("active"));
@@ -4354,6 +4470,241 @@ Come live with me, and be my love.</span>
   }
 
   renderWishList();
+
+  // ── Kids Slang Dictionary ──
+  const slangTerms = [
+    // COMPLIMENTS / POSITIVE
+    {t:"Rizz",d:"Charisma, especially with romantic interests. Can be used as a verb (to rizz someone up).",ex:"\"He's got that rizz \u2014 she was smiling the whole time.\"",cat:"positive"},
+    {t:"Bussin",d:"Really good, amazing \u2014 especially used for food but can apply to anything.",ex:"\"This pizza is bussin, no cap.\"",cat:"positive"},
+    {t:"Slay",d:"Doing something exceptionally well. Killing it.",ex:"\"You slayed that presentation!\"",cat:"positive"},
+    {t:"Ate / Ate That Up",d:"Did something perfectly; left nothing behind.",ex:"\"She ate that dance routine and left no crumbs.\"",cat:"positive"},
+    {t:"Slaps",d:"Really good, usually referring to music.",ex:"\"This song absolutely slaps.\"",cat:"positive"},
+    {t:"Fire / Lit",d:"Awesome, exciting, really cool.",ex:"\"That party was fire last night.\"",cat:"positive"},
+    {t:"Snatched",d:"Looking really good; on point. Often about appearance/outfit.",ex:"\"Your outfit is snatched today!\"",cat:"positive"},
+    {t:"Drip",d:"Fashionable outfit or style; looking expensive.",ex:"\"Check out my drip \u2014 head to toe designer.\"",cat:"positive"},
+    {t:"W",p:"(dub)",d:"A win; a good thing happening.",ex:"\"Got an A on the test \u2014 that's a W.\"",cat:"positive"},
+    {t:"Goated / GOAT",d:"Greatest Of All Time. The absolute best at something.",ex:"\"LeBron is goated, no debate.\"",cat:"positive"},
+    {t:"Valid",d:"Acceptable, makes sense, good.",ex:"\"That take is actually valid.\"",cat:"positive"},
+    {t:"Hits Different",d:"Feels uniquely special or meaningful.",ex:"\"Summer nights hit different.\"",cat:"positive"},
+    {t:"Based",d:"Being unapologetically yourself; not caring what others think.",ex:"\"He said exactly what he thought \u2014 so based.\"",cat:"positive"},
+    {t:"Iconic",d:"Legendary, unforgettable, memorable moment.",ex:"\"That comeback was iconic.\"",cat:"positive"},
+    {t:"Living Rent Free",d:"Can't stop thinking about something; it occupies your mind.",ex:"\"That song is living rent free in my head.\"",cat:"positive"},
+    {t:"Understood the Assignment",d:"Did exactly what was needed; nailed it perfectly.",ex:"\"She understood the assignment with that outfit.\"",cat:"positive"},
+    // NEGATIVE / INSULTS
+    {t:"Chopped",d:"Ugly, messed up, badly done.",ex:"\"That haircut is chopped, bro.\"",cat:"negative"},
+    {t:"Mid",d:"Mediocre, average, not impressive at all.",ex:"\"That movie was mid \u2014 total waste of time.\"",cat:"negative"},
+    {t:"L",p:"(ell)",d:"A loss; a bad thing; failure.",ex:"\"Taking an L on that test.\"",cat:"negative"},
+    {t:"Cap",d:"A lie; something fake or untrue.",ex:"\"That's cap \u2014 you never did that.\"",cat:"negative"},
+    {t:"Sus",d:"Suspicious, shady, not trustworthy. From Among Us.",ex:"\"You're acting real sus right now.\"",cat:"negative"},
+    {t:"Cringe",d:"Awkward, embarrassing, makes you uncomfortable.",ex:"\"That TikTok was so cringe.\"",cat:"negative"},
+    {t:"Ick",d:"A sudden turn-off; something that makes you lose attraction.",ex:"\"He chewed with his mouth open \u2014 instant ick.\"",cat:"negative"},
+    {t:"Cooked",d:"Done for; in deep trouble; destroyed.",ex:"\"I'm cooked if mom sees my report card.\"",cat:"negative"},
+    {t:"Crashed Out",d:"Messed up badly; lost control of a situation.",ex:"\"He crashed out during that argument.\"",cat:"negative"},
+    {t:"Flopped",d:"Failed badly; didn't succeed.",ex:"\"That joke absolutely flopped.\"",cat:"negative"},
+    {t:"Fumbled",d:"Messed up an opportunity, especially romantic.",ex:"\"He fumbled the bag with her.\"",cat:"negative"},
+    {t:"Ratio",d:"When a reply gets more likes than the original post. Used as an insult.",ex:"\"You just got ratioed \u2014 everyone disagrees.\"",cat:"negative"},
+    {t:"L + Ratio",d:"Ultimate dismissal: you lost AND everyone agrees you're wrong.",ex:"\"L + ratio + skill issue.\"",cat:"negative"},
+    {t:"Touch Grass",d:"Go outside; you spend too much time online.",ex:"\"You really need to touch grass.\"",cat:"negative"},
+    {t:"NPC",d:"A boring person with no personality. From video game Non-Player Characters.",ex:"\"He just stands there like an NPC.\"",cat:"negative"},
+    {t:"Cornball",d:"A lame, uncool person who tries too hard.",ex:"\"Don't be such a cornball.\"",cat:"negative"},
+    {t:"Washed",d:"Past your prime; no longer good at something.",ex:"\"That player is washed \u2014 he can't keep up.\"",cat:"negative"},
+    {t:"Couch",d:"Really bad, terrible. The worst.",ex:"\"That outfit is couch.\"",cat:"negative"},
+    // EXPRESSIONS / REACTIONS
+    {t:"No Cap",d:"No lie; for real; I'm being honest.",ex:"\"No cap, that was the craziest thing I've ever seen.\"",cat:"expression"},
+    {t:"Fr Fr",p:"(fur fur)",d:"For real for real. Emphasis that you're being serious.",ex:"\"Fr fr, I'm not even lying.\"",cat:"expression"},
+    {t:"Ong",p:"(on god)",d:"On God; I swear it's true.",ex:"\"Ong that actually happened.\"",cat:"expression"},
+    {t:"Periodt",d:"End of discussion. Final word. Period with emphasis.",ex:"\"I'm the best at this game, periodt.\"",cat:"expression"},
+    {t:"Bet",d:"Okay, sounds good, I agree. Also a challenge accepted.",ex:"\"Wanna go get food?\" \"Bet.\"",cat:"expression"},
+    {t:"Sheeesh",d:"Impressed exclamation. The longer the 'eee' the more impressed.",ex:"\"Sheeesh, that car is nice!\"",cat:"expression"},
+    {t:"Oof",d:"Expression of sympathy, pain, or secondhand embarrassment.",ex:"\"Oof, that's rough buddy.\"",cat:"expression"},
+    {t:"Yeet",d:"To throw something with force. Also an exclamation of excitement.",ex:"\"He yeeted that ball across the field!\"",cat:"expression"},
+    {t:"Fax / Facts",d:"That's the truth. I agree completely.",ex:"\"That's straight fax.\"",cat:"expression"},
+    {t:"Say Less",d:"I understand; no need to explain more; I'm on it.",ex:"\"Can you pick me up?\" \"Say less.\"",cat:"expression"},
+    {t:"Deadass",d:"Seriously; for real; I'm not joking.",ex:"\"I'm deadass about to leave right now.\"",cat:"expression"},
+    {t:"I'm Dead / Deceased",d:"That's so hilarious I figuratively died laughing.",ex:"\"I'm dead \uD83D\uDC80 that meme sent me.\"",cat:"expression"},
+    {t:"It's Giving...",d:"It has the vibe of; it looks like; it reminds me of.",ex:"\"That outfit? It's giving main character energy.\"",cat:"expression"},
+    {t:"Not the...",d:"Expressing shock or disapproval at something specific.",ex:"\"Not the fake Gucci bag \uD83D\uDE2D\"",cat:"expression"},
+    {t:"The Way...",d:"Used to emphasize how intensely you reacted to something.",ex:"\"The way I SCREAMED when I saw that.\"",cat:"expression"},
+    {t:"Tell Me Why...",d:"Introducing a story or situation, usually dramatic.",ex:"\"Tell me why he showed up 2 hours late.\"",cat:"expression"},
+    {t:"Naur",d:"Exaggerated/dramatic way of saying 'no'. Often mocking.",ex:"\"Naur way that actually happened.\"",cat:"expression"},
+    {t:"Purr",d:"Expression of approval or encouragement. Like a cat purring.",ex:"\"New shoes? Purr!\"",cat:"expression"},
+    {t:"Slay Queen",d:"Encouragement telling someone they're doing amazing.",ex:"\"You look amazing \u2014 slay queen!\"",cat:"expression"},
+    // INTERNET / MEME CULTURE
+    {t:"Skibidi",d:"Originally from Skibidi Toilet meme. Can mean weird, random, or bad.",ex:"\"That's so skibidi.\"",cat:"internet"},
+    {t:"Ohio",d:"Representing somewhere weird, cringe, or chaotic. From 'Only in Ohio' memes.",ex:"\"Only in Ohio would that happen.\"",cat:"internet"},
+    {t:"Sigma",d:"The lone wolf; ultra-cool independent person. From 'sigma male' meme.",ex:"\"Sigma grindset \u2014 he doesn't need anyone.\"",cat:"internet"},
+    {t:"Beta",d:"Opposite of sigma/alpha; weak, submissive. Used as an insult.",ex:"\"That was such a beta move.\"",cat:"internet"},
+    {t:"Alpha",d:"Dominant, leader, top dog. The one in charge.",ex:"\"Alpha move walking in like that.\"",cat:"internet"},
+    {t:"Gyatt",p:"(gee-AT)",d:"Exclamation of surprise or admiration, usually about appearance.",ex:"\"Gyatt! Did you see that?!\"",cat:"internet"},
+    {t:"Fanum Tax",d:"Stealing someone's food. From streamer Fanum who takes bites of others' meals.",ex:"\"He hit me with the Fanum tax on my fries!\"",cat:"internet"},
+    {t:"Mewing",d:"Jaw exercise/tongue posture trend. Kids do it to 'sharpen jawline'.",ex:"\"Stop mewing in class and pay attention.\"",cat:"internet"},
+    {t:"Aura",d:"Cool points; your reputation/vibe score. Can be gained or lost.",ex:"\"That fall just cost you 1000 aura points.\"",cat:"internet"},
+    {t:"Negative Aura",d:"Doing something extremely uncool that tanks your reputation.",ex:"\"-1000 aura for that outfit choice.\"",cat:"internet"},
+    {t:"Delulu",d:"Delusional. Being unrealistic about something, especially relationships.",ex:"\"She thinks he likes her \u2014 she's being delulu.\"",cat:"internet"},
+    {t:"Simp",d:"Someone who does way too much for a person they like, often without reciprocation.",ex:"\"He bought her flowers every day \u2014 what a simp.\"",cat:"internet"},
+    {t:"Stan",d:"An extremely devoted fan. Can be a verb: to stan someone.",ex:"\"I stan Taylor Swift, no shame.\"",cat:"internet"},
+    {t:"Main Character",d:"Acting like you're the star of a movie; living your best life.",ex:"\"She walked in with main character energy.\"",cat:"internet"},
+    {t:"Side Character",d:"Not the focus; unimportant in the situation.",ex:"\"I'm just a side character in this drama.\"",cat:"internet"},
+    {t:"Canon Event",d:"Something that inevitably must happen; part of someone's story arc.",ex:"\"Getting your heart broken is a canon event.\"",cat:"internet"},
+    {t:"Unhinged",d:"Wild, chaotic, unpredictable behavior.",ex:"\"That response was completely unhinged.\"",cat:"internet"},
+    {t:"Chronically Online",d:"Someone who spends too much time on the internet; overly aware of online culture.",ex:"\"You're chronically online if you get that reference.\"",cat:"internet"},
+    {t:"IRL",p:"(eye-are-ell)",d:"In Real Life. The opposite of online.",ex:"\"Let's meet up IRL sometime.\"",cat:"internet"},
+    // DESCRIBING ACTIONS
+    {t:"Flex",d:"To show off, brag about something.",ex:"\"Stop flexing your new phone.\"",cat:"action"},
+    {t:"Vibe / Vibing",d:"Relaxing, enjoying yourself, going with the flow.",ex:"\"Just vibing to some music right now.\"",cat:"action"},
+    {t:"Vibe Check",d:"Assessing someone's mood or energy. Can be sudden.",ex:"\"Vibe check! How you feeling?\"",cat:"action"},
+    {t:"Ghost",d:"To suddenly stop responding to someone's messages/calls. Disappearing.",ex:"\"He ghosted me after three dates.\"",cat:"action"},
+    {t:"Curve",d:"To reject or turn someone down, especially romantically.",ex:"\"She curved him so hard.\"",cat:"action"},
+    {t:"Clout Chasing",d:"Doing things purely to get attention, followers, or fame.",ex:"\"He's just clout chasing with that post.\"",cat:"action"},
+    {t:"Gatekeep",d:"Keeping something to yourself; not sharing a recommendation.",ex:"\"Stop gatekeeping that restaurant!\"",cat:"action"},
+    {t:"Gaslight",d:"Manipulating someone into questioning their own reality or memory.",ex:"\"Don't gaslight me \u2014 I know what you said.\"",cat:"action"},
+    {t:"Lowkey",d:"Secretly; somewhat; on the down-low.",ex:"\"I lowkey love that song.\"",cat:"action"},
+    {t:"Highkey",d:"Obviously; really; not hiding it at all.",ex:"\"I highkey need pizza right now.\"",cat:"action"},
+    {t:"Big Back",d:"Someone who eats a lot; always hungry.",ex:"\"He ordered three entrees \u2014 big back behavior.\"",cat:"action"},
+    {t:"Mogging",d:"Looking so much better than someone else you make them look bad.",ex:"\"He's mogging everyone at the party.\"",cat:"action"},
+    {t:"Glazing",d:"Over-praising someone excessively; being a suck-up.",ex:"\"Stop glazing the teacher.\"",cat:"action"},
+    {t:"Meat Riding",d:"Excessively supporting or defending someone no matter what.",ex:"\"You're meat riding that brand so hard.\"",cat:"action"},
+    {t:"Tweaking",d:"Acting crazy; behaving erratically.",ex:"\"You're tweaking if you think that's true.\"",cat:"action"},
+    {t:"Buggin",d:"Acting crazy; being unreasonable.",ex:"\"You're buggin right now.\"",cat:"action"},
+    {t:"Trippin",d:"Overreacting; being wrong about something.",ex:"\"You're trippin if you don't like this song.\"",cat:"action"},
+    // ADJECTIVES / DESCRIPTIONS
+    {t:"Salty",d:"Bitter or upset, usually over something minor.",ex:"\"Why are you so salty about losing?\"",cat:"adjective"},
+    {t:"Boujee",p:"(boo-zhee)",d:"Fancy, luxurious, high-class. Sometimes used mockingly.",ex:"\"That restaurant is so boujee.\"",cat:"adjective"},
+    {t:"Cheugy",p:"(chew-gee)",d:"Outdated, trying too hard, no longer trendy. Millennial things.",ex:"\"Live Laugh Love signs are so cheugy.\"",cat:"adjective"},
+    {t:"Bussin Bussin",d:"Even more emphasis than regular bussin. Extremely good.",ex:"\"This is bussin bussin fr fr.\"",cat:"adjective"},
+    {t:"Dank",d:"High quality, cool, excellent. Originally about memes.",ex:"\"Those are some dank memes.\"",cat:"adjective"},
+    {t:"Snack",d:"An attractive person.",ex:"\"He's a whole snack.\"",cat:"adjective"},
+    {t:"Zaddy",d:"An attractive, stylish older man who has it together.",ex:"\"Brad is a total zaddy.\"",cat:"adjective"},
+    {t:"Thicc",p:"(thick with two c's)",d:"Having an attractive curvy or full figure. A compliment.",ex:"\"She's thicc and she knows it.\"",cat:"adjective"},
+    {t:"Smol",d:"Small and cute. Used for adorable things.",ex:"\"Look at that smol puppy!\"",cat:"adjective"},
+    {t:"Sending Me",d:"Making me laugh uncontrollably.",ex:"\"This video is sending me \uD83D\uDE02\"",cat:"adjective"},
+    // REACTIONS / SITUATIONS
+    {t:"When I Tell You...",d:"Used to emphasize how dramatic or intense something was.",ex:"\"When I tell you I RAN to the car...\"",cat:"reaction"},
+    {t:"Not Me...",d:"Admitting something embarrassing about yourself.",ex:"\"Not me crying at a dog video again.\"",cat:"reaction"},
+    {t:"I Can't Even",d:"So overwhelmed or amused you can't form words.",ex:"\"I literally can't even right now.\"",cat:"reaction"},
+    {t:"I'm Screaming",d:"Extremely excited, shocked, or amused.",ex:"\"I'm screaming \u2014 did you see what she posted?!\"",cat:"reaction"},
+    {t:"I Hate It Here",d:"Expressing frustration with a situation or place.",ex:"\"Another Monday \u2014 I hate it here.\"",cat:"reaction"},
+    {t:"Passed the Vibe Check",d:"Meets approval; is cool and acceptable.",ex:"\"New kid passed the vibe check.\"",cat:"reaction"},
+    {t:"Failed the Vibe Check",d:"Does NOT meet approval; is awkward or uncool.",ex:"\"That restaurant failed the vibe check hard.\"",cat:"reaction"},
+    {t:"Caught in 4K",d:"Caught red-handed doing something wrong, with proof.",ex:"\"Caught in 4K \uD83D\uDCF8 deleting those texts!\"",cat:"reaction"},
+    // SOCIAL MEDIA
+    {t:"Tea",d:"Gossip; juicy information.",ex:"\"Spill the tea \u2014 what happened?\"",cat:"social"},
+    {t:"Shade",d:"A subtle insult or disrespectful comment.",ex:"\"She threw shade at her outfit.\"",cat:"social"},
+    {t:"Receipts",d:"Proof or evidence, usually screenshots.",ex:"\"Don't lie \u2014 I have the receipts.\"",cat:"social"},
+    {t:"Drag",d:"To harshly criticize or call someone out publicly.",ex:"\"Twitter dragged him for that tweet.\"",cat:"social"},
+    {t:"Canceled",d:"Publicly rejected or boycotted for something problematic.",ex:"\"He got canceled after those old tweets surfaced.\"",cat:"social"},
+    {t:"FYP",p:"(eff-why-pee)",d:"For You Page on TikTok. The main content feed.",ex:"\"This sound is all over my FYP.\"",cat:"social"},
+    {t:"POV",p:"(pee-oh-vee)",d:"Point Of View. Used to set up a scenario.",ex:"\"POV: You're the favorite child at Thanksgiving.\"",cat:"social"},
+    {t:"Finsta",d:"A fake/private Instagram account for close friends only.",ex:"\"I only post real stuff on my finsta.\"",cat:"social"},
+    {t:"Rinsta",d:"Your real/public Instagram account.",ex:"\"My rinsta is curated; my finsta is chaos.\"",cat:"social"},
+    // MONEY / STATUS
+    {t:"Bag",d:"Money. Getting money.",ex:"\"Gotta go secure that bag.\"",cat:"money"},
+    {t:"Bands",d:"Thousands of dollars (from money bands on cash stacks).",ex:"\"He's making bands at his new job.\"",cat:"money"},
+    {t:"Bread",d:"Money. Earning a living.",ex:"\"Gotta get this bread every day.\"",cat:"money"},
+    {t:"Fumble the Bag",d:"To lose or waste a money-making opportunity.",ex:"\"Don't fumble the bag on this deal.\"",cat:"money"},
+    {t:"Secure the Bag",d:"To get money or lock down an opportunity.",ex:"\"She secured the bag with that promotion.\"",cat:"money"},
+    {t:"Guap",p:"(gwop)",d:"Lots of money.",ex:"\"He's got guap from that side hustle.\"",cat:"money"},
+    // RELATIONSHIP TERMS
+    {t:"Ship",d:"To support or root for a romantic relationship between two people.",ex:"\"I totally ship them together.\"",cat:"relationship"},
+    {t:"Situationship",d:"A complicated, undefined romantic relationship. Not quite dating.",ex:"\"We're in a situationship \u2014 it's complicated.\"",cat:"relationship"},
+    {t:"Talking Stage",d:"The pre-dating phase where you're getting to know someone.",ex:"\"We're in the talking stage right now.\"",cat:"relationship"},
+    {t:"Cuffing Season",d:"Fall/winter when people want to be in a relationship to stay warm/cozy.",ex:"\"It's cuffing season \u2014 everyone's getting together.\"",cat:"relationship"},
+    {t:"Friendzone",d:"Being relegated to 'just friends' when you wanted more.",ex:"\"He got friendzoned so fast.\"",cat:"relationship"},
+    {t:"Caught Feelings",d:"Unexpectedly developed romantic emotions for someone.",ex:"\"I wasn't supposed to catch feelings but here we are.\"",cat:"relationship"},
+    {t:"Down Bad",d:"Desperately wanting someone; being lovesick to an embarrassing degree.",ex:"\"He texted her 47 times \u2014 he's down bad.\"",cat:"relationship"}
+  ];
+
+  const slangCategories = {
+    positive: "\uD83D\uDC9A Positive",
+    negative: "\uD83D\uDC94 Negative",
+    expression: "\uD83D\uDDE3\uFE0F Expression",
+    internet: "\uD83C\uDF10 Internet",
+    action: "\uD83C\uDFAC Action",
+    adjective: "\uD83C\uDFA8 Adjective",
+    reaction: "\uD83D\uDE31 Reaction",
+    social: "\uD83D\uDCF1 Social",
+    money: "\uD83D\uDCB0 Money",
+    relationship: "\uD83D\uDC95 Relationship"
+  };
+
+  let slangAlpha = false;
+  let slangActiveCat = "";
+
+  function initSlangCats() {
+    const wrap = document.getElementById("slangCats");
+    const allBtn = document.createElement("button");
+    allBtn.className = "slang-cat-btn active";
+    allBtn.textContent = "All";
+    allBtn.onclick = () => { slangActiveCat = ""; filterSlang(); };
+    wrap.appendChild(allBtn);
+    Object.entries(slangCategories).forEach(([key, label]) => {
+      const btn = document.createElement("button");
+      btn.className = "slang-cat-btn";
+      btn.textContent = label;
+      btn.dataset.cat = key;
+      btn.onclick = () => {
+        slangActiveCat = (slangActiveCat === key) ? "" : key;
+        filterSlang();
+      };
+      wrap.appendChild(btn);
+    });
+  }
+
+  function toggleSlangSort() {
+    slangAlpha = !slangAlpha;
+    const btn = document.getElementById("slangSortBtn");
+    btn.classList.toggle("active", slangAlpha);
+    filterSlang();
+  }
+
+  function filterSlang() {
+    const q = document.getElementById("slangSearch").value.trim().toLowerCase();
+    let filtered = slangTerms.filter(s => {
+      const matchQ = !q || s.t.toLowerCase().includes(q) || s.d.toLowerCase().includes(q) || s.ex.toLowerCase().includes(q);
+      const matchCat = !slangActiveCat || s.cat === slangActiveCat;
+      return matchQ && matchCat;
+    });
+    if (slangAlpha) filtered.sort((a, b) => a.t.localeCompare(b.t));
+
+    // Update cat button states
+    document.querySelectorAll(".slang-cat-btn").forEach(b => {
+      if (!b.dataset.cat) b.classList.toggle("active", !slangActiveCat);
+      else b.classList.toggle("active", b.dataset.cat === slangActiveCat);
+    });
+
+    renderSlangList(filtered);
+  }
+
+  function renderSlangList(items) {
+    const list = document.getElementById("slangList");
+    const empty = document.getElementById("slangEmpty");
+    const count = document.getElementById("slangCount");
+    list.innerHTML = "";
+
+    if (items.length === 0) {
+      empty.style.display = "";
+      count.textContent = "";
+      return;
+    }
+    empty.style.display = "none";
+    count.textContent = items.length + " of " + slangTerms.length + " terms";
+
+    items.forEach(s => {
+      const card = document.createElement("div");
+      card.className = "slang-card glass";
+      const pronHtml = s.p ? '<span class="slang-pron">' + s.p + '</span>' : '';
+      const catLabel = slangCategories[s.cat] || s.cat;
+      card.innerHTML =
+        '<div><span class="slang-term">' + s.t + '</span>' + pronHtml +
+        '<span class="slang-cat-tag ' + s.cat + '">' + catLabel + '</span></div>' +
+        '<div class="slang-def">' + s.d + '</div>' +
+        '<div class="slang-example">' + s.ex + '</div>';
+      list.appendChild(card);
+    });
+  }
+
+  initSlangCats();
+  filterSlang();
 
   // ── Service Worker ──
   if ("serviceWorker" in navigator) {
