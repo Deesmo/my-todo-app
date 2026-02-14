@@ -1380,9 +1380,19 @@
     font-size: .7rem; color: var(--text-muted); margin-top: 2px;
     font-family: Georgia, "Times New Roman", serif; font-style: italic;
   }
-  .purse-empty {
-    text-align: center; padding: 40px 20px; color: var(--text-muted);
+  .purse-count {
+    text-align: center; margin-bottom: 16px;
+  }
+  .purse-count-badge {
+    display: inline-block; padding: 6px 18px; border-radius: 20px;
+    background: rgba(255,215,0,.18); color: var(--gold);
+    font-size: .78rem; font-weight: 700; letter-spacing: .06em;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .purse-note {
+    text-align: center; padding: 20px 16px 4px; color: var(--text-muted);
     font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    font-size: .82rem;
   }
 
   /* Purse Lightbox */
@@ -2394,14 +2404,13 @@ Come live with me, and be my love.</span>
   <!-- ════ MY PURSES PAGE ════ -->
   <div class="page" id="page-purses">
 
-    <div class="gallery-label">&#128092; My Purses &#128092;</div>
-    <div class="purse-subtitle">From Brad with Love &#128149;</div>
+    <div class="gallery-label">&#128092; My Purse Collection &#128092;</div>
+    <div class="purse-subtitle">From Brad with Love &#8212; All 82 beautiful purses for outfit planning and shopping reference!</div>
+    <div class="purse-count" id="purseCount"></div>
 
     <div class="purse-grid" id="purseGrid"></div>
 
-    <div class="purse-empty" id="purseEmpty" style="display:none;">
-      Photos coming soon! &#128092;&#128149;
-    </div>
+    <div class="purse-note">Perfect for choosing outfits and remembering what you have when shopping! &#128149;</div>
 
     <div class="footer">
       Made with &#10084;&#65039; for the love of my life
@@ -3957,37 +3966,24 @@ Come live with me, and be my love.</span>
   }
 
   // ── My Purses Gallery ──
-  // To add purses: add entries to this array with photo path, brand, and caption.
-  // Photos go in /static/photos/purses/
-  const purseCollection = [
-    // { img: "/static/photos/purses/purse1.jpg", brand: "Coach", caption: "Birthday 2023" },
-    // { img: "/static/photos/purses/purse2.jpg", brand: "Michael Kors", caption: "Anniversary gift" },
-    // { img: "/static/photos/purses/purse3.jpg", brand: "Kate Spade", caption: "Just because \u2764\uFE0F" },
-  ];
+  const purseCount = 82;
+  const purseCollection = [];
+  for (let i = 1; i <= purseCount; i++) {
+    purseCollection.push({ img: "/static/purses/purse" + i + ".jpg" });
+  }
 
   let purseLBIndex = 0;
 
   function renderPurseGrid() {
     const grid = document.getElementById("purseGrid");
-    const empty = document.getElementById("purseEmpty");
     grid.innerHTML = "";
-    if (purseCollection.length === 0) {
-      grid.style.display = "none";
-      empty.style.display = "";
-      return;
-    }
-    grid.style.display = "";
-    empty.style.display = "none";
+    document.getElementById("purseCount").innerHTML =
+      '<span class="purse-count-badge">\uD83D\uDC5C ' + purseCollection.length + ' Purses</span>';
     purseCollection.forEach((p, i) => {
       const card = document.createElement("div");
       card.className = "purse-card";
       card.onclick = () => openPurseLB(i);
-      card.innerHTML =
-        '<img class="purse-card-img" src="' + p.img + '" alt="' + (p.brand || "Purse") + '" loading="lazy">' +
-        '<div class="purse-card-info">' +
-          (p.brand ? '<div class="purse-card-brand">' + p.brand + '</div>' : '') +
-          (p.caption ? '<div class="purse-card-caption">' + p.caption + '</div>' : '') +
-        '</div>';
+      card.innerHTML = '<img class="purse-card-img" src="' + p.img + '" alt="Purse ' + (i+1) + '" loading="lazy">';
       grid.appendChild(card);
     });
   }
@@ -4012,11 +4008,8 @@ Come live with me, and be my love.</span>
   function updatePurseLB() {
     const p = purseCollection[purseLBIndex];
     document.getElementById("purseLBImg").src = p.img;
-    document.getElementById("purseLBImg").alt = p.brand || "Purse";
-    const parts = [];
-    if (p.brand) parts.push(p.brand);
-    if (p.caption) parts.push(p.caption);
-    document.getElementById("purseLBCaption").textContent = parts.join(" \u2022 ") || "";
+    document.getElementById("purseLBImg").alt = "Purse " + (purseLBIndex + 1);
+    document.getElementById("purseLBCaption").textContent = p.brand ? (p.brand + (p.caption ? " \u2022 " + p.caption : "")) : "";
     document.getElementById("purseLBCounter").textContent = (purseLBIndex + 1) + " / " + purseCollection.length;
   }
 
