@@ -4666,16 +4666,16 @@ Come live with me, and be my love.</span>
 
   renderPurseGrid();
 
-  // ── Wish List ──
+  // ── Wish List (shared backend) ──
   let wishPriority = "";
-  const WISH_KEY = "katyWishList";
+  let wishItems = [];
 
-  function getWishItems() {
-    try { return JSON.parse(localStorage.getItem(WISH_KEY)) || []; }
-    catch { return []; }
-  }
-  function saveWishItems(items) {
-    localStorage.setItem(WISH_KEY, JSON.stringify(items));
+  async function fetchWishItems() {
+    try {
+      const res = await fetch("/api/wishlist");
+      wishItems = await res.json();
+    } catch { wishItems = []; }
+    renderWishList();
   }
 
   function toggleWishForm() {
@@ -4706,7 +4706,7 @@ Come live with me, and be my love.</span>
     });
   }
 
-  function saveWishItem() {
+  async function saveWishItem() {
     const name = document.getElementById("wishName").value.trim();
     if (!name) {
       document.getElementById("wishName").style.borderColor = "#ef9a9a";
@@ -4723,21 +4723,18 @@ Come live with me, and be my love.</span>
       priority: wishPriority,
       date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
     };
-    const items = getWishItems();
-    items.unshift(item);
-    saveWishItems(items);
+    await fetch("/api/wishlist", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(item) });
     toggleWishForm();
-    renderWishList();
+    fetchWishItems();
   }
 
-  function deleteWishItem(id) {
-    const items = getWishItems().filter(i => i.id !== id);
-    saveWishItems(items);
-    renderWishList();
+  async function deleteWishItem(id) {
+    await fetch("/api/wishlist/" + id, { method: "DELETE" });
+    fetchWishItems();
   }
 
   function renderWishList() {
-    const items = getWishItems();
+    const items = wishItems;
     const list = document.getElementById("wishList");
     const empty = document.getElementById("wishEmpty");
     const count = document.getElementById("wishCount");
@@ -4793,7 +4790,7 @@ Come live with me, and be my love.</span>
     return d.innerHTML;
   }
 
-  renderWishList();
+  fetchWishItems();
 
   // ── Kids Slang Dictionary ──
   const slangTerms = [
