@@ -1235,6 +1235,114 @@
     .ws-cell { width: 28px; height: 28px; font-size: .75rem; }
     .ws-card { padding: 18px 10px; }
   }
+
+  /* ── Game Switcher flex-wrap ── */
+  .game-switcher { flex-wrap: wrap; }
+
+  /* ── HP Trivia Game ── */
+  .hp-card {
+    padding: 28px 20px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hp-score {
+    display: inline-block; padding: 6px 18px; border-radius: 20px;
+    background: rgba(255,215,0,.18); color: var(--gold);
+    font-size: .78rem; font-weight: 700; letter-spacing: .06em;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    margin-bottom: 18px;
+  }
+  .hp-difficulty {
+    display: inline-block; margin-left: 8px; padding: 3px 10px; border-radius: 12px;
+    font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  }
+  .hp-difficulty.easy { background: rgba(129,199,132,.25); color: #81c784; }
+  .hp-difficulty.medium { background: rgba(255,183,77,.25); color: #ffb74d; }
+  .hp-difficulty.hard { background: rgba(239,154,154,.25); color: #ef9a9a; }
+  .hp-qnum {
+    font-size: .72rem; color: var(--text-muted); margin-bottom: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .hp-question {
+    font-size: 1.15rem; font-weight: 700; color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.5; margin-bottom: 22px; min-height: 60px;
+  }
+  .hp-answers {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin-bottom: 18px;
+  }
+  .hp-answer {
+    padding: 14px 12px; border: 2px solid rgba(255,215,0,.2); border-radius: 14px;
+    background: rgba(255,255,255,.06); color: var(--text);
+    font-size: .88rem; font-weight: 600; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+    text-align: center; line-height: 1.3;
+  }
+  .hp-answer:active { transform: scale(.95); }
+  .hp-answer.selected {
+    border-color: var(--gold); background: rgba(255,215,0,.15);
+    box-shadow: 0 0 16px rgba(255,215,0,.2);
+  }
+  .hp-answer.correct {
+    border-color: #81c784; background: rgba(129,199,132,.25);
+    color: #c8e6c9;
+  }
+  .hp-answer.wrong {
+    border-color: #ef9a9a; background: rgba(239,154,154,.2);
+    color: #ef9a9a; opacity: .7;
+  }
+  .hp-answer.disabled { pointer-events: none; }
+  .hp-answer.reveal-correct {
+    border-color: #81c784; background: rgba(129,199,132,.25);
+    color: #c8e6c9;
+  }
+  .hp-feedback {
+    min-height: 48px; margin-bottom: 16px;
+    font-size: .92rem; font-weight: 600;
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.4; transition: opacity .3s ease;
+  }
+  .hp-feedback.correct { color: #81c784; }
+  .hp-feedback.wrong { color: #ef9a9a; }
+  .hp-btns {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  }
+  .hp-btn-submit {
+    padding: 12px 28px; border: none; border-radius: 30px;
+    background: linear-gradient(135deg, #ffd700, #ffb300);
+    color: #1a0a1e; font-size: .88rem; font-weight: 800; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 16px rgba(255,215,0,.3);
+  }
+  .hp-btn-submit:active { transform: scale(.93); }
+  .hp-btn-submit:disabled { opacity: .4; cursor: default; }
+  .hp-btn-next {
+    padding: 12px 28px; border: none; border-radius: 30px;
+    background: linear-gradient(135deg, var(--love-bright), #c2185b);
+    color: #fff; font-size: .88rem; font-weight: 700; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 16px rgba(233,30,99,.4);
+    display: none;
+  }
+  .hp-btn-next:active { transform: scale(.93); }
+  .hp-streak {
+    margin-top: 12px; font-size: .75rem; color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    min-height: 20px;
+  }
+  .hp-celebrate {
+    position: absolute; pointer-events: none;
+    font-size: 1.4rem; opacity: 0;
+    animation: jumbleCelebrate 1s ease-out forwards;
+  }
+  @media (max-width: 480px) {
+    .hp-card { padding: 22px 14px; }
+    .hp-question { font-size: 1rem; }
+    .hp-answers { grid-template-columns: 1fr; }
+    .hp-answer { padding: 12px 10px; font-size: .84rem; }
+  }
 </style>
 </head>
 <body>
@@ -2134,6 +2242,7 @@ Come live with me, and be my love.</span>
     <div class="game-switcher">
       <button class="game-switcher-btn active" onclick="switchGame('jumble')">&#128260; Word Jumble</button>
       <button class="game-switcher-btn" onclick="switchGame('wordsearch')">&#128270; Word Search</button>
+      <button class="game-switcher-btn" onclick="switchGame('hptrivia')">&#9889; HP Trivia</button>
     </div>
 
     <!-- Word Jumble -->
@@ -2165,6 +2274,27 @@ Come live with me, and be my love.</span>
         <div class="ws-wordlist" id="wsWordList"></div>
         <div class="ws-complete-msg" id="wsCompleteMsg">&#127881; You found them all! &#127881;</div>
         <button class="ws-btn-new" onclick="newWordSearch()">&#10024; New Puzzle</button>
+      </div>
+    </div>
+
+    <!-- Harry Potter Trivia -->
+    <div class="game-section" id="game-hptrivia">
+      <div class="hp-card glass" id="hpCard">
+        <div class="hp-score" id="hpScore">&#9889; Score: 0 / 0</div>
+        <div class="hp-qnum" id="hpQNum">&#129668; Tap "Next Question" to start!</div>
+        <div class="hp-question" id="hpQuestion">Ready to test your wizarding knowledge?</div>
+        <div class="hp-answers" id="hpAnswers">
+          <button class="hp-answer disabled" style="opacity:.4">&#129668;</button>
+          <button class="hp-answer disabled" style="opacity:.4">&#128166;</button>
+          <button class="hp-answer disabled" style="opacity:.4">&#9889;</button>
+          <button class="hp-answer disabled" style="opacity:.4">&#129417;</button>
+        </div>
+        <div class="hp-feedback" id="hpFeedback"></div>
+        <div class="hp-btns">
+          <button class="hp-btn-submit" id="hpSubmit" onclick="submitHP()" disabled>&#129668; Submit Answer</button>
+          <button class="hp-btn-next" id="hpNext" onclick="nextHP()">&#10024; Next Question</button>
+        </div>
+        <div class="hp-streak" id="hpStreak"></div>
       </div>
     </div>
 
@@ -3203,14 +3333,16 @@ Come live with me, and be my love.</span>
   });
 
   // ── Game Switcher ──
+  const gameNames = ["jumble","wordsearch","hptrivia"];
   function switchGame(game) {
     document.querySelectorAll(".game-section").forEach(s => s.classList.remove("active"));
     document.querySelectorAll(".game-switcher-btn").forEach(b => b.classList.remove("active"));
     document.getElementById("game-" + game).classList.add("active");
     const btns = document.querySelectorAll(".game-switcher-btn");
-    if (game === "jumble") btns[0].classList.add("active");
-    else btns[1].classList.add("active");
+    const idx = gameNames.indexOf(game);
+    if (idx >= 0 && btns[idx]) btns[idx].classList.add("active");
     if (game === "wordsearch" && !wsInitialized) { newWordSearch(); wsInitialized = true; }
+    if (game === "hptrivia" && !hpInitialized) { nextHP(); hpInitialized = true; }
   }
 
   // ── Word Search Game ──
@@ -3481,6 +3613,232 @@ Come live with me, and be my love.</span>
     newWrap.addEventListener("touchstart", onStart, {passive: false});
     newWrap.addEventListener("touchmove", onMove, {passive: false});
     newWrap.addEventListener("touchend", onEnd);
+  }
+
+  // ── Harry Potter Trivia ──
+  let hpInitialized = false;
+  let hpScore = 0;
+  let hpTotal = 0;
+  let hpSelected = -1;
+  let hpAnswered = false;
+  let hpStreak = 0;
+  let hpUsed = [];
+  let hpCurrent = null;
+
+  const hpQuestions = [
+    // ─── EASY ───
+    {q:"What Hogwarts house is Harry Potter sorted into?", a:["Gryffindor","Slytherin","Ravenclaw","Hufflepuff"], c:0, d:"easy",
+     ex:"The Sorting Hat placed Harry in Gryffindor, the house of the brave!"},
+    {q:"What is Hermione's cat's name?", a:["Crookshanks","Mrs. Norris","Scabbers","Hedwig"], c:0, d:"easy",
+     ex:"Crookshanks is Hermione's half-Kneazle ginger cat."},
+    {q:"What position does Harry play in Quidditch?", a:["Seeker","Chaser","Beater","Keeper"], c:0, d:"easy",
+     ex:"Harry is the youngest Seeker in a century!"},
+    {q:"What is the name of Harry's pet owl?", a:["Hedwig","Errol","Pigwidgeon","Fawkes"], c:0, d:"easy",
+     ex:"Hedwig was a beautiful snowy owl given to Harry by Hagrid."},
+    {q:"Who is the headmaster of Hogwarts when Harry first arrives?", a:["Albus Dumbledore","Severus Snape","Minerva McGonagall","Dolores Umbridge"], c:0, d:"easy",
+     ex:"Dumbledore is considered one of the greatest wizards of all time."},
+    {q:"What platform at King's Cross do students use to get to Hogwarts?", a:["Platform 9\u00BE","Platform 7\u00BD","Platform 10","Platform 8"], c:0, d:"easy",
+     ex:"You have to run through the barrier between platforms 9 and 10!"},
+    {q:"What is the name of the magical map that shows everyone in Hogwarts?", a:["The Marauder's Map","The Hogwarts Atlas","The Wizard's Guide","The Enchanted Chart"], c:0, d:"easy",
+     ex:"'I solemnly swear that I am up to no good!' activates the map."},
+    {q:"What creature guards the entrance to Dumbledore's office?", a:["A gargoyle","A sphinx","A dragon","A troll"], c:0, d:"easy",
+     ex:"You need a password (usually a candy name) to get the gargoyle to move!"},
+    {q:"Who is Harry's best friend besides Hermione?", a:["Ron Weasley","Neville Longbottom","Draco Malfoy","Dean Thomas"], c:0, d:"easy",
+     ex:"Ron and Harry became best friends on the Hogwarts Express!"},
+    {q:"What sport do witches and wizards play on broomsticks?", a:["Quidditch","Broomball","Wizardball","Skyball"], c:0, d:"easy",
+     ex:"Quidditch has four balls: Quaffle, two Bludgers, and the Golden Snitch."},
+    {q:"What animal can Sirius Black transform into?", a:["A large black dog","A stag","A rat","A wolf"], c:0, d:"easy",
+     ex:"Sirius is an unregistered Animagus who takes the form of a big black dog!"},
+
+    // ─── MEDIUM ───
+    {q:"What are the three Deathly Hallows?", a:["Elder Wand, Resurrection Stone, Invisibility Cloak","Elder Wand, Philosopher's Stone, Invisibility Cloak","Elder Wand, Resurrection Stone, Time-Turner","Sword of Gryffindor, Resurrection Stone, Invisibility Cloak"], c:0, d:"medium",
+     ex:"Together they make the owner the Master of Death."},
+    {q:"Who is the Half-Blood Prince?", a:["Severus Snape","Tom Riddle","Albus Dumbledore","Draco Malfoy"], c:0, d:"medium",
+     ex:"Snape's mother was a witch named Eileen Prince; his father was a Muggle."},
+    {q:"What form does Harry's Patronus take?", a:["A stag","A doe","A phoenix","An otter"], c:0, d:"medium",
+     ex:"Harry's Patronus is a stag, the same Animagus form as his father James."},
+    {q:"What is the core of Harry's wand?", a:["Phoenix feather","Dragon heartstring","Unicorn hair","Thestral tail hair"], c:0, d:"medium",
+     ex:"The feather came from Fawkes, who also gave the feather in Voldemort's wand!"},
+    {q:"What does the spell 'Expecto Patronum' do?", a:["Conjures a Patronus to repel Dementors","Disarms an opponent","Creates a shield charm","Produces light from the wand"], c:0, d:"medium",
+     ex:"A Patronus is a projection of positive energy that drives away Dementors."},
+    {q:"How many Horcruxes did Voldemort create intentionally?", a:["Six","Seven","Five","Eight"], c:0, d:"medium",
+     ex:"He made six on purpose; Harry became an unintentional seventh."},
+    {q:"What does Amortentia (the most powerful love potion) smell like?", a:["Different for everyone, based on what attracts them","Roses and chocolate","Firewhiskey","Treacle tart and broomstick polish"], c:0, d:"medium",
+     ex:"Hermione smelled fresh-cut grass, new parchment, and Ron's hair."},
+    {q:"What is the name of the Weasley family's home?", a:["The Burrow","The Den","Shell Cottage","Grimmauld Place"], c:0, d:"medium",
+     ex:"The Burrow is a wonderfully cozy, magically constructed home near Ottery St Catchpole."},
+    {q:"Which spell is known as the Killing Curse?", a:["Avada Kedavra","Crucio","Imperio","Sectumsempra"], c:0, d:"medium",
+     ex:"It's one of the three Unforgivable Curses, and leaves no trace on the body."},
+    {q:"What magical creature can only be seen by those who have witnessed death?", a:["Thestrals","Dementors","Boggarts","Hippogriffs"], c:0, d:"medium",
+     ex:"Harry first sees the Thestrals pulling the Hogwarts carriages in his fifth year."},
+    {q:"What is Voldemort's real name?", a:["Tom Marvolo Riddle","Tom Salazar Riddle","Thomas Riddle","Marvolo Gaunt"], c:0, d:"medium",
+     ex:"He rearranged 'Tom Marvolo Riddle' to make 'I am Lord Voldemort.'"},
+
+    // ─── HARD ───
+    {q:"Who are the four founders of Hogwarts?", a:["Godric Gryffindor, Helga Hufflepuff, Rowena Ravenclaw, Salazar Slytherin","Godric Gryffindor, Helena Hufflepuff, Rowena Ravenclaw, Salazar Slytherin","Godric Gryffindor, Helga Hufflepuff, Rowena Ravenclaw, Severus Slytherin","Garrick Gryffindor, Helga Hufflepuff, Rowena Ravenclaw, Salazar Slytherin"], c:0, d:"hard",
+     ex:"The four founders built Hogwarts together over a thousand years ago!"},
+    {q:"What potion did Slughorn show on the first day of his Potions class in Harry's 6th year?", a:["Amortentia, Polyjuice Potion, Felix Felicis, and Veritaserum","Amortentia, Wolfsbane, Felix Felicis, and Veritaserum","Amortentia, Polyjuice Potion, Draught of Living Death, and Veritaserum","Amortentia, Polyjuice Potion, Felix Felicis, and Skele-Gro"], c:0, d:"hard",
+     ex:"Felix Felicis (liquid luck) was offered as a prize for the best Draught of Living Death."},
+    {q:"What is the incantation to summon the Dark Mark?", a:["Morsmordre","Serpensortia","Sectumsempra","Deletrius"], c:0, d:"hard",
+     ex:"Death Eaters cast Morsmordre to conjure the skull-and-serpent Dark Mark in the sky."},
+    {q:"What is the name of the centaur who teaches Divination after Trelawney is sacked?", a:["Firenze","Bane","Ronan","Magorian"], c:0, d:"hard",
+     ex:"Firenze was banished from his herd for agreeing to work for Dumbledore."},
+    {q:"What are the names of Draco Malfoy's two cronies?", a:["Vincent Crabbe and Gregory Goyle","Vincent Goyle and Gregory Crabbe","Marcus Crabbe and Blaise Goyle","Theodore Crabbe and Gregory Goyle"], c:0, d:"hard",
+     ex:"Crabbe and Goyle are Draco's dim-witted but loyal sidekicks throughout the series."},
+    {q:"Which spell does Hermione use to erase her parents' memories?", a:["Obliviate","Confundo","Stupefy","Legilimens"], c:0, d:"hard",
+     ex:"Hermione modified her parents' memories so they'd move to Australia and forget her."},
+    {q:"What does the Mirror of Erised show?", a:["The deepest desire of one's heart","The future","The past","One's worst fear"], c:0, d:"hard",
+     ex:"'Erised' is 'Desire' backwards. Harry sees his parents; Ron sees himself as Head Boy."},
+    {q:"What is the address of the Order of the Phoenix headquarters?", a:["12 Grimmauld Place","4 Privet Drive","13 Diagon Alley","7 Godric's Hollow"], c:0, d:"hard",
+     ex:"The house belonged to the Black family and was inherited by Sirius."},
+    {q:"What is Nearly Headless Nick's full name?", a:["Sir Nicholas de Mimsy-Porpington","Sir Nicholas de Mimsy-Paddington","Sir Nicholas de Canterbury","Sir Nicholas Flamel"], c:0, d:"hard",
+     ex:"He was hit 45 times with a blunt axe but his head didn't come fully off!"},
+    {q:"What type of dragon does Harry face in the Triwizard Tournament?", a:["Hungarian Horntail","Norwegian Ridgeback","Swedish Short-Snout","Chinese Fireball"], c:0, d:"hard",
+     ex:"The Hungarian Horntail is considered the most dangerous dragon breed."},
+    {q:"What is the name of the house-elf who served the Crouch family?", a:["Winky","Dobby","Kreacher","Hokey"], c:0, d:"hard",
+     ex:"Winky was freed by Bartemius Crouch Sr. and ended up working at Hogwarts."},
+    {q:"What plant does Neville use to breathe underwater in the film version of the second task?", a:["Gillyweed","Mandrake","Venomous Tentacula","Bubotuber"], c:0, d:"hard",
+     ex:"In the book, Dobby gives Harry the Gillyweed. In the film, Neville suggests it!"},
+    {q:"What does the spell 'Episkey' do?", a:["Heals minor injuries","Opens locked doors","Makes objects fly","Creates fire"], c:0, d:"hard",
+     ex:"Tonks uses Episkey to fix Harry's broken nose on the Hogwarts Express."},
+    {q:"What is the name of the Wizarding prison guarded by Dementors?", a:["Azkaban","Nurmengard","The Ministry Dungeon","Durmstrang"], c:0, d:"hard",
+     ex:"Azkaban is located on an island in the middle of the North Sea."}
+  ];
+
+  const hpCorrectMsgs = [
+    "\u26A1 Wingardium Leviosa! You got it!",
+    "\u26A1 10 points to Gryffindor!",
+    "\u2728 Brilliant! Hermione would be proud!",
+    "\uD83E\uDE84 Mischief managed! That's correct!",
+    "\uD83E\uDD89 Hedwig approves! Well done!",
+    "\uD83C\uDF1F Outstanding! You're a true witch or wizard!",
+    "\u26A1 Expecto Patronum! Your knowledge shines!",
+    "\uD83E\uDE84 Accio correct answer! You nailed it!"
+  ];
+  const hpWrongMsgs = [
+    "\uD83D\uDC80 Not quite... even Neville would've known that!",
+    "\uD83D\uDC0D The basilisk strikes! Wrong answer...",
+    "\uD83E\uDDD9 Even Trelawney couldn't have predicted that answer...",
+    "\u26A1 Obliviate! Let's forget that happened...",
+    "\uD83E\uDE84 That spell backfired! Try again next time!"
+  ];
+
+  function hpShuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function nextHP() {
+    hpSelected = -1;
+    hpAnswered = false;
+    document.getElementById("hpFeedback").textContent = "";
+    document.getElementById("hpFeedback").className = "hp-feedback";
+    document.getElementById("hpSubmit").style.display = "";
+    document.getElementById("hpSubmit").disabled = true;
+    document.getElementById("hpNext").style.display = "none";
+
+    // Pick a question not recently used
+    if (hpUsed.length >= hpQuestions.length - 2) hpUsed = [];
+    let idx;
+    do { idx = Math.floor(Math.random() * hpQuestions.length); } while (hpUsed.includes(idx));
+    hpUsed.push(idx);
+    hpCurrent = hpQuestions[idx];
+
+    // Shuffle answers while tracking correct
+    const correctText = hpCurrent.a[hpCurrent.c];
+    const shuffledAnswers = hpShuffle(hpCurrent.a);
+    const newCorrectIdx = shuffledAnswers.indexOf(correctText);
+
+    document.getElementById("hpQNum").innerHTML = "\uD83E\uDE84 Question " + (hpTotal + 1) +
+      ' <span class="hp-difficulty ' + hpCurrent.d + '">' + hpCurrent.d + '</span>';
+    document.getElementById("hpQuestion").textContent = hpCurrent.q;
+
+    const answersEl = document.getElementById("hpAnswers");
+    answersEl.innerHTML = "";
+    shuffledAnswers.forEach((ans, i) => {
+      const btn = document.createElement("button");
+      btn.className = "hp-answer";
+      btn.textContent = ans;
+      btn.dataset.idx = i;
+      btn.dataset.correct = (i === newCorrectIdx) ? "1" : "0";
+      btn.onclick = function() { selectHP(this); };
+      answersEl.appendChild(btn);
+    });
+  }
+
+  function selectHP(btn) {
+    if (hpAnswered) return;
+    document.querySelectorAll(".hp-answer").forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    hpSelected = +btn.dataset.idx;
+    document.getElementById("hpSubmit").disabled = false;
+  }
+
+  function submitHP() {
+    if (hpSelected < 0 || hpAnswered) return;
+    hpAnswered = true;
+    hpTotal++;
+    const btns = document.querySelectorAll(".hp-answer");
+    const selectedBtn = btns[hpSelected];
+    const isCorrect = selectedBtn.dataset.correct === "1";
+
+    btns.forEach(b => {
+      b.classList.add("disabled");
+      if (b.dataset.correct === "1") b.classList.add("correct");
+      else if (b === selectedBtn && !isCorrect) b.classList.add("wrong");
+    });
+
+    const fb = document.getElementById("hpFeedback");
+    if (isCorrect) {
+      hpScore++;
+      hpStreak++;
+      fb.className = "hp-feedback correct";
+      fb.textContent = hpCorrectMsgs[Math.floor(Math.random() * hpCorrectMsgs.length)];
+      // Celebration on streak
+      if (hpStreak >= 3) {
+        const card = document.getElementById("hpCard");
+        const emojis = ["\u26A1","\uD83E\uDE84","\uD83E\uDD89","\u2728","\uD83C\uDF1F","\uD83E\uDDD9","\uD83D\uDC09"];
+        for (let i = 0; i < 10; i++) {
+          const s = document.createElement("span");
+          s.className = "hp-celebrate";
+          s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+          s.style.left = (25 + Math.random()*50) + "%";
+          s.style.top = (15 + Math.random()*30) + "%";
+          s.style.setProperty("--cx", (Math.random()*200-100)+"px");
+          s.style.setProperty("--cy", (Math.random()*-150-30)+"px");
+          s.style.setProperty("--cr", (Math.random()*360-180)+"deg");
+          card.appendChild(s);
+          setTimeout(() => s.remove(), 1100);
+        }
+      }
+    } else {
+      hpStreak = 0;
+      fb.className = "hp-feedback wrong";
+      fb.textContent = hpWrongMsgs[Math.floor(Math.random() * hpWrongMsgs.length)];
+    }
+
+    // Show explanation
+    if (hpCurrent.ex) {
+      fb.textContent += "\n" + hpCurrent.ex;
+    }
+
+    document.getElementById("hpScore").innerHTML = "\u26A1 Score: " + hpScore + " / " + hpTotal;
+    document.getElementById("hpSubmit").style.display = "none";
+    document.getElementById("hpNext").style.display = "";
+
+    // Streak display
+    const streakEl = document.getElementById("hpStreak");
+    if (hpStreak >= 3) {
+      streakEl.innerHTML = "\uD83D\uDD25 " + hpStreak + " in a row! You're on fire!";
+    } else if (hpStreak >= 2) {
+      streakEl.textContent = "\u2728 " + hpStreak + " in a row!";
+    } else {
+      streakEl.textContent = "";
+    }
   }
 
   // ── Service Worker ──
