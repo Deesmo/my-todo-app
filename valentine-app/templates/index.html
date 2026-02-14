@@ -964,6 +964,75 @@
     .sms-text { font-size: .88rem; }
     .challenge-card { padding: 24px 16px; }
   }
+
+  /* ── About the Author ── */
+  .about-photo-wrap {
+    position: relative; width: 180px; height: 180px;
+    margin: 0 auto 24px; border-radius: 50%; overflow: visible;
+  }
+  .about-photo {
+    width: 180px; height: 180px; border-radius: 50%; object-fit: cover;
+    border: 3px solid rgba(233,30,99,.4);
+    box-shadow: 0 8px 32px rgba(233,30,99,.3), 0 0 60px rgba(233,30,99,.1);
+    position: relative; z-index: 1;
+  }
+  .about-photo-shine {
+    position: absolute; top: -4px; left: -4px; right: -4px; bottom: -4px;
+    border-radius: 50%; z-index: 2; pointer-events: none;
+    background: linear-gradient(135deg, rgba(255,255,255,.25) 0%, transparent 50%, transparent 70%, rgba(255,255,255,.08) 100%);
+    animation: aboutShine 4s ease-in-out infinite alternate;
+  }
+  @keyframes aboutShine {
+    0% { opacity: .6; transform: rotate(0deg); }
+    100% { opacity: 1; transform: rotate(8deg); }
+  }
+  .about-sparkle {
+    position: absolute; font-size: 1rem; z-index: 3;
+    animation: aboutSparkle 2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .about-sparkle:nth-child(2) { top: 5%; right: 5%; animation-delay: 0s; }
+  .about-sparkle:nth-child(3) { top: 50%; right: -8%; animation-delay: .7s; }
+  .about-sparkle:nth-child(4) { bottom: 5%; right: 10%; animation-delay: 1.4s; }
+  .about-sparkle:nth-child(5) { top: 15%; left: -5%; animation-delay: .4s; }
+  .about-sparkle:nth-child(6) { bottom: 10%; left: 5%; animation-delay: 1.1s; }
+  @keyframes aboutSparkle {
+    0%, 100% { opacity: .3; transform: scale(.7); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+  .about-card {
+    padding: 32px 24px; text-align: center;
+  }
+  .about-name {
+    font-size: 1.4rem; font-weight: 700; color: var(--text);
+    margin-bottom: 4px;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .about-title-sub {
+    font-size: .82rem; color: var(--love-pink); font-style: italic;
+    margin-bottom: 24px;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .about-text {
+    font-size: .92rem; line-height: 1.8; color: var(--text-secondary);
+    font-family: Georgia, "Times New Roman", serif;
+    text-align: left; max-width: 420px; margin: 0 auto;
+  }
+  .about-text p { margin-bottom: 14px; }
+  .about-text p:last-child { margin-bottom: 0; }
+  .about-sig {
+    margin-top: 28px; padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    font-size: .85rem; color: var(--love-pink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+  }
+  @media (max-width: 480px) {
+    .about-photo-wrap, .about-photo { width: 150px; height: 150px; }
+    .about-card { padding: 24px 16px; }
+    .about-name { font-size: 1.2rem; }
+    .about-text { font-size: .85rem; }
+  }
 </style>
 </head>
 <body>
@@ -994,6 +1063,7 @@
     <button class="nav-tab" onclick="showPage('booth')">Booth</button>
     <button class="nav-tab" onclick="showPage('textme')">Text Me</button>
     <button class="nav-tab" onclick="showPage('challenge')">Challenge</button>
+    <button class="nav-tab" onclick="showPage('about')">About</button>
   </div>
 
   <!-- ════ HOME PAGE ════ -->
@@ -1853,6 +1923,40 @@ Come live with me, and be my love.</span>
 
   </div>
 
+  <!-- ════ ABOUT THE AUTHOR PAGE ════ -->
+  <div class="page" id="page-about">
+
+    <div class="gallery-label">&#10084;&#65039; About the Author &#10084;&#65039;</div>
+
+    <div class="about-card glass">
+      <div class="about-photo-wrap">
+        <img class="about-photo" src="/static/brad-photo.jpg" alt="Brad">
+        <div class="about-photo-shine"></div>
+        <span class="about-sparkle">&#10024;</span>
+        <span class="about-sparkle">&#10024;</span>
+        <span class="about-sparkle">&#10024;</span>
+        <span class="about-sparkle">&#10024;</span>
+        <span class="about-sparkle">&#10024;</span>
+      </div>
+      <div class="about-name">Brad Valdes</div>
+      <div class="about-title-sub">Husband, Father, Hopeless Romantic</div>
+      <div class="about-text">
+        <p>This app was lovingly crafted by your incredibly handsome, devoted, and romantic husband, Brad.</p>
+        <p>Why did he make this? Because you deserve to know how much you&#8217;re loved every single day.</p>
+        <p>Brad&#8217;s credentials include: Being hopelessly in love with Katy, making her laugh daily, attempting to cook (with varying success), and being the luckiest man alive.</p>
+        <p>His life&#8217;s mission: Making sure Katy never forgets she&#8217;s the most amazing woman in the world.</p>
+        <p>Professional skills: Building apps, planning romantic surprises, and being ridiculously good-looking (his words, not mine&#8230; okay, his words).</p>
+        <p>Side note: He&#8217;s also incredibly humble. &#128527;</p>
+      </div>
+      <div class="about-sig">Made with &#10084;&#65039; by Brad</div>
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
 </div>
 
 <audio id="bgMusic" preload="auto">
@@ -1898,7 +2002,7 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "about"];
   let musicWasPlaying = false;
   function showPage(name) {
     const prevPage = pageNames.find(p => document.getElementById("page-" + p).classList.contains("active"));
