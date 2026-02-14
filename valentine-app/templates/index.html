@@ -1127,6 +1127,114 @@
     .jumble-card { padding: 24px 16px; }
     .jumble-input { max-width: 240px; font-size: 1rem; padding: 12px 14px; }
   }
+
+  /* ── Game Switcher ── */
+  .game-switcher {
+    display: flex; gap: 10px; justify-content: center; margin-bottom: 18px;
+  }
+  .game-switcher-btn {
+    padding: 10px 22px; border: 2px solid rgba(233,30,99,.3); border-radius: 30px;
+    background: var(--glass); color: var(--text-secondary);
+    font-size: .88rem; font-weight: 700; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+  }
+  .game-switcher-btn.active {
+    background: linear-gradient(135deg, var(--love-bright), #c2185b);
+    color: #fff; border-color: transparent;
+    box-shadow: 0 4px 16px rgba(233,30,99,.4);
+  }
+  .game-switcher-btn:active { transform: scale(.93); }
+  .game-section { display: none; }
+  .game-section.active { display: block; }
+
+  /* ── Word Search Game ── */
+  .ws-card {
+    padding: 24px 16px; text-align: center;
+  }
+  .ws-stats {
+    display: flex; gap: 16px; justify-content: center; align-items: center;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .ws-stat {
+    display: inline-block; padding: 6px 16px; border-radius: 20px;
+    background: rgba(233,30,99,.2); color: var(--love-pink);
+    font-size: .78rem; font-weight: 700; letter-spacing: .06em;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .ws-grid-wrap {
+    display: inline-block; position: relative;
+    touch-action: none; user-select: none; -webkit-user-select: none;
+    margin-bottom: 16px;
+  }
+  .ws-grid {
+    display: grid; gap: 2px;
+  }
+  .ws-grid.size-12 { grid-template-columns: repeat(12, 1fr); }
+  .ws-grid.size-10 { grid-template-columns: repeat(10, 1fr); }
+  .ws-cell {
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    font-size: .85rem; font-weight: 700; color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    border-radius: 6px; background: rgba(255,255,255,.06);
+    cursor: pointer; transition: background .15s, transform .15s;
+    position: relative; z-index: 1;
+  }
+  .ws-cell.selecting {
+    background: rgba(233,30,99,.35); transform: scale(1.08);
+  }
+  .ws-cell.found-0 { background: rgba(233,30,99,.45); color: #fff; }
+  .ws-cell.found-1 { background: rgba(156,39,176,.45); color: #fff; }
+  .ws-cell.found-2 { background: rgba(103,58,183,.45); color: #fff; }
+  .ws-cell.found-3 { background: rgba(33,150,243,.45); color: #fff; }
+  .ws-cell.found-4 { background: rgba(0,150,136,.45); color: #fff; }
+  .ws-cell.found-5 { background: rgba(255,152,0,.45); color: #fff; }
+  .ws-cell.found-6 { background: rgba(244,67,54,.45); color: #fff; }
+  .ws-cell.found-7 { background: rgba(63,81,181,.45); color: #fff; }
+  .ws-selection-line {
+    position: absolute; pointer-events: none; z-index: 0;
+    background: rgba(233,30,99,.25); border-radius: 16px;
+  }
+  .ws-wordlist {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    margin-bottom: 18px;
+  }
+  .ws-word-tag {
+    padding: 5px 14px; border-radius: 18px;
+    background: rgba(255,255,255,.08); color: var(--text-secondary);
+    font-size: .78rem; font-weight: 600; letter-spacing: .04em;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition);
+  }
+  .ws-word-tag.found {
+    background: rgba(129,199,132,.25); color: #81c784;
+    text-decoration: line-through;
+  }
+  .ws-btn-new {
+    padding: 12px 28px; border: none; border-radius: 30px;
+    background: linear-gradient(135deg, rgba(255,215,0,.3), rgba(255,183,77,.2));
+    color: var(--gold); border: 1px solid rgba(255,215,0,.3);
+    font-size: .88rem; font-weight: 700; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+  }
+  .ws-btn-new:active { transform: scale(.93); }
+  .ws-celebrate {
+    position: absolute; pointer-events: none;
+    font-size: 1.4rem; opacity: 0;
+    animation: jumbleCelebrate 1s ease-out forwards;
+  }
+  .ws-complete-msg {
+    margin-top: 14px; font-size: 1.1rem; font-weight: 700;
+    color: #81c784; font-family: Georgia, "Times New Roman", serif;
+    opacity: 0; transition: opacity .5s ease;
+  }
+  .ws-complete-msg.show { opacity: 1; }
+  @media (max-width: 480px) {
+    .ws-cell { width: 28px; height: 28px; font-size: .75rem; }
+    .ws-card { padding: 18px 10px; }
+  }
 </style>
 </head>
 <body>
@@ -2018,21 +2126,45 @@ Come live with me, and be my love.</span>
 
   </div>
 
-  <!-- ════ WORD JUMBLE GAME PAGE ════ -->
+  <!-- ════ GAMES PAGE ════ -->
   <div class="page" id="page-games">
 
-    <div class="gallery-label">&#127922; Love Word Jumble &#127922;</div>
+    <div class="gallery-label">&#127922; Love Games &#127922;</div>
 
-    <div class="jumble-card glass" id="jumbleCard" style="position:relative; overflow:hidden;">
-      <div class="jumble-score" id="jumbleScore">&#10084;&#65039; Score: 0</div>
-      <div class="jumble-scrambled" id="jumbleScrambled">???</div>
-      <div class="jumble-hint" id="jumbleHint">Tap "New Word" to start!</div>
-      <input class="jumble-input" id="jumbleInput" type="text" placeholder="Type your guess..." autocomplete="off" autocapitalize="characters" spellcheck="false">
-      <div class="jumble-feedback" id="jumbleFeedback"></div>
-      <div class="jumble-btns">
-        <button class="jumble-btn jumble-btn-check" onclick="checkJumble()">&#10004;&#65039; Check</button>
-        <button class="jumble-btn jumble-btn-skip" onclick="revealJumble()">&#128064; Give Up</button>
-        <button class="jumble-btn jumble-btn-next" onclick="nextJumble()">&#10024; New Word</button>
+    <div class="game-switcher">
+      <button class="game-switcher-btn active" onclick="switchGame('jumble')">&#128260; Word Jumble</button>
+      <button class="game-switcher-btn" onclick="switchGame('wordsearch')">&#128270; Word Search</button>
+    </div>
+
+    <!-- Word Jumble -->
+    <div class="game-section active" id="game-jumble">
+      <div class="jumble-card glass" id="jumbleCard" style="position:relative; overflow:hidden;">
+        <div class="jumble-score" id="jumbleScore">&#10084;&#65039; Score: 0</div>
+        <div class="jumble-scrambled" id="jumbleScrambled">???</div>
+        <div class="jumble-hint" id="jumbleHint">Tap "New Word" to start!</div>
+        <input class="jumble-input" id="jumbleInput" type="text" placeholder="Type your guess..." autocomplete="off" autocapitalize="characters" spellcheck="false">
+        <div class="jumble-feedback" id="jumbleFeedback"></div>
+        <div class="jumble-btns">
+          <button class="jumble-btn jumble-btn-check" onclick="checkJumble()">&#10004;&#65039; Check</button>
+          <button class="jumble-btn jumble-btn-skip" onclick="revealJumble()">&#128064; Give Up</button>
+          <button class="jumble-btn jumble-btn-next" onclick="nextJumble()">&#10024; New Word</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Word Search -->
+    <div class="game-section" id="game-wordsearch">
+      <div class="ws-card glass" id="wsCard" style="position:relative; overflow:hidden;">
+        <div class="ws-stats">
+          <div class="ws-stat" id="wsFound">&#10084;&#65039; Found: 0 / 0</div>
+          <div class="ws-stat" id="wsTimer">&#9201; 0:00</div>
+        </div>
+        <div class="ws-grid-wrap" id="wsGridWrap">
+          <div class="ws-grid" id="wsGrid"></div>
+        </div>
+        <div class="ws-wordlist" id="wsWordList"></div>
+        <div class="ws-complete-msg" id="wsCompleteMsg">&#127881; You found them all! &#127881;</div>
+        <button class="ws-btn-new" onclick="newWordSearch()">&#10024; New Puzzle</button>
       </div>
     </div>
 
@@ -3069,6 +3201,287 @@ Come live with me, and be my love.</span>
   document.getElementById("jumbleInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") checkJumble();
   });
+
+  // ── Game Switcher ──
+  function switchGame(game) {
+    document.querySelectorAll(".game-section").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".game-switcher-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("game-" + game).classList.add("active");
+    const btns = document.querySelectorAll(".game-switcher-btn");
+    if (game === "jumble") btns[0].classList.add("active");
+    else btns[1].classList.add("active");
+    if (game === "wordsearch" && !wsInitialized) { newWordSearch(); wsInitialized = true; }
+  }
+
+  // ── Word Search Game ──
+  const wsAllWords = [
+    "LOVE","KISS","HEART","ROMANCE","PASSION","FOREVER","HUSBAND","WIFE",
+    "SOULMATE","DEVOTION","CHERISH","ADORE","SWEETHEART","DARLING",
+    "BRAD","KATY","VALENTINE","BELOVED","TOGETHER","BEAUTIFUL","AMAZING","ANGEL"
+  ];
+  let wsInitialized = false;
+  let wsGrid = [];
+  let wsSize = 12;
+  let wsWords = [];
+  let wsPlacedWords = [];
+  let wsFoundWords = [];
+  let wsFoundCount = 0;
+  let wsSelecting = false;
+  let wsStartCell = null;
+  let wsCurrCell = null;
+  let wsSelectedCells = [];
+  let wsTimerInterval = null;
+  let wsSeconds = 0;
+  let wsComplete = false;
+
+  const wsColors = ["found-0","found-1","found-2","found-3","found-4","found-5","found-6","found-7"];
+  const wsDirs = [
+    [0,1],[1,0],[0,-1],[-1,0],  // right, down, left, up
+    [1,1],[1,-1],[-1,1],[-1,-1] // diagonals
+  ];
+
+  function wsGetSize() {
+    return window.innerWidth <= 480 ? 10 : 12;
+  }
+
+  function wsShuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function wsCanPlace(word, r, c, dr, dc, grid, size) {
+    for (let k = 0; k < word.length; k++) {
+      const nr = r + dr * k, nc = c + dc * k;
+      if (nr < 0 || nr >= size || nc < 0 || nc >= size) return false;
+      if (grid[nr][nc] !== "" && grid[nr][nc] !== word[k]) return false;
+    }
+    return true;
+  }
+
+  function wsPlaceWord(word, grid, size) {
+    const shuffledDirs = wsShuffle(wsDirs);
+    const attempts = 100;
+    for (let a = 0; a < attempts; a++) {
+      const dir = shuffledDirs[a % shuffledDirs.length];
+      const r = Math.floor(Math.random() * size);
+      const c = Math.floor(Math.random() * size);
+      if (wsCanPlace(word, r, c, dir[0], dir[1], grid, size)) {
+        const cells = [];
+        for (let k = 0; k < word.length; k++) {
+          grid[r + dir[0]*k][c + dir[1]*k] = word[k];
+          cells.push([r + dir[0]*k, c + dir[1]*k]);
+        }
+        return cells;
+      }
+    }
+    return null;
+  }
+
+  function wsGenerateGrid() {
+    wsSize = wsGetSize();
+    wsGrid = Array.from({length: wsSize}, () => Array(wsSize).fill(""));
+    const shuffled = wsShuffle(wsAllWords);
+    wsPlacedWords = [];
+    wsWords = [];
+    // Try to place 8-10 words
+    for (const word of shuffled) {
+      if (wsWords.length >= 8 && word.length > wsSize) continue;
+      if (wsWords.length >= 10) break;
+      const cells = wsPlaceWord(word, wsGrid, wsSize);
+      if (cells) {
+        wsWords.push(word);
+        wsPlacedWords.push({ word, cells });
+      }
+    }
+    // Fill empty cells with random letters
+    const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (let r = 0; r < wsSize; r++) {
+      for (let c = 0; c < wsSize; c++) {
+        if (wsGrid[r][c] === "") wsGrid[r][c] = alpha[Math.floor(Math.random() * 26)];
+      }
+    }
+  }
+
+  function wsRenderGrid() {
+    const gridEl = document.getElementById("wsGrid");
+    gridEl.className = "ws-grid size-" + wsSize;
+    gridEl.innerHTML = "";
+    for (let r = 0; r < wsSize; r++) {
+      for (let c = 0; c < wsSize; c++) {
+        const cell = document.createElement("div");
+        cell.className = "ws-cell";
+        cell.textContent = wsGrid[r][c];
+        cell.dataset.r = r;
+        cell.dataset.c = c;
+        gridEl.appendChild(cell);
+      }
+    }
+  }
+
+  function wsRenderWordList() {
+    const list = document.getElementById("wsWordList");
+    list.innerHTML = "";
+    wsWords.forEach(w => {
+      const tag = document.createElement("span");
+      tag.className = "ws-word-tag";
+      tag.id = "ws-tag-" + w;
+      tag.textContent = w;
+      list.appendChild(tag);
+    });
+  }
+
+  function wsCellAt(r, c) {
+    return document.querySelector('.ws-cell[data-r="'+r+'"][data-c="'+c+'"]');
+  }
+
+  function wsGetCellFromEvent(e) {
+    const touch = e.touches ? e.touches[0] : e;
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (el && el.classList.contains("ws-cell")) return el;
+    return null;
+  }
+
+  function wsCellsInLine(r1, c1, r2, c2) {
+    const dr = Math.sign(r2 - r1), dc = Math.sign(c2 - c1);
+    const dist = Math.max(Math.abs(r2 - r1), Math.abs(c2 - c1));
+    // Must be a straight line (horizontal, vertical, or 45-degree diagonal)
+    if (r1 !== r2 && c1 !== c2 && Math.abs(r2-r1) !== Math.abs(c2-c1)) return [];
+    const cells = [];
+    for (let k = 0; k <= dist; k++) {
+      cells.push([r1 + dr*k, c1 + dc*k]);
+    }
+    return cells;
+  }
+
+  function wsClearSelection() {
+    document.querySelectorAll(".ws-cell.selecting").forEach(c => c.classList.remove("selecting"));
+    wsSelectedCells = [];
+  }
+
+  function wsHighlightSelection(cells) {
+    wsClearSelection();
+    cells.forEach(([r,c]) => {
+      const cell = wsCellAt(r, c);
+      if (cell) cell.classList.add("selecting");
+    });
+    wsSelectedCells = cells;
+  }
+
+  function wsCheckSelection() {
+    if (wsSelectedCells.length === 0) return;
+    const selectedWord = wsSelectedCells.map(([r,c]) => wsGrid[r][c]).join("");
+    const reversedWord = [...selectedWord].reverse().join("");
+    for (const placed of wsPlacedWords) {
+      if (wsFoundWords.includes(placed.word)) continue;
+      if (selectedWord === placed.word || reversedWord === placed.word) {
+        wsFoundWords.push(placed.word);
+        wsFoundCount++;
+        const colorClass = wsColors[wsFoundCount % wsColors.length];
+        wsSelectedCells.forEach(([r,c]) => {
+          const cell = wsCellAt(r, c);
+          if (cell) { cell.classList.remove("selecting"); cell.classList.add(colorClass); }
+        });
+        const tag = document.getElementById("ws-tag-" + placed.word);
+        if (tag) tag.classList.add("found");
+        document.getElementById("wsFound").innerHTML = "&#10084;&#65039; Found: " + wsFoundCount + " / " + wsWords.length;
+        if (wsFoundCount === wsWords.length) wsCompleteGame();
+        return;
+      }
+    }
+  }
+
+  function wsCompleteGame() {
+    wsComplete = true;
+    clearInterval(wsTimerInterval);
+    document.getElementById("wsCompleteMsg").classList.add("show");
+    // Celebration burst
+    const card = document.getElementById("wsCard");
+    const emojis = ["\u2764\uFE0F","\uD83D\uDC95","\uD83D\uDC96","\u2728","\uD83C\uDF89","\uD83C\uDF1F","\uD83D\uDC97"];
+    for (let i = 0; i < 14; i++) {
+      const s = document.createElement("span");
+      s.className = "ws-celebrate";
+      s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      s.style.left = (20 + Math.random()*60) + "%";
+      s.style.top = (10 + Math.random()*40) + "%";
+      s.style.setProperty("--cx", (Math.random()*200-100)+"px");
+      s.style.setProperty("--cy", (Math.random()*-150-30)+"px");
+      s.style.setProperty("--cr", (Math.random()*360-180)+"deg");
+      card.appendChild(s);
+      setTimeout(() => s.remove(), 1100);
+    }
+  }
+
+  function wsStartTimer() {
+    clearInterval(wsTimerInterval);
+    wsSeconds = 0;
+    wsTimerInterval = setInterval(() => {
+      wsSeconds++;
+      const m = Math.floor(wsSeconds / 60);
+      const s = wsSeconds % 60;
+      document.getElementById("wsTimer").innerHTML = "&#9201; " + m + ":" + (s < 10 ? "0" : "") + s;
+    }, 1000);
+  }
+
+  function newWordSearch() {
+    wsFoundWords = [];
+    wsFoundCount = 0;
+    wsComplete = false;
+    document.getElementById("wsCompleteMsg").classList.remove("show");
+    wsGenerateGrid();
+    wsRenderGrid();
+    wsRenderWordList();
+    document.getElementById("wsFound").innerHTML = "&#10084;&#65039; Found: 0 / " + wsWords.length;
+    wsStartTimer();
+    wsBindEvents();
+  }
+
+  function wsBindEvents() {
+    const wrap = document.getElementById("wsGridWrap");
+    // Remove old listeners by replacing node
+    const newWrap = wrap.cloneNode(true);
+    wrap.parentNode.replaceChild(newWrap, wrap);
+    const gridEl = newWrap.querySelector("#wsGrid");
+
+    function onStart(e) {
+      if (wsComplete) return;
+      e.preventDefault();
+      const cell = wsGetCellFromEvent(e);
+      if (!cell) return;
+      wsSelecting = true;
+      wsStartCell = cell;
+      wsCurrCell = cell;
+      wsHighlightSelection([[+cell.dataset.r, +cell.dataset.c]]);
+    }
+    function onMove(e) {
+      if (!wsSelecting || wsComplete) return;
+      e.preventDefault();
+      const cell = wsGetCellFromEvent(e);
+      if (!cell || cell === wsCurrCell) return;
+      wsCurrCell = cell;
+      const r1 = +wsStartCell.dataset.r, c1 = +wsStartCell.dataset.c;
+      const r2 = +cell.dataset.r, c2 = +cell.dataset.c;
+      const cells = wsCellsInLine(r1, c1, r2, c2);
+      if (cells.length > 0) wsHighlightSelection(cells);
+    }
+    function onEnd(e) {
+      if (!wsSelecting) return;
+      wsSelecting = false;
+      wsCheckSelection();
+      wsClearSelection();
+    }
+
+    newWrap.addEventListener("mousedown", onStart);
+    newWrap.addEventListener("mousemove", onMove);
+    newWrap.addEventListener("mouseup", onEnd);
+    newWrap.addEventListener("mouseleave", onEnd);
+    newWrap.addEventListener("touchstart", onStart, {passive: false});
+    newWrap.addEventListener("touchmove", onMove, {passive: false});
+    newWrap.addEventListener("touchend", onEnd);
+  }
 
   // ── Service Worker ──
   if ("serviceWorker" in navigator) {
