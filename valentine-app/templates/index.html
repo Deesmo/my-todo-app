@@ -1439,6 +1439,153 @@
     .purse-card-brand { font-size: .72rem; }
     .purse-lightbox-nav { font-size: 1.8rem; padding: 8px; }
   }
+
+  /* ── Wish List ── */
+  .wish-subtitle {
+    text-align: center; font-size: .85rem; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    margin-bottom: 18px;
+  }
+  .wish-add-btn {
+    display: block; width: 100%; padding: 14px; border: 2px dashed rgba(233,30,99,.3);
+    border-radius: 16px; background: rgba(233,30,99,.06); color: var(--love-pink);
+    font-size: .92rem; font-weight: 700; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+    margin-bottom: 18px;
+  }
+  .wish-add-btn:hover { background: rgba(233,30,99,.12); border-color: var(--love-bright); }
+  .wish-add-btn:active { transform: scale(.97); }
+  .wish-form {
+    display: none; padding: 20px; border-radius: 18px; margin-bottom: 18px;
+  }
+  .wish-form.open { display: block; }
+  .wish-form-title {
+    font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    text-align: center;
+  }
+  .wish-field {
+    width: 100%; padding: 12px 14px; border: 2px solid rgba(233,30,99,.2);
+    border-radius: 12px; background: rgba(255,255,255,.06); color: var(--text);
+    font-size: .88rem; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    outline: none; transition: var(--transition); margin-bottom: 10px;
+    -webkit-appearance: none; box-sizing: border-box;
+  }
+  .wish-field:focus { border-color: var(--love-bright); box-shadow: 0 0 16px rgba(233,30,99,.15); }
+  .wish-field::placeholder { color: var(--text-muted); }
+  .wish-row { display: flex; gap: 10px; }
+  .wish-row .wish-field { flex: 1; min-width: 0; }
+  .wish-priority-row {
+    display: flex; gap: 8px; margin-bottom: 12px; align-items: center;
+  }
+  .wish-priority-label {
+    font-size: .78rem; color: var(--text-muted); font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    white-space: nowrap;
+  }
+  .wish-priority-btn {
+    padding: 6px 14px; border: 2px solid rgba(255,255,255,.1); border-radius: 20px;
+    background: rgba(255,255,255,.06); color: var(--text-secondary);
+    font-size: .75rem; font-weight: 700; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+  }
+  .wish-priority-btn.active-high { border-color: #ef9a9a; background: rgba(239,154,154,.2); color: #ef9a9a; }
+  .wish-priority-btn.active-med { border-color: #ffb74d; background: rgba(255,183,77,.2); color: #ffb74d; }
+  .wish-priority-btn.active-low { border-color: #81c784; background: rgba(129,199,132,.2); color: #81c784; }
+  .wish-form-btns {
+    display: flex; gap: 10px; margin-top: 4px;
+  }
+  .wish-save-btn {
+    flex: 1; padding: 12px; border: none; border-radius: 30px;
+    background: linear-gradient(135deg, var(--love-bright), #c2185b);
+    color: #fff; font-size: .88rem; font-weight: 700; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition); box-shadow: 0 4px 16px rgba(233,30,99,.4);
+  }
+  .wish-save-btn:active { transform: scale(.93); }
+  .wish-cancel-btn {
+    padding: 12px 20px; border: none; border-radius: 30px;
+    background: var(--glass); color: var(--text-secondary);
+    border: 1px solid var(--glass-border); font-size: .88rem; font-weight: 700;
+    cursor: pointer; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition);
+  }
+  .wish-cancel-btn:active { transform: scale(.93); }
+  .wish-count {
+    text-align: center; margin-bottom: 14px;
+    font-size: .75rem; color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .wish-list { display: flex; flex-direction: column; gap: 12px; }
+  .wish-card {
+    padding: 16px; border-radius: 16px; position: relative;
+    border-left: 4px solid var(--love-pink);
+  }
+  .wish-card.priority-high { border-left-color: #ef9a9a; }
+  .wish-card.priority-med { border-left-color: #ffb74d; }
+  .wish-card.priority-low { border-left-color: #81c784; }
+  .wish-card-top {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+  }
+  .wish-card-name {
+    font-size: 1rem; font-weight: 700; color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    line-height: 1.3;
+  }
+  .wish-card-name a {
+    color: var(--love-pink); text-decoration: none;
+    border-bottom: 1px dashed rgba(233,30,99,.4);
+  }
+  .wish-card-name a:hover { border-bottom-style: solid; }
+  .wish-card-delete {
+    background: none; border: none; color: rgba(255,255,255,.3);
+    font-size: 1.1rem; cursor: pointer; padding: 4px 6px; line-height: 1;
+    -webkit-tap-highlight-color: transparent; transition: color .2s;
+    flex-shrink: 0;
+  }
+  .wish-card-delete:hover { color: #ef9a9a; }
+  .wish-card-meta {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; align-items: center;
+  }
+  .wish-card-price {
+    display: inline-block; padding: 3px 10px; border-radius: 12px;
+    background: rgba(255,215,0,.15); color: var(--gold);
+    font-size: .75rem; font-weight: 700;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .wish-card-priority-tag {
+    display: inline-block; padding: 3px 10px; border-radius: 12px;
+    font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .wish-card-priority-tag.high { background: rgba(239,154,154,.2); color: #ef9a9a; }
+  .wish-card-priority-tag.med { background: rgba(255,183,77,.2); color: #ffb74d; }
+  .wish-card-priority-tag.low { background: rgba(129,199,132,.2); color: #81c784; }
+  .wish-card-date {
+    font-size: .68rem; color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .wish-card-notes {
+    margin-top: 6px; font-size: .82rem; color: var(--text-secondary);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    line-height: 1.4;
+  }
+  .wish-card-img {
+    margin-top: 10px; width: 100%; max-height: 200px; object-fit: cover;
+    border-radius: 10px;
+  }
+  .wish-empty {
+    text-align: center; padding: 40px 20px; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    font-size: .9rem;
+  }
+  @media (max-width: 480px) {
+    .wish-row { flex-direction: column; gap: 0; }
+    .wish-card { padding: 14px 12px; }
+    .wish-card-name { font-size: .92rem; }
+  }
 </style>
 </head>
 <body>
@@ -1471,6 +1618,7 @@
     <button class="nav-tab" onclick="showPage('challenge')">Challenge</button>
     <button class="nav-tab" onclick="showPage('games')">Games</button>
     <button class="nav-tab" onclick="showPage('purses')">Purses</button>
+    <button class="nav-tab" onclick="showPage('wishlist')">Wishes</button>
     <button class="nav-tab" onclick="showPage('about')">About</button>
   </div>
 
@@ -2428,6 +2576,47 @@ Come live with me, and be my love.</span>
     <div class="purse-lightbox-counter" id="purseLBCounter"></div>
   </div>
 
+  <!-- ════ WISH LIST PAGE ════ -->
+  <div class="page" id="page-wishlist">
+
+    <div class="gallery-label">&#127873; My Wish List &#127873;</div>
+    <div class="wish-subtitle">Items I'm dreaming about... Hint hint, Brad! &#128521;</div>
+
+    <button class="wish-add-btn" id="wishAddBtn" onclick="toggleWishForm()">&#10133; Add New Item</button>
+
+    <div class="wish-form glass" id="wishForm">
+      <div class="wish-form-title">&#128149; What are you dreaming about?</div>
+      <input class="wish-field" id="wishName" type="text" placeholder="Item name *" maxlength="200">
+      <input class="wish-field" id="wishUrl" type="url" placeholder="Link to product (optional)">
+      <div class="wish-row">
+        <input class="wish-field" id="wishPrice" type="text" placeholder="Price (optional)">
+        <input class="wish-field" id="wishNotes" type="text" placeholder="Notes (optional)">
+      </div>
+      <input class="wish-field" id="wishImage" type="url" placeholder="Image URL (optional)">
+      <div class="wish-priority-row">
+        <span class="wish-priority-label">Priority:</span>
+        <button class="wish-priority-btn" data-p="high" onclick="setWishPriority('high')">&#128293; High</button>
+        <button class="wish-priority-btn" data-p="med" onclick="setWishPriority('med')">&#128155; Medium</button>
+        <button class="wish-priority-btn" data-p="low" onclick="setWishPriority('low')">&#128154; Low</button>
+      </div>
+      <div class="wish-form-btns">
+        <button class="wish-save-btn" onclick="saveWishItem()">&#128149; Save to Wish List</button>
+        <button class="wish-cancel-btn" onclick="toggleWishForm()">Cancel</button>
+      </div>
+    </div>
+
+    <div class="wish-count" id="wishCount"></div>
+    <div class="wish-list" id="wishList"></div>
+    <div class="wish-empty" id="wishEmpty" style="display:none;">
+      No wishes yet! Tap "Add New Item" to start dreaming &#128149;
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
   <!-- ════ ABOUT THE AUTHOR PAGE ════ -->
   <div class="page" id="page-about">
 
@@ -2507,7 +2696,7 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "purses", "about"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "purses", "wishlist", "about"];
   let musicWasPlaying = false;
   function showPage(name) {
     const prevPage = pageNames.find(p => document.getElementById("page-" + p).classList.contains("active"));
@@ -4036,6 +4225,135 @@ Come live with me, and be my love.</span>
   })();
 
   renderPurseGrid();
+
+  // ── Wish List ──
+  let wishPriority = "";
+  const WISH_KEY = "katyWishList";
+
+  function getWishItems() {
+    try { return JSON.parse(localStorage.getItem(WISH_KEY)) || []; }
+    catch { return []; }
+  }
+  function saveWishItems(items) {
+    localStorage.setItem(WISH_KEY, JSON.stringify(items));
+  }
+
+  function toggleWishForm() {
+    const form = document.getElementById("wishForm");
+    form.classList.toggle("open");
+    if (!form.classList.contains("open")) clearWishForm();
+  }
+
+  function clearWishForm() {
+    document.getElementById("wishName").value = "";
+    document.getElementById("wishUrl").value = "";
+    document.getElementById("wishPrice").value = "";
+    document.getElementById("wishNotes").value = "";
+    document.getElementById("wishImage").value = "";
+    wishPriority = "";
+    document.querySelectorAll(".wish-priority-btn").forEach(b => {
+      b.className = "wish-priority-btn";
+    });
+  }
+
+  function setWishPriority(p) {
+    wishPriority = (wishPriority === p) ? "" : p;
+    document.querySelectorAll(".wish-priority-btn").forEach(b => {
+      b.className = "wish-priority-btn";
+      if (b.dataset.p === wishPriority) {
+        b.classList.add("active-" + wishPriority);
+      }
+    });
+  }
+
+  function saveWishItem() {
+    const name = document.getElementById("wishName").value.trim();
+    if (!name) {
+      document.getElementById("wishName").style.borderColor = "#ef9a9a";
+      setTimeout(() => document.getElementById("wishName").style.borderColor = "", 1500);
+      return;
+    }
+    const item = {
+      id: Date.now(),
+      name: name,
+      url: document.getElementById("wishUrl").value.trim(),
+      price: document.getElementById("wishPrice").value.trim(),
+      notes: document.getElementById("wishNotes").value.trim(),
+      image: document.getElementById("wishImage").value.trim(),
+      priority: wishPriority,
+      date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    };
+    const items = getWishItems();
+    items.unshift(item);
+    saveWishItems(items);
+    toggleWishForm();
+    renderWishList();
+  }
+
+  function deleteWishItem(id) {
+    const items = getWishItems().filter(i => i.id !== id);
+    saveWishItems(items);
+    renderWishList();
+  }
+
+  function renderWishList() {
+    const items = getWishItems();
+    const list = document.getElementById("wishList");
+    const empty = document.getElementById("wishEmpty");
+    const count = document.getElementById("wishCount");
+    list.innerHTML = "";
+
+    if (items.length === 0) {
+      empty.style.display = "";
+      count.textContent = "";
+      return;
+    }
+    empty.style.display = "none";
+    count.textContent = "\u2764\uFE0F " + items.length + " wish" + (items.length !== 1 ? "es" : "") + " saved";
+
+    items.forEach(item => {
+      const card = document.createElement("div");
+      let pClass = "";
+      if (item.priority) pClass = " priority-" + item.priority;
+      card.className = "wish-card glass" + pClass;
+
+      let nameHtml;
+      if (item.url) {
+        nameHtml = '<a href="' + item.url.replace(/"/g, "&quot;") + '" target="_blank" rel="noopener">\u2764\uFE0F ' + escHtml(item.name) + '</a>';
+      } else {
+        nameHtml = '\u2764\uFE0F ' + escHtml(item.name);
+      }
+
+      let metaHtml = '';
+      if (item.price) metaHtml += '<span class="wish-card-price">' + escHtml(item.price) + '</span>';
+      if (item.priority) {
+        const pLabels = { high: "High", med: "Medium", low: "Low" };
+        metaHtml += '<span class="wish-card-priority-tag ' + item.priority + '">' + pLabels[item.priority] + '</span>';
+      }
+      if (item.date) metaHtml += '<span class="wish-card-date">' + escHtml(item.date) + '</span>';
+
+      let notesHtml = item.notes ? '<div class="wish-card-notes">' + escHtml(item.notes) + '</div>' : '';
+      let imgHtml = item.image ? '<img class="wish-card-img" src="' + item.image.replace(/"/g, "&quot;") + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">' : '';
+
+      card.innerHTML =
+        '<div class="wish-card-top">' +
+          '<div class="wish-card-name">' + nameHtml + '</div>' +
+          '<button class="wish-card-delete" onclick="deleteWishItem(' + item.id + ')" title="Remove">&times;</button>' +
+        '</div>' +
+        (metaHtml ? '<div class="wish-card-meta">' + metaHtml + '</div>' : '') +
+        notesHtml + imgHtml;
+
+      list.appendChild(card);
+    });
+  }
+
+  function escHtml(s) {
+    const d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  renderWishList();
 
   // ── Service Worker ──
   if ("serviceWorker" in navigator) {
