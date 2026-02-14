@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Recovery</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    background: #1a0a1e; color: #f5e6f0; padding: 20px;
+    min-height: 100vh;
+  }
+  h1 { text-align: center; margin-bottom: 8px; font-size: 1.4rem; }
+  .subtitle { text-align: center; color: #b39dba; font-size: .85rem; margin-bottom: 24px; }
+  .status {
+    padding: 16px; border-radius: 12px; margin-bottom: 16px;
+    text-align: center; font-weight: 600;
+  }
+  .status.scanning { background: rgba(255,193,7,.15); color: #ffd54f; }
+  .status.found { background: rgba(76,175,80,.15); color: #81c784; }
+  .status.empty { background: rgba(244,67,54,.15); color: #ef9a9a; }
+  .status.saved { background: rgba(76,175,80,.25); color: #a5d6a7; }
+  .section {
+    background: rgba(255,255,255,.06); border-radius: 14px;
+    padding: 16px; margin-bottom: 16px;
+  }
+  .section h2 { font-size: 1rem; margin-bottom: 10px; }
+  .item {
+    background: rgba(255,255,255,.04); border-radius: 8px;
+    padding: 10px 12px; margin-bottom: 8px; font-size: .85rem;
+    border-left: 3px solid rgba(233,30,99,.4);
+  }
+  .item .label { color: #f48fb1; font-weight: 600; }
+  .item .detail { color: #b39dba; font-size: .78rem; margin-top: 2px; }
+  .count { color: #b39dba; font-size: .8rem; margin-bottom: 8px; }
+  .btn {
+    display: block; width: 100%; padding: 14px; border: none; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 16px;
+    transition: all .2s;
+  }
+  .btn-save {
+    background: linear-gradient(135deg, #e91e63, #c2185b);
+    color: #fff; box-shadow: 0 4px 16px rgba(233,30,99,.4);
+  }
+  .btn-save:disabled { opacity: .4; cursor: default; }
+  .btn-back {
+    background: rgba(255,255,255,.08); color: #b39dba;
+    margin-top: 10px;
+  }
+  .raw {
+    background: rgba(0,0,0,.3); border-radius: 8px; padding: 12px;
+    font-family: monospace; font-size: .72rem; color: #b39dba;
+    max-height: 200px; overflow: auto; word-break: break-all;
+    margin-top: 12px;
+  }
+  .keys { font-size: .78rem; color: #b39dba; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<h1>&#128295; Data Recovery Tool</h1>
+<p class="subtitle">Scanning localStorage for wish list and watchlist data...</p>
+
+<div class="status scanning" id="status">Scanning...</div>
+
+<div id="results"></div>
+
+<button class="btn btn-save" id="saveBtn" style="display:none" onclick="saveToServer()">
+  &#128190; Save All Recovered Data to Server
+</button>
+<div id="saveStatus"></div>
+
+<button class="btn btn-back" onclick="window.location='/'">&#8592; Back to App</button>
+
+<div style="margin-top:24px;">
+  <h2 style="font-size:.9rem; margin-bottom:8px;">All localStorage Keys:</h2>
+  <div class="keys" id="allKeys"></div>
+  <div class="raw" id="rawData"></div>
+</div>
+
+<script>
+  const results = document.getElementById("results");
+  const status = document.getElementById("status");
+  const saveBtn = document.getElementById("saveBtn");
+
+  // Collect ALL localStorage for inspection
+  const allKeys = Object.keys(localStorage);
+  document.getElementById("allKeys").textContent = allKeys.length > 0
+    ? allKeys.join(", ")
+    : "(empty - no localStorage keys found)";
+
+  const rawDump = {};
+  allKeys.forEach(k => { rawDump[k] = localStorage.getItem(k); });
+  document.getElementById("rawData").textContent = JSON.stringify(rawDump, null, 2);
+
+  // Try to find wish list data under various possible keys
+  const wishKeys = ["wishlist", "wishList", "wish-list", "wishes", "wish_items", "wishItems", "myWishList"];
+  const watchKeys = ["watchlist", "watchList", "watch-list", "shows", "movies", "showList"];
+  const halloweenKeys = ["halloween", "halloweenList", "halloween-watchlist", "spooky", "horror"];
+
+  let recovered = { wishlist: [], watchlist: [], halloween: [] };
+  let totalFound = 0;
+
+  function tryParse(key) {
+    try {
+      const val = localStorage.getItem(key);
+      if (!val) return null;
+      const parsed = JSON.parse(val);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    } catch(e) {}
+    return null;
+  }
+
+  function renderItems(items, label, emoji) {
+    if (!items || items.length === 0) return "";
+    let html = '<div class="section"><h2>' + emoji + " " + label + '</h2>';
+    html += '<div class="count">' + items.length + ' items found</div>';
+    items.forEach(item => {
+      const name = item.name || item.title || item.text || JSON.stringify(item).substring(0, 80);
+      let details = [];
+      if (item.price) details.push("Price: " + item.price);
+      if (item.priority) details.push("Priority: " + item.priority);
+      if (item.type) details.push("Type: " + item.type);
+      if (item.where) details.push("Where: " + item.where);
+      if (item.who) details.push("Added by: " + item.who);
+      if (item.notes) details.push("Notes: " + item.notes);
+      if (item.date) details.push("Date: " + item.date);
+      html += '<div class="item"><div class="label">' + name + '</div>';
+      if (details.length > 0) html += '<div class="detail">' + details.join(" &middot; ") + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  // Search all possible keys
+  wishKeys.forEach(k => {
+    const data = tryParse(k);
+    if (data) { recovered.wishlist = recovered.wishlist.concat(data); totalFound += data.length; }
+  });
+  watchKeys.forEach(k => {
+    const data = tryParse(k);
+    if (data) { recovered.watchlist = recovered.watchlist.concat(data); totalFound += data.length; }
+  });
+  halloweenKeys.forEach(k => {
+    const data = tryParse(k);
+    if (data) { recovered.halloween = recovered.halloween.concat(data); totalFound += data.length; }
+  });
+
+  // Also scan ALL keys for any arrays that look like list data
+  allKeys.forEach(k => {
+    if ([...wishKeys, ...watchKeys, ...halloweenKeys].includes(k)) return;
+    const data = tryParse(k);
+    if (data && data.length > 0 && typeof data[0] === "object") {
+      totalFound += data.length;
+      results.innerHTML += '<div class="section"><h2>&#128270; Unknown key: "' + k + '"</h2>';
+      results.innerHTML += '<div class="count">' + data.length + ' items</div>';
+      data.forEach(item => {
+        results.innerHTML += '<div class="item"><div class="detail">' +
+          JSON.stringify(item).substring(0, 200) + '</div></div>';
+      });
+      results.innerHTML += '</div>';
+    }
+  });
+
+  // Render results
+  let html = "";
+  html += renderItems(recovered.wishlist, "Wish List Items", "&#127873;");
+  html += renderItems(recovered.watchlist, "Watchlist Items", "&#127916;");
+  html += renderItems(recovered.halloween, "Halloween Items", "&#127875;");
+  results.innerHTML = html + results.innerHTML;
+
+  if (totalFound > 0) {
+    status.className = "status found";
+    status.innerHTML = "&#9989; Found " + totalFound + " items! Review below then click Save.";
+    saveBtn.style.display = "";
+  } else {
+    status.className = "status empty";
+    status.innerHTML = "&#10060; No recoverable data found in localStorage. " +
+      "The data was stored server-side only.";
+  }
+
+  async function saveToServer() {
+    saveBtn.disabled = true;
+    saveBtn.textContent = "Saving...";
+    try {
+      const res = await fetch("/api/recover", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(recovered)
+      });
+      const data = await res.json();
+      status.className = "status saved";
+      status.innerHTML = "&#9989; Saved " + data.recovered + " items to server! Data is safe now.";
+      saveBtn.textContent = "&#9989; Saved!";
+      document.getElementById("saveStatus").innerHTML =
+        '<p style="text-align:center;color:#81c784;margin-top:8px;">All recovered data has been saved to the database.</p>';
+    } catch(e) {
+      status.className = "status empty";
+      status.innerHTML = "&#10060; Error saving: " + e.message;
+      saveBtn.disabled = false;
+      saveBtn.textContent = "&#128190; Retry Save";
+    }
+  }
+</script>
+
+</body>
+</html>

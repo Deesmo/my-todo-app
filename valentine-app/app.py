@@ -54,6 +54,29 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/recover-data")
+def recover_data():
+    return render_template("recover.html")
+
+
+@app.route("/api/recover", methods=["POST"])
+def recover_post():
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No data"}), 400
+    recovered = 0
+    for item in data.get("wishlist", []):
+        add_item("wishlist", item)
+        recovered += 1
+    for item in data.get("watchlist", []):
+        add_item("watchlist", item)
+        recovered += 1
+    for item in data.get("halloween", []):
+        add_item("halloween", item)
+        recovered += 1
+    return jsonify({"ok": True, "recovered": recovered})
+
+
 # ── Generic helpers ──
 
 def get_all(table):
