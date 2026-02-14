@@ -2359,20 +2359,14 @@ Come live with me, and be my love.</span>
 
   loadHunt();
 
-  // ── Daily Reminder ──
-  const DAILY_KEY = "valentine-daily-reminder";
-
+  // ── Love Reminder (every launch) ──
   function showDailyReminder() {
-    const today = new Date().toDateString();
-    if (localStorage.getItem(DAILY_KEY) === today) return;
-    // Show after tap overlay is dismissed (1.5s delay)
     setTimeout(() => {
       document.getElementById("dailyOverlay").classList.add("visible");
     }, 1500);
   }
 
   function dismissDaily() {
-    localStorage.setItem(DAILY_KEY, new Date().toDateString());
     document.getElementById("dailyOverlay").classList.remove("visible");
   }
 
