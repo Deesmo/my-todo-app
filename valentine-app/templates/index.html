@@ -119,20 +119,24 @@
 
   /* Navigation tabs */
   .nav-tabs {
-    display: flex; justify-content: center; gap: 4px;
+    display: flex; gap: 4px;
     margin-bottom: 24px; padding: 4px;
     background: var(--glass);
     backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+  .nav-tabs::-webkit-scrollbar { display: none; }
   .nav-tab {
-    flex: 1; padding: 10px 8px; border: none; border-radius: 12px;
+    flex: 0 0 auto; padding: 10px 14px; border: none; border-radius: 12px;
     background: transparent; color: var(--text-muted);
     font-size: .78rem; font-weight: 600; cursor: pointer;
     transition: var(--transition);
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
     -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
   }
   .nav-tab.active {
     background: linear-gradient(135deg, rgba(233,30,99,.4), rgba(244,143,177,.3));
@@ -721,6 +725,96 @@
     margin-top: 10px; font-size: .82rem; color: var(--text-muted);
     font-family: Georgia, "Times New Roman", serif;
   }
+
+  /* ── Generator shared styles ── */
+  .gen-card {
+    padding: 32px 24px; text-align: center;
+    min-height: 280px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .gen-card-inner {
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .gen-card-inner.switching {
+    opacity: 0; transform: translateY(20px) scale(.96);
+  }
+  .gen-category {
+    display: inline-block; padding: 4px 14px;
+    border-radius: 20px; font-size: .7rem;
+    font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; margin-bottom: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .gen-category.romantic { background: rgba(233,30,99,.25); color: #f48fb1; }
+  .gen-category.adventurous { background: rgba(255,152,0,.2); color: #ffb74d; }
+  .gen-category.cozy { background: rgba(156,39,176,.2); color: #ce93d8; }
+  .gen-category.fancy { background: rgba(255,215,0,.2); color: #ffd700; }
+  .gen-category.fun { background: rgba(0,188,212,.2); color: #4dd0e1; }
+  .gen-category.athome { background: rgba(139,195,74,.2); color: #aed581; }
+  .gen-category.quick { background: rgba(76,175,80,.2); color: #81c784; }
+  .gen-category.comfort { background: rgba(255,138,101,.2); color: #ffab91; }
+  .gen-category.healthy { background: rgba(102,187,106,.2); color: #a5d6a7; }
+  .gen-category.takeout { background: rgba(255,183,77,.2); color: #ffe082; }
+  .gen-category.sweet { background: rgba(244,143,177,.25); color: #f8bbd0; }
+  .gen-category.sexy { background: rgba(233,30,99,.3); color: #f06292; }
+  .gen-category.funny { background: rgba(0,188,212,.25); color: #80deea; }
+  .gen-icon { font-size: 2.8rem; margin-bottom: 16px; display: block; }
+  .gen-title {
+    font-size: 1.35rem; font-weight: 700; color: var(--text);
+    margin-bottom: 10px; line-height: 1.3;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .gen-desc {
+    font-size: .92rem; line-height: 1.7; color: var(--text-secondary);
+    font-family: Georgia, "Times New Roman", serif;
+    max-width: 340px;
+  }
+  .gen-meta {
+    margin-top: 14px; font-size: .78rem; color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    letter-spacing: .03em;
+  }
+  .gen-btn {
+    margin-top: 24px; padding: 14px 36px;
+    border: none; border-radius: 30px;
+    background: linear-gradient(135deg, var(--love-bright), #c2185b);
+    color: #fff; font-size: .95rem; font-weight: 700;
+    cursor: pointer; transition: var(--transition);
+    box-shadow: 0 4px 20px rgba(233,30,99,.4);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: .02em;
+  }
+  .gen-btn:hover { transform: scale(1.05); box-shadow: 0 6px 28px rgba(233,30,99,.5); }
+  .gen-btn:active { transform: scale(.95); }
+
+  /* Compliment specific */
+  .compliment-text {
+    font-size: 1.25rem; line-height: 1.8; color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic; max-width: 360px;
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .compliment-text.switching {
+    opacity: 0; transform: translateY(20px) scale(.96);
+  }
+  .compliment-burst {
+    position: absolute; pointer-events: none;
+    font-size: 1.2rem; opacity: 0;
+    animation: burstHeart .8s ease-out forwards;
+  }
+  @keyframes burstHeart {
+    0% { opacity: 1; transform: translate(0,0) scale(.5); }
+    100% { opacity: 0; transform: translate(var(--bx), var(--by)) scale(1.3); }
+  }
+  @media (max-width: 480px) {
+    .gen-card { padding: 24px 16px; min-height: 240px; }
+    .gen-title { font-size: 1.15rem; }
+    .gen-desc { font-size: .85rem; }
+    .compliment-text { font-size: 1.1rem; }
+  }
 </style>
 </head>
 <body>
@@ -745,6 +839,9 @@
     <button class="nav-tab" onclick="showPage('hunt')">Hunt</button>
     <button class="nav-tab" onclick="showPage('poems')">Poems</button>
     <button class="nav-tab" onclick="showPage('fascinate')">Video</button>
+    <button class="nav-tab" onclick="showPage('dates')">Dates</button>
+    <button class="nav-tab" onclick="showPage('compliments')">Sweet</button>
+    <button class="nav-tab" onclick="showPage('dinner')">Dinner</button>
   </div>
 
   <!-- ════ HOME PAGE ════ -->
@@ -1371,6 +1468,68 @@ Come live with me, and be my love.</span>
 
   </div>
 
+  <!-- ════ DATE NIGHT IDEAS PAGE ════ -->
+  <div class="page" id="page-dates">
+
+    <div class="gallery-label">&#127769; Date Night Generator &#127769;</div>
+
+    <div class="gen-card glass" id="dateCard">
+      <div class="gen-card-inner" id="dateInner">
+        <span class="gen-icon" id="dateIcon">&#127769;</span>
+        <span class="gen-category romantic" id="dateCat">Romantic</span>
+        <div class="gen-title" id="dateTitle">Tap below to get a date night idea!</div>
+        <div class="gen-desc" id="dateDesc">Brad and Katy's personal date night spinner</div>
+        <div class="gen-meta" id="dateMeta"></div>
+      </div>
+      <button class="gen-btn" onclick="spinDate()">&#127922; Spin for a Date!</button>
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
+  <!-- ════ COMPLIMENTS FOR KATY PAGE ════ -->
+  <div class="page" id="page-compliments">
+
+    <div class="gallery-label">&#128149; Compliments for Katy &#128149;</div>
+
+    <div class="gen-card glass" id="complimentCard">
+      <span class="gen-icon">&#128156;</span>
+      <span class="gen-category sweet" id="complimentCat">Sweet</span>
+      <p class="compliment-text" id="complimentText">Tap below to hear something true about you &#10084;&#65039;</p>
+      <button class="gen-btn" onclick="newCompliment()">&#128149; Another One</button>
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
+  <!-- ════ WHAT'S FOR DINNER PAGE ════ -->
+  <div class="page" id="page-dinner">
+
+    <div class="gallery-label">&#127869; What's for Dinner? &#127869;</div>
+
+    <div class="gen-card glass" id="dinnerCard">
+      <div class="gen-card-inner" id="dinnerInner">
+        <span class="gen-icon" id="dinnerIcon">&#127869;</span>
+        <span class="gen-category comfort" id="dinnerCat">Comfort Food</span>
+        <div class="gen-title" id="dinnerTitle">Tap below to solve the eternal question!</div>
+        <div class="gen-desc" id="dinnerDesc">No more &ldquo;I don't know, what do you want?&rdquo;</div>
+        <div class="gen-meta" id="dinnerMeta"></div>
+      </div>
+      <button class="gen-btn" onclick="spinDinner()">&#127860; Pick Again</button>
+    </div>
+
+    <div class="footer">
+      Made with &#10084;&#65039; for the love of my life
+    </div>
+
+  </div>
+
 </div>
 
 <audio id="bgMusic" preload="auto">
@@ -1416,7 +1575,7 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner"];
   let musicWasPlaying = false;
   function showPage(name) {
     const prevPage = pageNames.find(p => document.getElementById("page-" + p).classList.contains("active"));
@@ -1878,6 +2037,171 @@ Come live with me, and be my love.</span>
   }
 
   document.getElementById("fascinateVideo").addEventListener("click", toggleFascinateVideo);
+
+  // ── Date Night Generator ──
+  const dateIdeas = [
+    { icon:"\uD83C\uDF37", cat:"romantic", title:"Sunset Picnic", desc:"Pack wine, cheese, and a blanket. Find a spot with a view and watch the sun go down together.", meta:"\uD83D\uDCB0 $20\u201340 \u00B7 \u23F0 2\u20133 hrs" },
+    { icon:"\uD83C\uDFB6", cat:"romantic", title:"Live Music Night", desc:"Find a local bar or venue with live music. Hold hands and sway to the songs.", meta:"\uD83D\uDCB0 $30\u201360 \u00B7 \u23F0 3+ hrs" },
+    { icon:"\uD83D\uDEB6", cat:"adventurous", title:"Night Hike", desc:"Pick a trail you both love and do it under the stars. Bring flashlights and hot cocoa.", meta:"\uD83D\uDCB0 Free \u00B7 \u23F0 2\u20133 hrs" },
+    { icon:"\uD83C\uDFA8", cat:"fun", title:"Paint & Sip at Home", desc:"Grab two canvases, some paint, and a bottle of wine. Paint each other\u2019s portraits (no skills required).", meta:"\uD83D\uDCB0 $20\u201330 \u00B7 \u23F0 2 hrs" },
+    { icon:"\uD83C\uDF7D\uFE0F", cat:"fancy", title:"Fancy Restaurant Date", desc:"Dress up, make reservations at that place you\u2019ve been meaning to try, and savor every course.", meta:"\uD83D\uDCB0 $80\u2013150 \u00B7 \u23F0 2\u20133 hrs" },
+    { icon:"\uD83C\uDFAC", cat:"cozy", title:"Movie Marathon", desc:"Pick a trilogy or series. Make a blanket fort, pop popcorn, and binge together all night.", meta:"\uD83D\uDCB0 Free \u00B7 \u23F0 4+ hrs" },
+    { icon:"\uD83E\uDDD6", cat:"cozy", title:"Spa Night at Home", desc:"Face masks, candles, massage oils, and soft music. Take turns pampering each other.", meta:"\uD83D\uDCB0 $15\u201330 \u00B7 \u23F0 2 hrs" },
+    { icon:"\uD83C\uDF73", cat:"athome", title:"Cook a New Recipe Together", desc:"Find something neither of you has made before. Make a mess in the kitchen and love every minute.", meta:"\uD83D\uDCB0 $20\u201340 \u00B7 \u23F0 2 hrs" },
+    { icon:"\u2B50", cat:"adventurous", title:"Stargazing", desc:"Drive somewhere dark, lay out blankets, and try to find constellations. Bring snacks and each other.", meta:"\uD83D\uDCB0 Free \u00B7 \u23F0 2+ hrs" },
+    { icon:"\uD83C\uDFB3", cat:"fun", title:"Bowling Night", desc:"Rent some shoes, throw some gutter balls, and laugh until your sides hurt. Loser buys ice cream.", meta:"\uD83D\uDCB0 $25\u201345 \u00B7 \u23F0 2 hrs" },
+    { icon:"\uD83D\uDCD6", cat:"cozy", title:"Bookstore & Coffee", desc:"Browse a bookstore together, pick a book for each other, then read side by side at a coffee shop.", meta:"\uD83D\uDCB0 $20\u201340 \u00B7 \u23F0 2\u20133 hrs" },
+    { icon:"\uD83C\uDF77", cat:"romantic", title:"Wine Tasting", desc:"Visit a local winery or set up a tasting at home with 4\u20135 different bottles. Rate them together.", meta:"\uD83D\uDCB0 $30\u201370 \u00B7 \u23F0 2\u20133 hrs" },
+    { icon:"\uD83D\uDE97", cat:"adventurous", title:"Spontaneous Road Trip", desc:"Pick a direction and drive. Stop at whatever looks interesting. The journey IS the date.", meta:"\uD83D\uDCB0 $30\u201360 \u00B7 \u23F0 Half day" },
+    { icon:"\uD83C\uDFAE", cat:"fun", title:"Game Night", desc:"Break out the board games or video games. Get competitive. Trash talk encouraged.", meta:"\uD83D\uDCB0 Free \u00B7 \u23F0 2\u20133 hrs" },
+    { icon:"\uD83D\uDC83", cat:"fancy", title:"Dancing", desc:"Find a salsa, swing, or ballroom class for beginners. Or just dance in the living room.", meta:"\uD83D\uDCB0 Free\u2013$40 \u00B7 \u23F0 2 hrs" },
+    { icon:"\uD83C\uDF1F", cat:"romantic", title:"Recreate Your First Date", desc:"Go back to where it all started. Wear what you wore (or try to). Relive the magic.", meta:"\uD83D\uDCB0 Varies \u00B7 \u23F0 3+ hrs" },
+    { icon:"\uD83C\uDF70", cat:"athome", title:"Baking Challenge", desc:"Each person picks a dessert to bake. Judge each other\u2019s creations. Everyone wins because\u2026 dessert.", meta:"\uD83D\uDCB0 $15\u201325 \u00B7 \u23F0 2\u20133 hrs" },
+    { icon:"\uD83D\uDDBC\uFE0F", cat:"fun", title:"Art Gallery or Museum", desc:"Wander through exhibits. Make up stories about the art. Pretend to be cultured.", meta:"\uD83D\uDCB0 $10\u201330 \u00B7 \u23F0 2\u20133 hrs" },
+    { icon:"\uD83C\uDF1C", cat:"romantic", title:"Rooftop Drinks", desc:"Find a rooftop bar with a view. Order cocktails and soak in the city lights together.", meta:"\uD83D\uDCB0 $30\u201360 \u00B7 \u23F0 2 hrs" },
+    { icon:"\uD83C\uDFD5\uFE0F", cat:"adventurous", title:"Backyard Camping", desc:"Set up a tent in the yard. Make s\u2019mores, tell stories, sleep under the stars (or retreat inside at 2am).", meta:"\uD83D\uDCB0 Free \u00B7 \u23F0 All night" },
+    { icon:"\uD83D\uDCF8", cat:"fun", title:"Photo Walk", desc:"Grab your phones and walk around town photographing anything beautiful. Compare shots over dinner.", meta:"\uD83D\uDCB0 Free \u00B7 \u23F0 2 hrs" },
+    { icon:"\uD83E\uDD42", cat:"fancy", title:"Cocktail Making Class", desc:"Learn to make fancy drinks together. Shake, stir, and taste-test your creations.", meta:"\uD83D\uDCB0 $40\u201380 \u00B7 \u23F0 2 hrs" },
+    { icon:"\uD83D\uDEC1", cat:"cozy", title:"Bubble Bath for Two", desc:"Candles, bubbles, wine, and nowhere to be. Just the two of you.", meta:"\uD83D\uDCB0 $10 \u00B7 \u23F0 1+ hrs" },
+    { icon:"\uD83C\uDF89", cat:"fun", title:"Karaoke Night", desc:"Belt out your favorite songs at a karaoke bar or at home. Duets mandatory.", meta:"\uD83D\uDCB0 $15\u201340 \u00B7 \u23F0 2\u20133 hrs" }
+  ];
+  let lastDateIdx = -1;
+
+  function spinDate() {
+    let idx;
+    do { idx = Math.floor(Math.random() * dateIdeas.length); } while (idx === lastDateIdx);
+    lastDateIdx = idx;
+    const d = dateIdeas[idx];
+    const inner = document.getElementById("dateInner");
+    inner.classList.add("switching");
+    setTimeout(() => {
+      document.getElementById("dateIcon").textContent = d.icon;
+      const catEl = document.getElementById("dateCat");
+      catEl.className = "gen-category " + d.cat;
+      catEl.textContent = d.cat === "athome" ? "At Home" : d.cat.charAt(0).toUpperCase() + d.cat.slice(1);
+      document.getElementById("dateTitle").textContent = d.title;
+      document.getElementById("dateDesc").textContent = d.desc;
+      document.getElementById("dateMeta").textContent = d.meta;
+      inner.classList.remove("switching");
+    }, 350);
+  }
+
+  // ── Compliments for Katy ──
+  const compliments = [
+    { cat:"romantic", text:"The way you love our family takes my breath away. You are the heart of everything good in our home." },
+    { cat:"sweet", text:"Your smile is still the most beautiful thing I\u2019ve ever seen. After all these years, it still stops me in my tracks." },
+    { cat:"sexy", text:"You have no idea how gorgeous you are. I look at you and wonder how I got so lucky." },
+    { cat:"funny", text:"You\u2019re the only person who can make me laugh so hard I forget what I was mad about. That\u2019s a superpower." },
+    { cat:"sweet", text:"You make even the ordinary days feel special. Just being near you makes everything better." },
+    { cat:"romantic", text:"I fall more in love with you every single day. That\u2019s not a clich\u00E9\u2014it\u2019s my actual life." },
+    { cat:"sexy", text:"The way you look at me from across the room? Yeah, that still does things to me." },
+    { cat:"sweet", text:"You are the strongest woman I know. The way you handle everything with grace inspires me daily." },
+    { cat:"funny", text:"Your cooking is incredible, your patience is legendary, and your eye-roll game is absolutely world-class." },
+    { cat:"romantic", text:"I would choose you in every lifetime, every universe, every version of reality. Always you." },
+    { cat:"sweet", text:"Our kids are amazing because of you. You\u2019re the best mother they could ever have." },
+    { cat:"sexy", text:"You\u2019re like fine wine, Katy\u2014you just keep getting better and more irresistible with time." },
+    { cat:"funny", text:"You tolerate my nonsense with remarkable grace. That alone qualifies you for sainthood." },
+    { cat:"romantic", text:"Coming home to you is my favorite part of every day. You are my home." },
+    { cat:"sweet", text:"Your heart is so big it amazes me. The way you care about others is one of the things I love most about you." },
+    { cat:"sexy", text:"That outfit you wore last time we went out? I\u2019m still thinking about it. Just saying." },
+    { cat:"funny", text:"You\u2019re basically a superhero. Your only weakness is Target. And that\u2019s very relatable." },
+    { cat:"romantic", text:"You make me want to be a better man. Every day, you inspire me to try harder." },
+    { cat:"sweet", text:"Your laugh is my favorite sound in the entire world. I\u2019d do anything to hear it." },
+    { cat:"sexy", text:"I don\u2019t tell you enough how attractive you are. Katy, you are absolutely stunning." },
+    { cat:"romantic", text:"Thank you for being my partner, my best friend, and the love of my life. I don\u2019t deserve you, but I\u2019m so grateful." },
+    { cat:"sweet", text:"The way you light up when you talk about something you love\u2014I could watch that forever." },
+    { cat:"funny", text:"You manage our household, our kids, and me\u2014and somehow make it look easy. You\u2019re basically a CEO." },
+    { cat:"sexy", text:"When you walk into a room, you own it. Every head turns, and I get to say \u2018that\u2019s my wife.\u2019" },
+    { cat:"romantic", text:"I look at our life together and I\u2019m overwhelmed with gratitude. You\u2019ve given me everything I\u2019ve ever wanted." },
+    { cat:"sweet", text:"You make the world a softer, kinder place just by being in it. That\u2019s your gift." },
+    { cat:"funny", text:"You\u2019re the reason I still have clean clothes and a will to live. I\u2019m only half joking." },
+    { cat:"sexy", text:"Every time I see you get dressed up, I have to remind myself to breathe. You\u2019re that beautiful." },
+    { cat:"romantic", text:"My favorite place in the entire world is right next to you. Nowhere else even comes close." },
+    { cat:"sweet", text:"The way you tuck the kids in, the way you remember every little detail\u2014you are pure magic, Katy." },
+    { cat:"sexy", text:"Honestly? You fascinate me. In every way. And you always will." },
+    { cat:"funny", text:"If loving you is wrong, I don\u2019t want to be right. Also, please don\u2019t make me sleep on the couch." }
+  ];
+  let lastCompIdx = -1;
+
+  function newCompliment() {
+    let idx;
+    do { idx = Math.floor(Math.random() * compliments.length); } while (idx === lastCompIdx);
+    lastCompIdx = idx;
+    const c = compliments[idx];
+    const textEl = document.getElementById("complimentText");
+    const catEl = document.getElementById("complimentCat");
+    textEl.classList.add("switching");
+    // Burst hearts
+    const card = document.getElementById("complimentCard");
+    for (let i = 0; i < 6; i++) {
+      const h = document.createElement("span");
+      h.className = "compliment-burst";
+      h.textContent = ["\u2764\uFE0F","\uD83D\uDC95","\uD83D\uDC96","\uD83D\uDC97","\uD83E\uDE77"][Math.floor(Math.random()*5)];
+      h.style.left = (30 + Math.random()*40) + "%";
+      h.style.top = (30 + Math.random()*30) + "%";
+      h.style.setProperty("--bx", (Math.random()*120-60)+"px");
+      h.style.setProperty("--by", (Math.random()*-100-20)+"px");
+      card.appendChild(h);
+      setTimeout(() => h.remove(), 900);
+    }
+    setTimeout(() => {
+      catEl.className = "gen-category " + c.cat;
+      catEl.textContent = c.cat.charAt(0).toUpperCase() + c.cat.slice(1);
+      textEl.textContent = "\u201C" + c.text + "\u201D";
+      textEl.classList.remove("switching");
+    }, 350);
+  }
+
+  // ── What's for Dinner Generator ──
+  const dinnerIdeas = [
+    { icon:"\uD83C\uDF5D", cat:"quick", title:"Pasta Aglio e Olio", desc:"Simple, fast, and absolutely delicious. Garlic, olive oil, chili flakes, and spaghetti.", meta:"Quick & Easy \u00B7 30 min" },
+    { icon:"\uD83E\uDD69", cat:"fancy", title:"Steak & Roasted Veggies", desc:"Sear a perfect steak, roast some asparagus and potatoes. Open a nice red wine.", meta:"Fancy Night In \u00B7 45 min" },
+    { icon:"\uD83C\uDF2E", cat:"fun", title:"Taco Tuesday (Any Day)", desc:"Set up a taco bar with all the fixings. Let everyone build their own. Margaritas optional (but recommended).", meta:"Fun & Easy \u00B7 35 min" },
+    { icon:"\uD83C\uDF72", cat:"comfort", title:"Homemade Chicken Soup", desc:"Soul-warming, hug-in-a-bowl comfort. Perfect for when you need something cozy.", meta:"Comfort Food \u00B7 1 hr" },
+    { icon:"\uD83E\uDD57", cat:"healthy", title:"Big Mediterranean Salad", desc:"Greens, feta, olives, cucumbers, chickpeas, and a lemon vinaigrette. Light but satisfying.", meta:"Healthy \u00B7 20 min" },
+    { icon:"\uD83C\uDF55", cat:"takeout", title:"Pizza Night (Delivered)", desc:"Nobody feels like cooking. Order from your favorite spot. Zero guilt, maximum comfort.", meta:"Takeout \u00B7 0 effort" },
+    { icon:"\uD83C\uDF5B", cat:"comfort", title:"Mac & Cheese (From Scratch)", desc:"Creamy, cheesy, baked until bubbly. Add bacon bits if you\u2019re feeling wild.", meta:"Comfort Food \u00B7 50 min" },
+    { icon:"\uD83C\uDF63", cat:"takeout", title:"Sushi Takeout", desc:"Treat yourselves to a sushi platter. Edamame, rolls, and maybe some sake.", meta:"Takeout \u00B7 0 effort" },
+    { icon:"\uD83E\uDD6A", cat:"quick", title:"Gourmet Grilled Cheese & Tomato Soup", desc:"Elevated comfort food. Use fancy cheese, good bread, and homemade soup.", meta:"Quick & Easy \u00B7 25 min" },
+    { icon:"\uD83C\uDF57", cat:"fancy", title:"Lemon Herb Roast Chicken", desc:"A whole roasted chicken with herbs, lemon, and roasted root vegetables. Feels fancy, tastes incredible.", meta:"Fancy Night In \u00B7 1.5 hrs" },
+    { icon:"\uD83C\uDF5C", cat:"quick", title:"Stir Fry Night", desc:"Whatever veggies you have, some protein, soy sauce, and rice. Done in 20 minutes.", meta:"Quick & Easy \u00B7 20 min" },
+    { icon:"\uD83C\uDF2F", cat:"fun", title:"Build-Your-Own Burrito Bowls", desc:"Rice, beans, protein, salsa, guac, cheese\u2014let everyone customize their bowl.", meta:"Fun & Easy \u00B7 30 min" },
+    { icon:"\uD83E\uDD58", cat:"healthy", title:"Salmon & Quinoa Bowl", desc:"Pan-seared salmon over quinoa with avocado, edamame, and a sesame drizzle.", meta:"Healthy \u00B7 35 min" },
+    { icon:"\uD83C\uDF54", cat:"comfort", title:"Smash Burgers", desc:"Crispy-edged, juicy smash burgers with all the toppings. Better than any restaurant.", meta:"Comfort Food \u00B7 30 min" },
+    { icon:"\uD83E\uDDC7", cat:"takeout", title:"Thai Takeout", desc:"Pad thai, green curry, spring rolls\u2014let someone else do the hard work tonight.", meta:"Takeout \u00B7 0 effort" },
+    { icon:"\uD83E\uDD5E", cat:"fun", title:"Breakfast for Dinner", desc:"Pancakes, eggs, bacon, the works. Because why not? Rules are made to be broken.", meta:"Fun & Easy \u00B7 25 min" },
+    { icon:"\uD83C\uDF5A", cat:"quick", title:"Fried Rice", desc:"Use leftover rice, toss in whatever\u2019s in the fridge, add soy sauce and an egg. Chef\u2019s kiss.", meta:"Quick & Easy \u00B7 15 min" },
+    { icon:"\uD83E\uDD6B", cat:"healthy", title:"Sheet Pan Chicken & Veggies", desc:"Everything on one pan. Chicken thighs, broccoli, sweet potatoes. Minimal dishes, maximum flavor.", meta:"Healthy \u00B7 40 min" },
+    { icon:"\uD83E\uDDC0", cat:"fancy", title:"Charcuterie & Wine Night", desc:"Skip the cooking entirely. Fancy cheeses, meats, crackers, fruit, and a great bottle of wine.", meta:"Fancy Night In \u00B7 15 min prep" },
+    { icon:"\uD83C\uDF5D", cat:"comfort", title:"Baked Ziti", desc:"Layers of pasta, ricotta, mozzarella, and marinara. Baked until golden and bubbly.", meta:"Comfort Food \u00B7 1 hr" },
+    { icon:"\uD83C\uDF64", cat:"quick", title:"Quesadillas", desc:"Tortilla, cheese, whatever leftovers you have. Crisp it up. Dip in salsa. Perfect.", meta:"Quick & Easy \u00B7 10 min" },
+    { icon:"\uD83E\uDD62", cat:"takeout", title:"Chinese Takeout", desc:"General Tso\u2019s, lo mein, egg rolls\u2014the classics. Fortune cookies for dessert.", meta:"Takeout \u00B7 0 effort" },
+    { icon:"\uD83E\uDD59", cat:"healthy", title:"Mediterranean Wraps", desc:"Hummus, grilled chicken, veggies, and feta in a warm wrap. Fresh and filling.", meta:"Healthy \u00B7 20 min" },
+    { icon:"\uD83C\uDF56", cat:"fancy", title:"Lamb Chops & Risotto", desc:"Date-night-at-home vibes. Seared lamb chops with creamy parmesan risotto.", meta:"Fancy Night In \u00B7 1 hr" },
+    { icon:"\uD83E\uDD6E", cat:"fun", title:"Fondue Night", desc:"Cheese fondue for dinner, chocolate fondue for dessert. Dip everything. Share everything.", meta:"Fun & Easy \u00B7 30 min" },
+    { icon:"\uD83C\uDF36\uFE0F", cat:"comfort", title:"Chili Night", desc:"A big pot of hearty chili with cornbread on the side. Perfect for a cozy evening.", meta:"Comfort Food \u00B7 1 hr" }
+  ];
+  let lastDinnerIdx = -1;
+
+  function spinDinner() {
+    let idx;
+    do { idx = Math.floor(Math.random() * dinnerIdeas.length); } while (idx === lastDinnerIdx);
+    lastDinnerIdx = idx;
+    const d = dinnerIdeas[idx];
+    const inner = document.getElementById("dinnerInner");
+    inner.classList.add("switching");
+    setTimeout(() => {
+      document.getElementById("dinnerIcon").textContent = d.icon;
+      const catEl = document.getElementById("dinnerCat");
+      catEl.className = "gen-category " + d.cat;
+      const catNames = { quick:"Quick & Easy", fancy:"Fancy", comfort:"Comfort Food", healthy:"Healthy", takeout:"Takeout", fun:"Fun" };
+      catEl.textContent = catNames[d.cat] || d.cat;
+      document.getElementById("dinnerTitle").textContent = d.title;
+      document.getElementById("dinnerDesc").textContent = d.desc;
+      document.getElementById("dinnerMeta").textContent = d.meta;
+      inner.classList.remove("switching");
+    }, 350);
+  }
 
   // ── Service Worker ──
   if ("serviceWorker" in navigator) {
