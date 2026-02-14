@@ -1678,6 +1678,121 @@
     .slang-controls { flex-direction: column; }
     .slang-sort-btn { width: 100%; text-align: center; }
   }
+
+  /* ── Word of the Day ── */
+  .wotd-subtitle {
+    text-align: center; font-size: .85rem; color: var(--text-muted);
+    font-family: Georgia, "Times New Roman", serif; font-style: italic;
+    margin-bottom: 20px;
+  }
+  .wotd-today { padding: 28px 22px; border-radius: 20px; margin-bottom: 22px; text-align: center; }
+  .wotd-badge {
+    display: inline-block; padding: 4px 14px; border-radius: 16px;
+    background: rgba(255,215,0,.18); color: var(--gold);
+    font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    margin-bottom: 12px;
+  }
+  .wotd-word {
+    font-size: 2.2rem; font-weight: 800; color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: .02em; line-height: 1.2;
+  }
+  .wotd-pron {
+    font-size: .82rem; color: var(--love-pink); font-style: italic;
+    font-family: Georgia, "Times New Roman", serif; margin-top: 4px;
+  }
+  .wotd-pos {
+    display: inline-block; padding: 3px 12px; border-radius: 12px;
+    background: rgba(156,39,176,.2); color: #ce93d8;
+    font-size: .68rem; font-weight: 700; font-style: italic;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    margin-top: 8px;
+  }
+  .wotd-def {
+    font-size: 1rem; color: var(--text-secondary); margin-top: 14px;
+    font-family: Georgia, "Times New Roman", serif; line-height: 1.5;
+    text-align: left;
+  }
+  .wotd-section-label {
+    font-size: .7rem; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: .1em; margin-top: 14px; margin-bottom: 4px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    text-align: left;
+  }
+  .wotd-etym {
+    font-size: .82rem; color: var(--text-muted); line-height: 1.4;
+    font-family: Georgia, "Times New Roman", serif; text-align: left;
+  }
+  .wotd-example {
+    font-size: .85rem; color: var(--text-secondary); font-style: italic;
+    font-family: Georgia, "Times New Roman", serif; line-height: 1.4;
+    padding-left: 12px; border-left: 2px solid rgba(233,30,99,.25); text-align: left;
+  }
+  .wotd-synonyms {
+    font-size: .8rem; color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    text-align: left;
+  }
+  .wotd-syn-tag {
+    display: inline-block; padding: 2px 10px; border-radius: 10px;
+    background: rgba(255,255,255,.08); margin: 2px 3px; font-size: .72rem;
+  }
+  .wotd-fact {
+    font-size: .8rem; color: var(--gold); line-height: 1.4;
+    font-family: Georgia, "Times New Roman", serif; text-align: left;
+    padding: 8px 12px; border-radius: 10px; background: rgba(255,215,0,.08);
+    margin-top: 10px;
+  }
+  .wotd-nav-btns {
+    display: flex; gap: 10px; justify-content: center; margin-top: 16px;
+  }
+  .wotd-nav-btn {
+    padding: 10px 20px; border: 1px solid var(--glass-border); border-radius: 24px;
+    background: var(--glass); color: var(--text-secondary);
+    font-size: .8rem; font-weight: 700; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  }
+  .wotd-nav-btn:active { transform: scale(.93); }
+  .wotd-archive-title {
+    font-size: .88rem; font-weight: 700; color: var(--text); margin-top: 24px; margin-bottom: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    text-align: center;
+  }
+  .wotd-archive { display: flex; flex-direction: column; gap: 10px; }
+  .wotd-mini {
+    padding: 14px; border-radius: 14px; cursor: pointer;
+    transition: var(--transition); -webkit-tap-highlight-color: transparent;
+  }
+  .wotd-mini:active { transform: scale(.98); }
+  .wotd-mini-word {
+    font-size: .95rem; font-weight: 700; color: var(--text);
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .wotd-mini-def {
+    font-size: .78rem; color: var(--text-muted); margin-top: 2px;
+    font-family: Georgia, "Times New Roman", serif;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .wotd-mini-date {
+    font-size: .65rem; color: var(--text-muted); margin-top: 2px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  }
+  .wotd-show-more {
+    display: block; margin: 14px auto 0; padding: 10px 24px;
+    border: 1px solid var(--glass-border); border-radius: 24px;
+    background: var(--glass); color: var(--text-secondary);
+    font-size: .8rem; font-weight: 700; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    transition: var(--transition);
+  }
+  .wotd-show-more:active { transform: scale(.93); }
+  @media (max-width: 480px) {
+    .wotd-today { padding: 22px 16px; }
+    .wotd-word { font-size: 1.7rem; }
+  }
 </style>
 </head>
 <body>
@@ -1712,6 +1827,7 @@
     <button class="nav-tab" onclick="showPage('purses')">Purses</button>
     <button class="nav-tab" onclick="showPage('wishlist')">Wishes</button>
     <button class="nav-tab" onclick="showPage('slang')">Slang</button>
+    <button class="nav-tab" onclick="showPage('wotd')">Word</button>
     <button class="nav-tab" onclick="showPage('about')">About</button>
   </div>
 
@@ -2733,6 +2849,22 @@ Come live with me, and be my love.</span>
 
   </div>
 
+  <!-- ════ WORD OF THE DAY PAGE ════ -->
+  <div class="page" id="page-wotd">
+    <div class="gallery-label">&#128214; Word of the Day &#128214;</div>
+    <div class="wotd-subtitle">Expand your vocabulary with rare, unusual, and forgotten words!</div>
+    <div class="wotd-today glass" id="wotdCard"></div>
+    <div class="wotd-nav-btns">
+      <button class="wotd-nav-btn" onclick="wotdNav(-1)">&#9664; Previous</button>
+      <button class="wotd-nav-btn" onclick="wotdGoToday()">&#128197; Today</button>
+      <button class="wotd-nav-btn" onclick="wotdNav(1)">Next &#9654;</button>
+    </div>
+    <div class="wotd-archive-title" id="wotdArchiveTitle">&#128218; Recent Words</div>
+    <div class="wotd-archive" id="wotdArchive"></div>
+    <button class="wotd-show-more" id="wotdShowMore" onclick="wotdLoadMore()">Show More</button>
+    <div class="footer">Made with &#10084;&#65039; for the love of my life</div>
+  </div>
+
   <!-- ════ ABOUT THE AUTHOR PAGE ════ -->
   <div class="page" id="page-about">
 
@@ -2791,6 +2923,7 @@ Come live with me, and be my love.</span>
   </div>
 </div>
 
+<script src="/static/wotd-data.js"></script>
 <script>
   // ── Floating Hearts ──
   const heartsContainer = document.getElementById("heartsContainer");
@@ -2812,7 +2945,7 @@ Come live with me, and be my love.</span>
   setInterval(spawnHeart, 1800);
 
   // ── Page Navigation ──
-  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "purses", "wishlist", "slang", "about"];
+  const pageNames = ["home", "sexy", "coupons", "hunt", "poems", "fascinate", "dates", "compliments", "dinner", "booth", "textme", "challenge", "games", "purses", "wishlist", "slang", "wotd", "about"];
   let musicWasPlaying = false;
   function showPage(name) {
     const prevPage = pageNames.find(p => document.getElementById("page-" + p).classList.contains("active"));
@@ -4851,6 +4984,83 @@ Come live with me, and be my love.</span>
 
   initSlangCats();
   filterSlang();
+
+  // ── Word of the Day ──
+  // wotdWords is loaded from /static/wotd-data.js
+  let wotdOffset = 0;
+  let wotdArchiveCount = 7;
+
+  function wotdDayIndex(offset) {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    const epoch = new Date(2025, 0, 1);
+    return Math.floor((d - epoch) / 86400000);
+  }
+
+  function wotdDateStr(offset) {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+  }
+
+  function wotdGetWord(offset) {
+    if (typeof wotdWords === "undefined" || !wotdWords.length) return null;
+    const idx = ((wotdDayIndex(offset) % wotdWords.length) + wotdWords.length) % wotdWords.length;
+    return wotdWords[idx];
+  }
+
+  function wotdRenderCard() {
+    const card = document.getElementById("wotdCard");
+    const entry = wotdGetWord(wotdOffset);
+    if (!entry) { card.innerHTML = '<div style="padding:20px;color:var(--text-muted)">Loading words...</div>'; return; }
+    const isToday = wotdOffset === 0;
+    let html = '<div class="wotd-badge">' + (isToday ? "\uD83D\uDCC5 Today's Word" : wotdDateStr(wotdOffset)) + '</div>';
+    html += '<div class="wotd-word">' + entry.w + '</div>';
+    if (entry.p) html += '<div class="wotd-pron">/' + entry.p + '/</div>';
+    if (entry.s) html += '<div class="wotd-pos">' + entry.s + '</div>';
+    if (entry.d) html += '<div class="wotd-def">' + entry.d + '</div>';
+    if (entry.e) { html += '<div class="wotd-section-label">Origin</div>'; html += '<div class="wotd-etym">' + entry.e + '</div>'; }
+    if (entry.x) { html += '<div class="wotd-section-label">Example</div>'; html += '<div class="wotd-example">"' + entry.x + '"</div>'; }
+    if (entry.y) {
+      html += '<div class="wotd-section-label">Synonyms</div><div class="wotd-synonyms">';
+      entry.y.split(",").forEach(s => { html += '<span class="wotd-syn-tag">' + s.trim() + '</span>'; });
+      html += '</div>';
+    }
+    if (entry.f) html += '<div class="wotd-fact">\u2728 ' + entry.f + '</div>';
+    card.innerHTML = html;
+  }
+
+  function wotdNav(dir) { wotdOffset += dir; wotdRenderCard(); }
+  function wotdGoToday() { wotdOffset = 0; wotdRenderCard(); }
+
+  function wotdRenderArchive() {
+    const arc = document.getElementById("wotdArchive");
+    arc.innerHTML = "";
+    for (let i = -1; i >= -wotdArchiveCount; i--) {
+      if (i === wotdOffset) continue;
+      const entry = wotdGetWord(i);
+      if (!entry) continue;
+      const el = document.createElement("div");
+      el.className = "wotd-mini glass";
+      el.onclick = () => { wotdOffset = i; wotdRenderCard(); window.scrollTo({top: 0, behavior: "smooth"}); };
+      el.innerHTML = '<div class="wotd-mini-word">' + entry.w + '</div>' +
+        '<div class="wotd-mini-def">' + (entry.d || "") + '</div>' +
+        '<div class="wotd-mini-date">' + wotdDateStr(i) + '</div>';
+      arc.appendChild(el);
+    }
+    document.getElementById("wotdShowMore").style.display = wotdArchiveCount < 30 ? "" : "none";
+  }
+
+  function wotdLoadMore() {
+    wotdArchiveCount = Math.min(wotdArchiveCount + 7, 30);
+    wotdRenderArchive();
+  }
+
+  function wotdInit() {
+    wotdRenderCard();
+    wotdRenderArchive();
+  }
+  if (typeof wotdWords !== "undefined") wotdInit();
 
   // ── Service Worker ──
   if ("serviceWorker" in navigator) {
