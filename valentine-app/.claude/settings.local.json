@@ -8,7 +8,18 @@
       "Bash(git config:*)",
       "Bash(git push:*)",
       "Bash(ls:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "WebFetch(domain:katy-valentine.onrender.com)",
+      "Bash(node -e:*)",
+      "Bash(node -c:*)",
+      "Bash(for word in LOVE KISS HEART ROMANCE PASSION FOREVER HUSBAND WIFE SOULMATE DEVOTION CHERISH ADORE SWEETHEART DARLING EMBRACE TENDERNESS AFFECTION VALENTINE BELOVED TREASURE COMMITMENT TOGETHER BEAUTIFUL GORGEOUS AMAZING INCREDIBLE STUNNING LOVELY PERFECT ANGEL DESIRE BLISS WARMTH INTIMATE HAPPINESS DESTINY ETERNITY MAGNETIC INFATUATE)",
+      "Bash(do if ! sed -n '3806,3851p' templates/index.html)",
+      "Bash(then echo \"MISSING: $word\")",
+      "Bash(fi:*)",
+      "Bash(done)",
+      "Bash(python3:*)",
+      "Bash(unzip:*)",
+      "Bash(git rm:*)"
     ]
   }
 }
