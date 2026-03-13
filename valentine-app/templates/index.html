@@ -2,6 +2,42 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>
+// Emergency auto-recovery: read cached API data and save to server
+(async function(){
+  try {
+    if (!("caches" in window)) return;
+    const cache = await caches.open("valentine-v14");
+    const recovered = { wishlist: [], watchlist: [], halloween: [] };
+    const apis = [
+      { path: "/api/wishlist", key: "wishlist" },
+      { path: "/api/watchlist", key: "watchlist" },
+      { path: "/api/halloween-watchlist", key: "halloween" }
+    ];
+    for (const api of apis) {
+      const urls = [api.path, location.origin + api.path, "https://katy-valentine.onrender.com" + api.path];
+      for (const url of urls) {
+        try {
+          const r = await cache.match(url);
+          if (r) { const d = await r.clone().json(); if (Array.isArray(d) && d.length > 0 && recovered[api.key].length === 0) recovered[api.key] = d; }
+        } catch(e) {}
+      }
+    }
+    const total = recovered.wishlist.length + recovered.watchlist.length + recovered.halloween.length;
+    if (total > 0) {
+      await fetch("/api/recover", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(recovered) });
+    }
+  } catch(e) {}
+})();
+// Listen for SW recovery notification
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.addEventListener("message", function(e) {
+    if (e.data && e.data.type === "recovered") {
+      window.location.reload();
+    }
+  });
+}
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Happy Valentine's Day Katy ❤️</title>
 <meta name="theme-color" content="#1a0a1e">
