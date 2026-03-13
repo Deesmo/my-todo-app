@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Data Recovery</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    background: #1a0a1e; color: #f5e6f0; padding: 20px;
+    min-height: 100vh;
+  }
+  h1 { text-align: center; margin-bottom: 8px; font-size: 1.3rem; }
+  .subtitle { text-align: center; color: #b39dba; font-size: .85rem; margin-bottom: 24px; }
+  .status {
+    padding: 16px; border-radius: 12px; margin-bottom: 16px;
+    text-align: center; font-weight: 600; font-size: .95rem;
+  }
+  .scanning { background: rgba(255,193,7,.15); color: #ffd54f; }
+  .found { background: rgba(76,175,80,.15); color: #81c784; }
+  .empty { background: rgba(244,67,54,.15); color: #ef9a9a; }
+  .saved { background: rgba(76,175,80,.25); color: #a5d6a7; }
+  .section {
+    background: rgba(255,255,255,.06); border-radius: 14px;
+    padding: 16px; margin-bottom: 16px;
+  }
+  .section h2 { font-size: 1rem; margin-bottom: 10px; }
+  .item {
+    background: rgba(255,255,255,.04); border-radius: 8px;
+    padding: 10px 12px; margin-bottom: 8px; font-size: .85rem;
+    border-left: 3px solid rgba(233,30,99,.4);
+  }
+  .item .label { color: #f48fb1; font-weight: 600; }
+  .item .detail { color: #b39dba; font-size: .78rem; margin-top: 2px; }
+  .btn {
+    display: block; width: 100%; padding: 14px; border: none; border-radius: 14px;
+    font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 16px;
+    transition: all .2s;
+  }
+  .btn-save {
+    background: linear-gradient(135deg, #e91e63, #c2185b);
+    color: #fff; box-shadow: 0 4px 16px rgba(233,30,99,.4);
+  }
+  .btn-save:disabled { opacity: .4; cursor: default; }
+  .warn {
+    background: rgba(255,193,7,.1); border: 1px solid rgba(255,193,7,.3);
+    border-radius: 12px; padding: 14px; margin-bottom: 20px;
+    text-align: center; font-size: .85rem; color: #ffd54f;
+  }
+  .raw {
+    background: rgba(0,0,0,.3); border-radius: 8px; padding: 12px;
+    font-family: monospace; font-size: .7rem; color: #b39dba;
+    max-height: 300px; overflow: auto; word-break: break-all;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🔧 Emergency Data Recovery</h1>
+<p class="subtitle">Scanning browser cache for your saved lists...</p>
+<div class="warn">⚠️ DO NOT go to the main app yet! Stay on this page until recovery is complete.</div>
+
+<div class="status scanning" id="status">🔍 Scanning browser cache...</div>
+<div id="results"></div>
+<button class="btn btn-save" id="saveBtn" style="display:none" onclick="saveAll()">💾 Restore All Data Now</button>
+<div id="saveResult"></div>
+<div class="raw" id="rawLog" style="display:none"></div>
+
+<script>
+(async function() {
+  const statusEl = document.getElementById("status");
+  const resultsEl = document.getElementById("results");
+  const saveBtn = document.getElementById("saveBtn");
+  const rawLog = document.getElementById("rawLog");
+  let log = [];
+  function addLog(msg) { log.push(msg); rawLog.textContent = log.join("\n"); rawLog.style.display = "block"; }
+
+  let recovered = { wishlist: [], watchlist: [], halloween: [] };
+  let totalFound = 0;
+
+  // Method 1: CacheStorage API — read service worker cache directly
+  addLog("Checking CacheStorage API...");
+  if ("caches" in window) {
+    try {
+      const cacheNames = await caches.keys();
+      addLog("Found caches: " + cacheNames.join(", "));
+
+      for (const cacheName of cacheNames) {
+        const cache = await caches.open(cacheName);
+        const keys = await cache.keys();
+        addLog("Cache '" + cacheName + "' has " + keys.length + " entries");
+
+        // Look for API responses
+        const apiPaths = [
+          { path: "/api/wishlist", key: "wishlist" },
+          { path: "/api/watchlist", key: "watchlist" },
+          { path: "/api/halloween-watchlist", key: "halloween" }
+        ];
+
+        for (const api of apiPaths) {
+          // Try exact match and variations
+          const variations = [
+            api.path,
+            "https://katy-valentine.onrender.com" + api.path,
+            window.location.origin + api.path
+          ];
+
+          for (const url of variations) {
+            try {
+              const resp = await cache.match(url);
+              if (resp) {
+                const data = await resp.json();
+                addLog("FOUND in cache: " + url + " → " + JSON.stringify(data).substring(0, 200));
+                if (Array.isArray(data) && data.length > 0) {
+                  recovered[api.key] = data;
+                  totalFound += data.length;
+                }
+                break;
+              }
+            } catch(e) { addLog("Error reading " + url + ": " + e.message); }
+          }
+        }
+
+        // Also dump ALL cached URLs for inspection
+        for (const req of keys) {
+          addLog("  Cached: " + req.url);
+          if (req.url.includes("/api/")) {
+            try {
+              const resp = await cache.match(req);
+              if (resp) {
+                const text = await resp.clone().text();
+                addLog("  → Data: " + text.substring(0, 300));
+                // Try to parse and recover
+                try {
+                  const data = JSON.parse(text);
+                  if (Array.isArray(data) && data.length > 0) {
+                    if (req.url.includes("wishlist") && recovered.wishlist.length === 0) {
+                      recovered.wishlist = data;
+                      totalFound += data.length;
+                      addLog("  → RECOVERED " + data.length + " wishlist items!");
+                    } else if (req.url.includes("watchlist") && !req.url.includes("halloween") && recovered.watchlist.length === 0) {
+                      recovered.watchlist = data;
+                      totalFound += data.length;
+                      addLog("  → RECOVERED " + data.length + " watchlist items!");
+                    } else if (req.url.includes("halloween") && recovered.halloween.length === 0) {
+                      recovered.halloween = data;
+                      totalFound += data.length;
+                      addLog("  → RECOVERED " + data.length + " halloween items!");
+                    }
+                  }
+                } catch(e) {}
+              }
+            } catch(e) { addLog("  → Error: " + e.message); }
+          }
+        }
+      }
+    } catch(e) {
+      addLog("CacheStorage error: " + e.message);
+    }
+  } else {
+    addLog("CacheStorage API not available");
+  }
+
+  // Method 2: localStorage scan (same as recover.html)
+  addLog("\nChecking localStorage...");
+  const lsKeys = Object.keys(localStorage);
+  addLog("localStorage keys: " + (lsKeys.length > 0 ? lsKeys.join(", ") : "(none)"));
+
+  const wishKeys = ["wishlist","wishList","wish-list","wishes","wish_items","wishItems","myWishList"];
+  const watchKeys = ["watchlist","watchList","watch-list","shows","movies","showList"];
+  const halloweenKeys = ["halloween","halloweenList","halloween-watchlist","spooky","horror"];
+
+  function tryLS(key) {
+    try {
+      const v = localStorage.getItem(key);
+      if (!v) return null;
+      const p = JSON.parse(v);
+      if (Array.isArray(p) && p.length > 0) return p;
+    } catch(e) {}
+    return null;
+  }
+
+  [...wishKeys, ...watchKeys, ...halloweenKeys].forEach(k => {
+    const data = tryLS(k);
+    if (data) {
+      addLog("Found in localStorage[" + k + "]: " + data.length + " items");
+      if (wishKeys.includes(k) && recovered.wishlist.length === 0) { recovered.wishlist = data; totalFound += data.length; }
+      if (watchKeys.includes(k) && recovered.watchlist.length === 0) { recovered.watchlist = data; totalFound += data.length; }
+      if (halloweenKeys.includes(k) && recovered.halloween.length === 0) { recovered.halloween = data; totalFound += data.length; }
+    }
+  });
+
+  // Also dump ALL localStorage
+  lsKeys.forEach(k => {
+    addLog("  LS[" + k + "] = " + (localStorage.getItem(k) || "").substring(0, 200));
+  });
+
+  // Method 3: Check IndexedDB
+  addLog("\nChecking IndexedDB...");
+  if ("indexedDB" in window) {
+    try {
+      const dbs = await indexedDB.databases();
+      addLog("IndexedDB databases: " + dbs.map(d => d.name).join(", ") || "(none)");
+    } catch(e) { addLog("IndexedDB.databases() not supported or error: " + e.message); }
+  }
+
+  // Display results
+  addLog("\n=== TOTAL FOUND: " + totalFound + " items ===");
+
+  function renderItems(items, label, emoji) {
+    if (!items || items.length === 0) return "";
+    let html = '<div class="section"><h2>' + emoji + " " + label + " (" + items.length + " items)</h2>";
+    items.forEach(item => {
+      const name = item.name || item.title || item.text || JSON.stringify(item).substring(0, 80);
+      let details = [];
+      if (item.price) details.push("$" + item.price);
+      if (item.priority) details.push(item.priority);
+      if (item.where) details.push(item.where);
+      if (item.notes) details.push(item.notes);
+      html += '<div class="item"><div class="label">' + name + "</div>";
+      if (details.length) html += '<div class="detail">' + details.join(" · ") + "</div>";
+      html += "</div>";
+    });
+    return html + "</div>";
+  }
+
+  resultsEl.innerHTML = renderItems(recovered.wishlist, "Wish List", "🎁")
+    + renderItems(recovered.watchlist, "Shows to Watch", "🎬")
+    + renderItems(recovered.halloween, "Halloween List", "🎃");
+
+  if (totalFound > 0) {
+    statusEl.className = "status found";
+    statusEl.innerHTML = "✅ Found " + totalFound + " items! Review below, then tap Restore.";
+    saveBtn.style.display = "";
+  } else {
+    statusEl.className = "status empty";
+    statusEl.innerHTML = "😔 No cached data found. The browser cache may have already been cleared.";
+  }
+
+  window._recovered = recovered;
+  window._totalFound = totalFound;
+})();
+
+async function saveAll() {
+  const btn = document.getElementById("saveBtn");
+  const statusEl = document.getElementById("status");
+  btn.disabled = true;
+  btn.textContent = "Restoring...";
+  try {
+    const res = await fetch("/api/recover", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(window._recovered)
+    });
+    const data = await res.json();
+    if (data.ok) {
+      statusEl.className = "status saved";
+      statusEl.innerHTML = "✅ Restored " + data.recovered + " items! You can now go back to the app.";
+      btn.textContent = "✅ Restored!";
+      document.getElementById("saveResult").innerHTML =
+        '<p style="text-align:center;margin-top:12px;"><a href="/" style="color:#f48fb1;font-weight:600;">← Go to App</a></p>';
+    } else {
+      throw new Error(data.error || "Unknown error");
+    }
+  } catch(e) {
+    statusEl.className = "status empty";
+    statusEl.innerHTML = "❌ Error: " + e.message;
+    btn.disabled = false;
+    btn.textContent = "💾 Retry";
+  }
+}
+</script>
+</body>
+</html>

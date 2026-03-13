@@ -59,6 +59,11 @@ def recover_data():
     return render_template("recover.html")
 
 
+@app.route("/recover-cache")
+def recover_cache():
+    return render_template("recover-cache.html")
+
+
 @app.route("/api/recover", methods=["POST"])
 def recover_post():
     data = request.get_json()
